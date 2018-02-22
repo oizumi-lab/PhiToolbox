@@ -55,16 +55,16 @@ end
 
 % check Cov_XY and Cov_Y
 if nargin >= 4
-%     if strcmp( type_of_phi, 'MI1' )
-%         error('Cov_XY and Cov_Y are not needed for computation of MI1!')
-%     end
+    %     if strcmp( type_of_phi, 'MI1' )
+    %         error('Cov_XY and Cov_Y are not needed for computation of MI1!')
+    %     end
     assert( isa( Cov_XY, 'double' ) )
     assert( isa( Cov_Y, 'double' ) )
-end
-[nYr, nYc] = size(Cov_Y);
-[nXYr, nXYc] = size(Cov_XY);
-if ~isequal(nZc, nYr, nYc, nXYr, nXYc)
-    error('Sizes of Cov_X and Cov_Y (Cov_XY) do not match!')
+    [nYr, nYc] = size(Cov_Y);
+    [nXYr, nXYc] = size(Cov_XY);
+    if ~isequal(nZc, nYr, nYc, nXYr, nXYc)
+        error('Sizes of Cov_X and Cov_Y (Cov_XY) do not match!')
+    end
 end
 
 % check Geo_OptimMethod
