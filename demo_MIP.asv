@@ -63,22 +63,21 @@ type_of_dist = 'Gauss';
 %%% Exhaustive Search %%%
 disp('Exhaustive Search...')
 
-%% pre-compute covariances
+%%
 tic;
 probs{1} = Cov_X;
-probs{2} = Cov_XY;
-probs{3} = Cov_Y;
-[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, X, [], probs);
+probs{2} = Cov_Y;
+probs{3} = Cov_XY;
+[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, [], [], probs);
 
 t_Exhaustive = toc;
 disp('Exhaustive Search finished.')
 disp(['phi at the MIP: ', num2str(phi_MIP)])
 disp(['the MIP: ', num2str(Z_MIP)])
 
-%% without covariances
+%%
 tic;
-params(1) = tau;
-[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
+[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params, probs);
 t_Exhaustive = toc;
 disp('Exhaustive Search finished.')
 disp(['phi at the MIP: ', num2str(phi_MIP)])

@@ -1,0 +1,1 @@
+function phi = phi_dis( type_of_phi)

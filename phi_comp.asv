@@ -1,0 +1,14 @@
+function phi = phi_comp(type_of_dist, type_of_phi, Z, X, tau, probs)
+
+if nargin < 6
+    probs = [];
+end
+
+switch type_of_dist
+    case 'Gauss'
+        phi = phi_Gauss( type_of_phi, Z, Cov_X, Cov_XY, Cov_Y);
+    case 'Dis'
+        phi = phi_Dis(Cov_X, Cov_XY, Cov_Y, Z);
+end
+
+end
