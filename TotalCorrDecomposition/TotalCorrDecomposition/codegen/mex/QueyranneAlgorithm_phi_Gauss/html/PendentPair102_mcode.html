@@ -1,0 +1,38 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="40,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">function</span> [ <span class="var type1" id="S2T3U3">pendantPair</span> ] = PendentPair( <span class="var type2" id="S3T50V1U6">F</span>, <span class="var type1" id="S4T53U7">index</span>, <span class="var type2" id="S5T3V2U8">ind</span> )</span></span>
+<span class="srcline"><span class="lineno"><a href="40,2" id="srcline2"> 2</a></span><span class="line"><span class="comment">%% [ pendantPair ] = PendentPair( F, index, ind ) </span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,3" id="srcline3"> 3</a></span><span class="line"><span class="comment">%% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,4" id="srcline4"> 4</a></span><span class="line"><span class="comment">%% This function is the core sub-routine of the QueyranneAlgorithm.m</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,5" id="srcline5"> 5</a></span><span class="line"><span class="comment">%% </span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,6" id="srcline6"> 6</a></span><span class="line"><span class="comment">%% First written by Shohei Hidaka   Oct 22nd, 2015.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,7" id="srcline7"> 7</a></span><span class="line"><span class="comment">%% Revised (added its description in comments) by Shohei Hidaka Jan 13th, 2016.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,8" id="srcline8"> 8</a></span><span class="line"><span class="comment">%%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,9" id="srcline9"> 9</a></span><span class="line"><span class="comment">%% See also: QueyranneAlgorithm</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,10" id="srcline10">10</a></span><span class="line"><span class="comment">%%</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,11" id="srcline11">11</a></span><span class="line"><span class="comment">%% References: Queyranne, M. (1998). Minimizing symmetric submodular functions. Mathematical Programming, 82(1-2), 3-12.</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,12" id="srcline12">12</a></span><span class="line"><span class="comment">%% http://link.springer.com/article/10.1007%2FBF01585863</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,13" id="srcline13">13</a></span><span class="line"><span class="keyword">if</span> nargin &lt; 2</span></span>
+<span class="srcline"><span class="lineno"><a href="40,14" id="srcline14">14</a></span><span class="line">    <span class="var type0" id="S5T0U17">ind</span> = 1;</span></span>
+<span class="srcline"><span class="lineno"><a href="40,15" id="srcline15">15</a></span><span class="line"><span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,16" id="srcline16">16</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="40,17" id="srcline17">17</a></span><span class="line"><span class="keyword">for</span> <span class="var type1" id="S7T3U21">i</span> = <span class="mxinfo " id="T39:U6"><span class="mxinfo " id="T3:U7">1</span>:( <span class="mxinfo " id="T3:U8"><span class="mxinfo " id="T3:U9">length( <span class="var type1" id="S4T53U28">index</span> )</span> - <span class="mxinfo " id="T3:U11">1</span></span> )</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="40,18" id="srcline18">18</a></span><span class="line">    <span class="mxinfo " id="T13:U12"><span class="var type1" id="S9T13U32">indc</span> = <span class="mxinfo " id="T13:U14">setdiff( <span class="mxinfo " id="T13:U15">1:<span class="mxinfo " id="T3:U16">length( <span class="var type1" id="S4T53U39">index</span> )</span></span>, <span class="var type1" id="S5T3U40">ind</span> )</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="40,19" id="srcline19">19</a></span><span class="line">    <span class="var type0" id="S11T0U43">candidates</span> = <span class="message error" id="M11F102C"><span class="var type1" id="S4T53U45">index</span>( <span class="var type0" id="S9T0U46">indc</span> )</span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="40,20" id="srcline20">20</a></span><span class="line">    </span></span>
+<span class="srcline"><span class="lineno"><a href="40,21" id="srcline21">21</a></span><span class="line">    <span class="var type0" id="S12T0U49">TCtemp</span> = zeros( <span class="mxinfo " id="T3:U20">1</span>, length( <span class="var type0" id="S11T0U55"><span class="message error" id="M12F102C">candidates</span></span> ) );</span></span>
+<span class="srcline"><span class="lineno"><a href="40,22" id="srcline22">22</a></span><span class="line">    <span class="keyword">for</span> <span class="var type0" id="S14T0U58">j</span> = <span class="mxinfo " id="T3:U21">1</span>:length( <span class="var type0" id="S11T0U63"><span class="message error" id="M13F102C">candidates</span></span> )</span></span>
+<span class="srcline"><span class="lineno"><a href="40,23" id="srcline23">23</a></span><span class="line">        <span class="var type0" id="S12T0U67">TCtemp</span>( <span class="var type0" id="S14T0U68">j</span> ) = <span class="var type1" id="S3T50U71">F</span>( [ <span class="message error" id="M14F102C"><span class="var type1" id="S4T53U75">index</span>( <span class="var type0" id="S5T0U76">ind</span> )</span>, <span class="var type0" id="S11T0U78">candidates</span>( <span class="var type0" id="S14T0U79">j</span> ) ] ) - <span class="var type0" id="S3T0U81">F</span>( [ <span class="var type0" id="S11T0U85">candidates</span>( <span class="var type0" id="S14T0U86">j</span> ) ] );</span></span>
+<span class="srcline"><span class="lineno"><a href="40,24" id="srcline24">24</a></span><span class="line">    <span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,25" id="srcline25">25</a></span><span class="line">    </span></span>
+<span class="srcline"><span class="lineno"><a href="40,26" id="srcline26">26</a></span><span class="line">    [ <span class="var type0" id="S15T0U90"><span class="message error" id="M16F102C">TCgreedy</span></span>, <span class="var type0" id="S16T0U91"><span class="message error" id="M17F102C">minind</span></span> ] = min( <span class="var type0" id="S12T0U94"><span class="message error" id="M15F102C">TCtemp</span></span> );</span></span>
+<span class="srcline"><span class="lineno"><a href="40,27" id="srcline27">27</a></span><span class="line">    <span class="var type0" id="S5T0U97">ind</span> = [ <span class="var type0" id="S5T0U100">ind</span>, <span class="var type1" id="S9T13U102">indc</span>( <span class="var type0" id="S16T0U103"><span class="message error" id="M18F102C">minind</span></span> ) ];</span></span>
+<span class="srcline"><span class="lineno"><a href="40,28" id="srcline28">28</a></span><span class="line"><span class="keyword">end</span></span></span>
+<span class="srcline"><span class="lineno"><a href="40,29" id="srcline29">29</a></span><span class="line"><span class="mxinfo " id="T3:U25"><span class="var type1" id="S2T3U106">pendantPair</span> = <span class="var type1" id="S5T3U107">ind</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="40,30" id="srcline30">30</a></span><span class="line"></span></span>
+</pre>
+</body>
+</html>

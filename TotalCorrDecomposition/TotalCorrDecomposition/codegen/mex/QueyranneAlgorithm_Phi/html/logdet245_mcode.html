@@ -1,0 +1,17 @@
+<!-- saved from url=(0014)about:internet -->
+<html>
+<body>
+<script src="resources/eml_report_loadable_data.js"></script>
+<pre class="code">
+<span class="srcline"><span class="lineno"><a href="80,1" id="srcline1"> 1</a></span><span class="line"><span class="keyword">function</span> <span class="var type1" id="S2T3U3">logdet_X</span> = logdet(<span class="var type1" id="S3T14U6">X</span>)</span></span>
+<span class="srcline"><span class="lineno"><a href="80,2" id="srcline2"> 2</a></span><span class="line"><span class="comment">%% compute log of determinant of X</span></span></span>
+<span class="srcline"><span class="lineno"><a href="80,3" id="srcline3"> 3</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="80,4" id="srcline4"> 4</a></span><span class="line"><span class="mxinfo " id="T3:U3"><span class="var type1" id="S4T3U9">n</span> = <span class="mxinfo " id="T3:U5">size(<span class="var type1" id="S3T14U12">X</span>,1)</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="80,5" id="srcline5"> 5</a></span><span class="line"><span class="mxinfo " id="T3:U7"><span class="var type1" id="S6T3U16">Const</span> = <span class="mxinfo " id="T3:U9">exp( <span class="mxinfo " id="T3:U10"><span class="mxinfo " id="T3:U11">sum( <span class="mxinfo " id="T44:U12">log(<span class="mxinfo " id="T44:U13">diag(<span class="var type1" id="S3T14U26">X</span>)</span>)</span> )</span>/<span class="var type1" id="S4T3U27">n</span></span> )</span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="80,6" id="srcline6"> 6</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="80,7" id="srcline7"> 7</a></span><span class="line"><span class="mxinfo " id="T14:U16"><span class="var type1" id="S3T14U30">X</span> = <span class="mxinfo " id="T14:U18"><span class="var type1" id="S3T14U32">X</span>/<span class="var type1" id="S6T3U33">Const</span></span></span>;</span></span>
+<span class="srcline"><span class="lineno"><a href="80,8" id="srcline8"> 8</a></span><span class="line"></span></span>
+<span class="srcline"><span class="lineno"><a href="80,9" id="srcline9"> 9</a></span><span class="line"><span class="mxinfo " id="T3:U21"><span class="var type1" id="S2T3U36">logdet_X</span> = <span class="mxinfo " id="T3:U23"><span class="mxinfo " id="T3:U24">log(<span class="mxinfo " id="T3:U25">det(<span class="var type1" id="S3T14U42">X</span>)</span>)</span> + <span class="mxinfo " id="T3:U27"><span class="mxinfo " id="T3:U28">log(<span class="var type1" id="S6T3U46">Const</span>)</span>*<span class="var type1" id="S4T3U47">n</span></span></span></span>;</span></span>
+</pre>
+</body>
+</html>
