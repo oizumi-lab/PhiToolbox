@@ -1,8 +1,7 @@
-function [Z_MIP, phi_MIP, phis] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params)
+function phi = phi_comp(type_of_dist, type_of_phi, Z, X, params)
 %-----------------------------------------------------------------------
-% FUNCTION: MIP_Exhaustive.m
-% PURPOSE: Find the Minimum Information Partition (MIP) by the exhaustive
-% search from time series data
+% FUNCTION: phi_comp.m
+% PURPOSE: Compute phi from time series data
 %
 % INPUTS: 
 %           type_of_dist:
@@ -21,15 +20,15 @@ function [Z_MIP, phi_MIP, phis] = MIP_Exhaustive( type_of_dist, type_of_phi, X, 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
 %           X: time series data in the form (unit x time)
 %           params: parameters for computing phi
+%              params(1) = the number of units, params(2) = time delay (tau)
+%              For the discrete distribution,  params(3) = the number of states
 %
 % OUTPUT:
-%           Z_MIP: the MIP
-%           phi_MIP: the amount of integrated information at the MIP
+%           phi: integrated information
 %-----------------------------------------------------------------------
 
 probs = data_to_probs(type_of_dist,X,params);
-
-[Z_MIP, phi_MIP, phis] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
+phi = phi_comp_probs(type_of_dist, type_of_phi, Z, params, probs);
 
 
 end
