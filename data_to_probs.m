@@ -2,7 +2,7 @@ function probs = data_to_probs(type_of_dist,X,params)
 
 switch type_of_dist
     case 'Gauss'
-        tau = params(2);
+        tau = params(1);
         [Cov_X, Cov_XY, Cov_Y] = Cov_comp(X,tau);
         probs{1} = Cov_X;
         probs{2} = Cov_XY;

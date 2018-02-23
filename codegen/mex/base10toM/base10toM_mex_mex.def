@@ -1,0 +1,12 @@
+LIBRARY base10toM_mex.mexw64
+EXPORTS
+mexFunction
+mexfilerequiredapiversion
+emlrtMexFcnProperties
+base10toM
+emxEnsureCapacity_real_T
+emxFree_real_T
+emxInit_real_T
+base10toM_initialize
+base10toM_terminate
+base10toM_atexit

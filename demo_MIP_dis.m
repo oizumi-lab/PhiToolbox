@@ -1,5 +1,3 @@
-%% globally coupled Map phase diagram
-
 addpath(genpath('minFunc_2012'));
 
 N = 6; % number of units
@@ -80,20 +78,22 @@ params(1) = N;
 params(2) = tau;
 params(3) = N_st;
 type_of_dist = 'dis';
-type_of_phi = 'star';
-[Z_MIP, phi_MIP, phis] =  MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
+type_of_phi = 'MI';
 
+tic;
+[Z_MIP, phi_MIP, phis] =  MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
 disp(Z_MIP);
 fprintf('phi_MIP=%f\n',phi_MIP);
 toc;
 
 %% find MIP without probability distributions
 fprintf('Searching for MIP\n');
-[Z_MIP, phi_MIP, phis] =  MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
 
+tic;
+[Z_MIP, phi_MIP, phis] =  MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
 disp(Z_MIP);
 fprintf('phi_MIP=%f\n',phi_MIP);
-
+toc;
 
 
 

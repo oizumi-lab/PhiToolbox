@@ -1,12 +1,13 @@
 function [q_TPM, q_past, q_joint, q_present] = est_q(p_past, joint, p_present, N_st, Z)
 
 %-------------------------------------------------------------------------------------------------
-% PURPOSE: estimate mismatched probability distribution q from discretized time series data X 
+% PURPOSE: estimate mismatched probability distribution q from the original probability distribution p 
 %
 % INPUTS:
-%   X: discretized time series data in form units x time
-%   N_st: the number of states in each unit
-%   tau: time lag between past and present
+%   p_past: probability distribution of past state (X^t-tau)
+%   joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%   p_present: probability distribution of present state (X^t)
+%   N_st: number of states
 %   Z: partition with which integrated information is computed
 %
 % OUTPUTS:

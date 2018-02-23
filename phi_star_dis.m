@@ -1,13 +1,14 @@
 function [phi_star, I, H] = phi_star_dis(Z, N_st, p_past, joint, p_present)
 
 %-------------------------------------------------------------------------------------------------
-% PURPOSE: calculate integrated information "phi_star" based on discretized
+% PURPOSE: calculate integrated information "phi_star" in discretized
 % data. See Oizumi et al., 2016, PLoS Comp for the details of phi_star. The
 % equation number in the codes refers to Oizumi et al., 2016, PLoS Comp.
 % 
 %
 % INPUTS:
 %   Z: partition
+%   N_st: number of states in each unit
 %   p_past: probability distribution of past state (X^t-tau)
 %   joint: joint distribution of X^t (present) and X^(t-\tau) (past)
 %   p_present: probability distribution of present state (X^t-tau)
@@ -45,14 +46,13 @@ phi_star = I - I_s;
 fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
 
     function [minus_I_s, minus_I_s_d] = I_s_I_s_d(beta)
-        
         I_s1 = 0; % the first term in Eq. (20)
         I_s2 = 0; % the second term in Eq. (20)
         
         % i: present state, j: past state
         for i=1: TNS
             Den = 0;
-            for j=1: TNS 
+            for j=1: TNS
                 if q_TPM(i,j) ~= 0
                     I_s2 = I_s2 + beta*joint(i,j)*log(q_TPM(i,j));
                 end

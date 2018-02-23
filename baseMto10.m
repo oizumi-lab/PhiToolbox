@@ -26,3 +26,5 @@ x = 0;
 for i=1: N
     x = x + M^(i-1)*sigma(i);
 end
+
+end

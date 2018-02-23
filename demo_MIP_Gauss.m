@@ -16,7 +16,7 @@ for i = 1:n_block
 end
 A = A + 0.01*randn(N)/sqrt(N);
 
-h_A = figure;
+figure(1)
 imagesc(A)
 drawnow
 title('Connectivity Matrix A')
