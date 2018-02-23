@@ -63,46 +63,48 @@ type_of_dist = 'Gauss';
 %%% Exhaustive Search %%%
 disp('Exhaustive Search...')
 
-%%
+%% pre-compute covariances
 tic;
 probs{1} = Cov_X;
-probs{2} = Cov_Y;
-probs{3} = Cov_XY;
-[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, [], [], probs);
+probs{2} = Cov_XY;
+probs{3} = Cov_Y;
+params(1) = N;
+params(2) = tau;
+
+[Z_MIP, phi_MIP] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
 
 t_Exhaustive = toc;
 disp('Exhaustive Search finished.')
 disp(['phi at the MIP: ', num2str(phi_MIP)])
 disp(['the MIP: ', num2str(Z_MIP)])
 
-%%
+%% without covariances
 tic;
-[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params, probs);
+
+[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
 t_Exhaustive = toc;
 disp('Exhaustive Search finished.')
 disp(['phi at the MIP: ', num2str(phi_MIP)])
 disp(['the MIP: ', num2str(Z_MIP)])
-
-pause;
 
 %%% Queyeranne's algorithm %%%
-disp('Queyranne''s algorithm...')
-tic;
-[Z_MIP_Q, phi_MIP_Q] = MIP_Queyranne( type_of_phi, Cov_X, Cov_XY, Cov_Y );
-t_Queyeranne = toc;
-disp('Queyranne''s algorithm finished.')
-disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q)])
-disp(['the estimated MIP: ', num2str(Z_MIP_Q)])
-
-%%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%%
-options = [];
-disp('REMCMC...')
-tic;
-[Z_MIP_REMCMC, phi_MIP_REMCMC, ...
-    Energy_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
-    MIP_REMCMC( type_of_phi, options, Cov_X, Cov_XY, Cov_Y );
-t_REMCMC = toc;
-disp('REMCMC finished.')
-disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC)])
-disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC)])
-
+% disp('Queyranne''s algorithm...')
+% tic;
+% [Z_MIP_Q, phi_MIP_Q] = MIP_Queyranne( type_of_phi, Cov_X, Cov_XY, Cov_Y );
+% t_Queyeranne = toc;
+% disp('Queyranne''s algorithm finished.')
+% disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q)])
+% disp(['the estimated MIP: ', num2str(Z_MIP_Q)])
+% 
+% %%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%%
+% options = [];
+% disp('REMCMC...')
+% tic;
+% [Z_MIP_REMCMC, phi_MIP_REMCMC, ...
+%     Energy_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
+%     MIP_REMCMC( type_of_phi, options, Cov_X, Cov_XY, Cov_Y );
+% t_REMCMC = toc;
+% disp('REMCMC finished.')
+% disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC)])
+% disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC)])
+% 

@@ -1,4 +1,4 @@
-function [phi_star, I, H] = phi_star_dis(p_past,joint,q_TPM,p_present)
+function [phi_star, I, H] = phi_star_dis(Z, N_st, p_past, joint, p_present)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: calculate integrated information "phi_star" based on discretized
@@ -7,9 +7,9 @@ function [phi_star, I, H] = phi_star_dis(p_past,joint,q_TPM,p_present)
 % 
 %
 % INPUTS:
+%   Z: partition
 %   p_past: probability distribution of past state (X^t-tau)
 %   joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%   q_TPM: \prod_i q(M_i^t|M_i^(t-\tau))
 %   p_present: probability distribution of present state (X^t-tau)
 %
 % OUTPUTS:
@@ -25,6 +25,9 @@ if nargin < 4
 end
 
 TNS = length(p_past); % total number of all possible states
+
+% q_TPM: \prod_i q(M_i^t|M_i^(t-\tau))
+q_TPM = est_q(p_past, joint, p_present, N_st, Z);
 
 %% find beta by a quasi-Newton method
 beta =  2; % initial value
