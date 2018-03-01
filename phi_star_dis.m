@@ -1,4 +1,4 @@
-function [phi_star, I, H] = phi_star_dis(Z, N_st, p_past, joint, p_present)
+function [phi_star, I, H] = phi_star_dis(Z, N_st, p_past, p_joint, p_present)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: calculate integrated information "phi_star" in discretized
@@ -28,7 +28,7 @@ end
 TNS = length(p_past); % total number of all possible states
 
 % q_TPM: \prod_i q(M_i^t|M_i^(t-\tau))
-q_TPM = est_q(p_past, joint, p_present, N_st, Z);
+q_TPM = est_q(p_past, p_joint, p_present, N_st, Z);
 
 %% find beta by a quasi-Newton method
 beta =  2; % initial value
@@ -40,7 +40,7 @@ Options.Display = 'off';
 %% minimize  negative I_s
 [beta,minus_I_s,~,~] = minFunc(@I_s_I_s_d,beta,Options);
 I_s = -minus_I_s;
-[I, H, H_cond] = I_dis(p_past,joint);
+[I, H, H_cond] = I_dis(p_past,p_joint);
 phi_star = I - I_s;
 
 fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
@@ -54,7 +54,7 @@ fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
             Den = 0;
             for j=1: TNS
                 if q_TPM(i,j) ~= 0
-                    I_s2 = I_s2 + beta*joint(i,j)*log(q_TPM(i,j));
+                    I_s2 = I_s2 + beta*p_joint(i,j)*log(q_TPM(i,j));
                 end
                 Den = Den + p_past(j)*q_TPM(i,j)^beta;
             end
@@ -74,7 +74,7 @@ fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
             Den = 0;
             for j=1: TNS
                 if q_TPM(i,j) ~= 0
-                    I_s2_d = I_s2_d + joint(i,j)*log(q_TPM(i,j));
+                    I_s2_d = I_s2_d + p_joint(i,j)*log(q_TPM(i,j));
                     Num = Num + p_past(j)*q_TPM(i,j)^beta*log(q_TPM(i,j));
                 end
                 Den = Den + p_past(j)*q_TPM(i,j)^beta;

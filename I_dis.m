@@ -1,4 +1,4 @@
-function [I, H, H_cond] = I_dis(p_past,joint,p_present)
+function [I, H, H_cond] = I_dis(p_past,p_joint,p_present)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: calculate mutual information
@@ -28,8 +28,8 @@ H_cond = 0; % conditional entropy
 % i: present, j: past
 for i=1: TNS
     for j=1: TNS
-        if joint(i,j) ~= 0
-            H_cond = H_cond - joint(i,j)*log(joint(i,j)/p_past(j));
+        if p_joint(i,j) ~= 0
+            H_cond = H_cond - p_joint(i,j)*log(p_joint(i,j)/p_past(j));
         end
     end
 end

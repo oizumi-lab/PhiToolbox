@@ -1,4 +1,4 @@
-function [q_TPM, q_past, q_joint, q_present] = est_q(p_past, joint, p_present, N_st, Z)
+function [q_TPM, q_past, q_joint, q_present] = est_q(p_past, p_joint, p_present, N_st, Z)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: estimate mismatched probability distribution q from the original probability distribution p 
@@ -37,7 +37,7 @@ q_present = cell(N_c,1);
 for k=1: N_c
     index = M_cell{k};
     q_past{k} = marginalize(p_past, index,N,N_st);
-    q_joint{k} = marginalize2(joint, index,N,N_st);
+    q_joint{k} = marginalize2(p_joint, index,N,N_st);
     q_present{k} = marginalize(p_present, index,N,N_st);
 end
 

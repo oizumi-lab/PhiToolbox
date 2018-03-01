@@ -1,4 +1,4 @@
-function SI = SI_dis(Z, N_st, p_past, joint, p_present)
+function SI = SI_dis(Z, N_st, p_past, p_joint, p_present)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: calculate stochastic interaction in discretized data
@@ -16,7 +16,7 @@ function SI = SI_dis(Z, N_st, p_past, joint, p_present)
 %
 % Masafumi Oizumi, 2018
 
-q_TPM = est_q(p_past, joint, p_present, N_st, Z);
+q_TPM = est_q(p_past, p_joint, p_present, N_st, Z);
 
 TNS = length(p_past);
 
@@ -26,12 +26,12 @@ H_cond_q = 0;
 % i: present, j: past
 for i=1: TNS
     for j=1: TNS
-        if joint(i,j) ~= 0
-            H_cond = H_cond - joint(i,j)*log(joint(i,j)/p_past(j));
+        if p_joint(i,j) ~= 0
+            H_cond = H_cond - p_joint(i,j)*log(p_joint(i,j)/p_past(j));
         end
         
         if q_TPM(i,j) ~= 0
-            H_cond_q = H_cond_q - joint(i,j)*log(q_TPM(i,j));
+            H_cond_q = H_cond_q - p_joint(i,j)*log(q_TPM(i,j));
         end
     end
 end
