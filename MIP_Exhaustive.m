@@ -1,4 +1,4 @@
-function [Z_MIP, phi_MIP, phis] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params)
+function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive( type_of_dist, type_of_phi, X, tau, varargin )
 %-----------------------------------------------------------------------
 % FUNCTION: MIP_Exhaustive.m
 % PURPOSE: Find the Minimum Information Partition (MIP) by the exhaustive
@@ -26,10 +26,24 @@ function [Z_MIP, phi_MIP, phis] = MIP_Exhaustive( type_of_dist, type_of_phi, X, 
 %           Z_MIP: the MIP
 %           phi_MIP: the amount of integrated information at the MIP
 %-----------------------------------------------------------------------
+%
+% Jun Kitazono, 2018
 
-probs = data_to_probs(type_of_dist,X,params);
+numSt = [];
 
-[Z_MIP, phi_MIP, phis] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
+num_params_other_than_varargin = 4;
+switch type_of_dist
+    case 'discrete'
+        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
+            error('Number of states must be identified.')
+        else
+            numSt = varargin{1};
+        end
+end
+
+probs = data_to_probs(type_of_dist, X, tau, numSt);
+
+[Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive_probs( type_of_phi, probs );
 
 
 end

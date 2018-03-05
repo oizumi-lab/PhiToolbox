@@ -1,4 +1,4 @@
-function phi = phi_comp(type_of_dist, type_of_phi, Z, X, params)
+function phi = phi_comp(type_of_dist, type_of_phi, Z, X, tau, varargin)
 %-----------------------------------------------------------------------
 % FUNCTION: phi_comp.m
 % PURPOSE: Compute phi from time series data
@@ -6,7 +6,7 @@ function phi = phi_comp(type_of_dist, type_of_phi, Z, X, params)
 % INPUTS: 
 %           type_of_dist:
 %              'Gauss': Gaussian distribution
-%              'dis': discrete probability distribution
+%              'discrete': discrete probability distribution
 %           type_of_phi:
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version
@@ -27,8 +27,8 @@ function phi = phi_comp(type_of_dist, type_of_phi, Z, X, params)
 %           phi: integrated information
 %-----------------------------------------------------------------------
 
-probs = data_to_probs(type_of_dist,X,params);
-phi = phi_comp_probs(type_of_dist, type_of_phi, Z, params, probs);
+probs = data_to_probs(type_of_dist, X, tau, varargin);
+phi = phi_comp_probs(type_of_phi, Z, probs);
 
 
 end

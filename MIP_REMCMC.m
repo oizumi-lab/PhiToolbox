@@ -1,75 +1,63 @@
-function [Z_MIP, phi_MIP, Energy_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = MIP_REMCMC( type_of_phi, options, Cov_X, Cov_XY, Cov_Y )
-%-----------------------------------------------------------------------
+function [Z_MIP, phi_MIP, ...
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] ...
+    = MIP_REMCMC( type_of_dist, type_of_phi, X, tau, varargin )
 % FUNCTION: MIP_REMCMC.m
 % PURPOSE: Find the minimum information partition (MIP) using Replica
-% Exchange Markov Chain Monte Carlo method
+% Exchange Monte Carlo Method (REMCMC)
 %
-% INPUTS:   
-%           type_of_phi:
-%              'SI': phi_H, stochastic interaction
-%              'Geo': phi_G, information geometry version
-%              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%           Cov_X: covariance of data X (past, t-tau)
-%           Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
-%           Cov_Y: covariance of data Y (present, t)
-%           options: see REMCMC_processInputOptions.m
+% INPUTS:
+%    type_of_dist:
+%       'Gauss': Gaussian distribution
+%       'discrete': discrete probability distribution
+%    type_of_phi: 
+%       'SI': phi_H, stochastic interaction
+%       'Geo': phi_G, information geometry version
+%       'star': phi_star, based on mismatched decoding
+%       'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%       'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%    X: time series data in the form (element x time)
+%    tau: time lag between past and present states
 %
 % OUTPUT:
-%           phi_MIP: amount of integrated information at the estimated MIP
-%           Z_MIP: the estimated MIP
-%-----------------------------------------------------------------------
+%    Z_MIP: the MIP
+%    phi_MIP: the amount of integrated information at the MIP
+%
+% EXAMPLES: 
+%    MIP_REMCMC( 'Gauss', 'SI', X, tau ) finds the MIP for a Gaussian 
+%    distribution.
+%
+%    MIP_REMCMC( 'discrete', 'SI', X, tau, number_of_states ) finds the MIP
+%    for a discrete distribution. 
+%
+%    Available options:
+%       MIP_REMCMC( 'Gauss', ..., tau, options )
+%       MIP_REMCMC( 'discrete', ..., number_of_state, options )
+%
+% Jun Kitazono, 2018
 
-addpath(genpath('EMC'))
 
-% check type_of_phi
-assert( isa( type_of_phi, 'char' ) )
-list_types_of_phi = {'MI1', 'MI', 'SI', 'star', 'Geo'};
-if ~any( strcmp(type_of_phi, list_types_of_phi) )
-    error('type_of_phi must be selected from MI1, MI, SI, star or Geo!')
+options = [];
+numSt = [];
+
+num_params_other_than_varargin = 4;
+length_varargin = nargin - num_params_other_than_varargin;
+isdiscrete = 0;
+switch type_of_dist
+    case 'discrete'
+        isdiscrete = 1;
+        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
+            error('Number of states must be identified.')
+        else
+            numSt = varargin{1};
+        end
+end
+if length_varargin > isdiscrete
+    options = varargin{isdiscrete + 1};
 end
 
-% check Cov_X
-assert( isa( Cov_X, 'double' ) )
-% [nXr, nXc] = size(Cov_X);
-% if ~isequal(nZc, nXr, nXc)
-%     error('Sizes of Z and Cov_X do not match! Z: 1 by n vector, Cov_X: n by n matrix')
-% end
+probs = data_to_probs(type_of_dist, X, tau, numSt);
 
-% check Cov_XY and Cov_Y
-if nargin >= 4
-%     if strcmp( type_of_phi, 'MI1' )
-%         error('Cov_XY and Cov_Y are not needed for computation of MI1!')
-%     end
-    assert( isa( Cov_XY, 'double' ) )
-    assert( isa( Cov_Y, 'double' ) )
-[nYr, nYc] = size(Cov_Y);
-[nXYr, nXYc] = size(Cov_XY);
-if ~isequal(nYr, nYc, nXYr, nXYc)
-    error('Sizes of Cov_X and Cov_Y (Cov_XY) do not match!')
-end
-end
-
-N = size(Cov_X, 1);
-
-switch type_of_phi
-    case 'MI1'
-        calc_E = @(Z)MI1_Gauss(Cov_X, Z);
-    case 'MI'
-        calc_E = @(Z)MI_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
-    case 'SI'
-        calc_E = @(Z)SI_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
-    case 'star'
-        calc_E = @(Z)phi_star_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
-    case 'Geo'
-        calc_E = @(Z)phi_G_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
-end
-
-[min_Energy, State_min_Energy, Energy_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
-    REMCMC_partition( calc_E, N, options );
-
-[phi_MIP, i_T_MIP] = min(min_Energy);
-Z_MIP = State_min_Energy(:, i_T_MIP)';
+[Z_MIP, phi_MIP, phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
+    MIP_REMCMC_probs( type_of_phi, probs, options );
 
 end
