@@ -15,6 +15,7 @@ function phi = phi_Gauss( type_of_phi, Z, Cov_X, Cov_XY, Cov_Y, phi_G_OptimMetho
 %         - Ex.1:  (1:n) (atomic partition)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
+%         - Not accept [1, 3], [1,2,4,2] (Group indices must be consecutive numbers from 1 to K) 
 %     Cov_X: covariance of data X (past, t-tau)
 %     Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
 %     Cov_Y: covariance of data Y (present, t)
@@ -35,21 +36,22 @@ end
 % check Z
 assert( isa( Z, 'double' ) )
 [nZr, nZc] = size(Z);
-if nZr~=1
-    error('Partition Z must be 1 by n row vector!')
+if nZr~=1 && nZc~=1
+    error('Partition Z must be 1 by n row vector or n by 1 column vector.')
 end
 unique_Z = unique(Z);
 if ~isequal( max(Z), length(unique_Z) )
-    error('Partition Z must include at least one elment from each group!')
+    error('Group indices must be consecutive numbers from 1 to K.')
+    %error('Partition Z must include at least one elment from each group!')
 end
-if length(unique_Z) < 2
-    error('Partition Z must consist of multiple groups!')
-end
+% if length(unique_Z) < 2
+%     error('Partition Z must consist of multiple groups!')
+% end
 
 % check Cov_X
 assert( isa( Cov_X, 'double' ) )
 [nXr, nXc] = size(Cov_X);
-if ~isequal(nZc, nXr, nXc)
+if ~isequal( max(nZr,nZc), nXr, nXc)
     error('Sizes of Z and Cov_X do not match! Z: 1 by n vector, Cov_X: n by n matrix')
 end
 
@@ -62,7 +64,7 @@ if nargin >= 4
     assert( isa( Cov_Y, 'double' ) )
     [nYr, nYc] = size(Cov_Y);
     [nXYr, nXYc] = size(Cov_XY);
-    if ~isequal(nZc, nYr, nYc, nXYr, nXYc)
+    if ~isequal(max(nZr,nZc), nYr, nYc, nXYr, nXYc)
         error('Sizes of Cov_X and Cov_Y (Cov_XY) do not match!')
     end
 end
