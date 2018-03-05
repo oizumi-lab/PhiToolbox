@@ -81,7 +81,7 @@ end
 probs = data_to_probs(type_of_dist, X, tau, numSt);
 
 [indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex, group_indices] = ...
-    Complex_Exhaustive_probs( type_of_phi, type_of_MIPsearch, probs, groups, options );
+    Complex_Exhaustive_probs( type_of_phi, type_of_MIPsearch, probs, 'groups', groups, 'options', options );
 
 
 end
