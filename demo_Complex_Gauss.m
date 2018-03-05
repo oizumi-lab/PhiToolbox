@@ -1,5 +1,5 @@
 
-% Find Minimum Information Partition (MIP) in a multivariate autoregressive model, 
+% Find the complex in a multivariate autoregressive model, 
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
@@ -10,9 +10,7 @@ disp('Generating data...')
 
 %%% construct connectivity matrix %%%
 N = 6; % the number of elements
-A = zeros(N); % A: connectivity matrix (block structured)
-n_block = 2;
-A = eye(N)/N;
+A = eye(N)/N; % A: connectivity matrix
 A(2:N-2, 2:N-2) = 1/N;
 
 h_A = figure;
@@ -20,7 +18,7 @@ imagesc(A)
 drawnow
 title('Connectivity Matrix A')
 
-%%% generate random gaussian time series X %%%
+%%% generate time series X using the AR model %%%
 T = 10^6;
 X = zeros(N,T);
 X(:,1) = randn(N,1);
@@ -64,4 +62,8 @@ tau = 1; % time lag
 % %%% without pre-computed covariances %%%
 [ indices_Complex, phi_Complex, indices, phis, Zs ] = ...
    Complex_Exhaustive( type_of_dist, type_of_phi, type_of_MIPsearch, X, tau);
-
+%  indices_Complex: indices of elements in the complex
+%  phi_Complex: the amount of integrated information at the (estimated) MIP of the complex 
+%  indices: the indices of every subsystem
+%  phis: the amount of integrated information for every subsystem
+%  Zs: the (estimated) MIP of every subsystem
