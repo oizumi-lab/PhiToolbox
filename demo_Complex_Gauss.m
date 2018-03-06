@@ -3,6 +3,8 @@
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
+addpath(genpath('../PhiToolbox'))
+
 
 %% generate data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
