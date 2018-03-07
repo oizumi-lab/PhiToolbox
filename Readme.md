@@ -7,13 +7,13 @@
 ## General description
 This toolbox provides MATLAB codes for end-to-end computation for practical versions of integrated information theory.
 
-** Computation of practical measures of integrated information **
+** Computation of practical measures of integrated information **  
 This toolbox provides codes for computing practical measures of integrated information, namely, mutual information, stochastic interaction, <img src="https://latex.codecogs.com/gif.latex?\Phi^*" /> [1] and <img src="https://latex.codecogs.com/gif.latex?\Phi_G" /> [2]. Integrated information quantifies the amount of information that is integrated within a system. Please first look at “demo_phi.m”, which is a simple demonstration code, to see how the core functions should be used.
 
-** Search for the minimum information partition **
+** Search for the minimum information partition **  
 The codes for searching the minimum information partition (see Tononi, 2008, Biol Bull for example) are provided. Three types of algorithms for the MIP search are provided, namely, the exhaustive search, Queranne’s algorithm and Replica exchange Markov chain Monte Carlo (REMCMC). Please first look at “demo_MIP_Gauss.m” and “demo_MIP_dis.m” which is a simple demonstration code, to see how the core functions should be used.
 
-** Search for the complex **
+** Search for the complex **  
 Please first look at “demo_Complex_Gauss.m”, which is a simple demonstration code, to see how the core functions should be used.
 
 This toolbox is an update of our previous version of toolbox, "phi_toolbox" available at figshare (doi:10.6084/m9.figshare.3203326). The main differences of the new version from phi_toolbox at figshare are summarized in the table below.
