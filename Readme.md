@@ -1,4 +1,4 @@
-#Practical PHI toolbox for integrated information analysis
+# Practical PHI toolbox for integrated information analysis
 
 ######Jun Kitazono and Masafumi Oizumi (Araya Inc.)
 ######Email: kitazono@araya.org, oizumi@araya.org
