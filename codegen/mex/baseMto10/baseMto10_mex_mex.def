@@ -1,9 +1,0 @@
-LIBRARY baseMto10_mex.mexw64
-EXPORTS
-mexFunction
-mexfilerequiredapiversion
-emlrtMexFcnProperties
-baseMto10
-baseMto10_initialize
-baseMto10_terminate
-baseMto10_atexit
