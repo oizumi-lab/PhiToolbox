@@ -11,10 +11,10 @@ switch probs.type_of_dist
         probs_Sub.Cov_XY = probs.Cov_XY(indices, indices);
         probs_Sub.Cov_Y = probs.Cov_Y(indices, indices);
     case 'discrete'
-        indices_complement = setdiff(1:probs.N, indices);
-        probs_Sub.past = marginalize(probs_Sub.past, indices_complement, probs.number_of_elements, probs.number_of_states);
-        probs_Sub.joint = marginalize2(probs_Sub.joint, indices_complement, probs.number_of_elements, probs.number_of_states);
-        probs_Sub.present = marginalize(probs_Sub.present, indices_complement, probs.number_of_elements, probs.number_of_states);
+        probs_Sub.number_of_states = probs.number_of_states;
+        probs_Sub.past = marginalize(probs.past, indices, probs.number_of_elements, probs.number_of_states);
+        probs_Sub.joint = marginalize2(probs.joint, indices, probs.number_of_elements, probs.number_of_states);
+        probs_Sub.present = marginalize(probs.present, indices, probs.number_of_elements, probs.number_of_states);
 end
 
 end

@@ -7,7 +7,7 @@ switch type_of_dist
     case 'Gauss'
         [probs.Cov_X, probs.Cov_XY, probs.Cov_Y] = Cov_comp(X, tau);
     case 'discrete'
-        if nargin > 3
+        if nargin > 3 || isa(number_of_states, 'numeric')
             probs.number_of_states = number_of_states;
             [probs.past, probs.joint, probs.present] = est_p(X, probs.number_of_states, tau);
         else

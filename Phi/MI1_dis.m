@@ -1,4 +1,4 @@
-function MI = MI_dis(Z, N_st, p)
+function MI1 = MI1_dis(Z, N_st, p)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: calculate mutual (multi) information between subsystems in discretized data
@@ -9,7 +9,7 @@ function MI = MI_dis(Z, N_st, p)
 %   p: probability distribution of time series X
 %
 % OUTPUTS:
-%   MI: mutual information between subsystems 
+%   MI1: mutual information between subsystems 
 %-------------------------------------------------------------------------------------------------
 %
 % Masafumi Oizumi, 2018
@@ -24,6 +24,6 @@ for i=1: N_c
 end
 H_joint = H_dis(p);
 
-MI = sum(H_part) - H_joint;
+MI1 = sum(H_part) - H_joint;
 
 end

@@ -1,4 +1,4 @@
-function x_t = generate_Boltzman(beta,W,N,T)
+function x_t = generate_Boltzmann(beta,W,N,T)
 
 x_t = zeros(N,T);
 

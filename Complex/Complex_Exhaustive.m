@@ -62,7 +62,7 @@ isdiscrete = 0;
 switch type_of_dist
     case 'discrete'
         isdiscrete = 1;
-        if nargin <= num_params_other_than_varargin || isa(varargin{1}, 'numeric')
+        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
             error('Number of states must be given.')
         else
             numSt = varargin{1};
@@ -76,7 +76,6 @@ for i = (isdiscrete+1):2:length_varargin
             options = varargin{i + 1};
     end
 end
-
 
 probs = data_to_probs(type_of_dist, X, tau, numSt);
 

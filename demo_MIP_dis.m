@@ -1,3 +1,5 @@
+addpath(genpath('../PhiToolbox'))
+
 N = 4; % number of units
 T = 10^6; % number of iterations
 tau = 4; % time delay
@@ -25,7 +27,7 @@ end
 
 beta = 4; % inverse temperature
 
-x_t = generate_Boltzman(beta,W,N,T); % generate time series of Boltzman machine
+x_t = generate_Boltzmann(beta,W,N,T); % generate time series of Boltzman machine
 
 %% 
 
@@ -74,7 +76,7 @@ X = x_t(n_vec,:);
 %% find Minimum Information Partition (MIP)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 type_of_dist = 'discrete';
-type_of_phi = 'MI';
+type_of_phi = 'MI1';
 
 %%%%%%%%%% with pre-computed probability distributions %%%%%%%%%% 
 disp('Find the MIP with pre-computed probability distributions')
@@ -153,21 +155,5 @@ disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_without)])
 disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_without)])
 disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_without)])
 disp(' ')
-
-% tic;
-% [Z_MIP, phi_MIP, Zs, phis] =  MIP_Exhaustive_probs( type_of_phi, probs );
-% disp(Z_MIP);
-% fprintf('phi_MIP=%f\n',phi_MIP);
-% toc;
-% 
-% %% find MIP without probability distributions
-% fprintf('Searching for MIP\n');
-% 
-% tic;
-% [Z_MIP, phi_MIP, phis] =  MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
-% disp(Z_MIP);
-% fprintf('phi_MIP=%f\n',phi_MIP);
-% toc;
-
 
 

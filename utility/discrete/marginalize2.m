@@ -3,7 +3,7 @@ function p_m = marginalize2(p,index,N, N_st)
 % PURPOSE: marginalize probability distribution p(X,Y)
 % Input
 % p: joint probability distribution of X and Y
-% index: indexes over which p(X,Y) is marginalized
+% index: marginalized out other variables than those indicated by index
 %
 % Output
 % p_m: marginalized probability distribution
