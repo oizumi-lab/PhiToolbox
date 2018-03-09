@@ -11,9 +11,11 @@ addpath(genpath('../PhiToolbox'))
 disp('Generating data...')
 
 %%% construct connectivity matrix %%%
-N = 6; % the number of elements
+N = 7; % the number of elements
 A = eye(N)/N; % A: connectivity matrix
-A(2:N-2, 2:N-2) = 1/N;
+A(3:N-2, 3:N-2) = 1/N;
+A(1:2, 1:2) = 1/N;
+A(6:7, 6:7) = 0.5/N;
 
 h_A = figure;
 imagesc(A)
@@ -69,3 +71,6 @@ tau = 1; % time lag
 %  indices: the indices of every subsystem
 %  phis: the amount of integrated information for every subsystem
 %  Zs: the (estimated) MIP of every subsystem
+
+[complexes, phis_complexes] = find_complexes(indices, phis, 1);
+
