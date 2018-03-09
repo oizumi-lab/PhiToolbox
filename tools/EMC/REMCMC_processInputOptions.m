@@ -7,7 +7,7 @@ o = toUpper(o);
 
 %type_of_state = getOpt(o, 'type_of_state', 'binary');
 
-Order of Partition
+%Order of Partition
 partition_order = getOpt(o, 'PARTITION_ORDER', 2);
 
 % Temperature Settings

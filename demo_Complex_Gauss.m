@@ -19,8 +19,8 @@ A(6:7, 6:7) = 0.5/N;
 
 h_A = figure;
 imagesc(A)
-drawnow
 title('Connectivity Matrix A')
+drawnow
 
 %%% generate time series X using the AR model %%%
 T = 10^6;
@@ -72,5 +72,5 @@ tau = 1; % time lag
 %  phis: the amount of integrated information for every subsystem
 %  Zs: the (estimated) MIP of every subsystem
 
-[complexes, phis_complexes] = find_complexes(indices, phis, 1);
+[complexes, phis_complexes] = find_complexes_repetitive(indices, phis, 1);
 

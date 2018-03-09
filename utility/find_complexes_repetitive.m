@@ -1,11 +1,25 @@
-function [complexes, phis_complexes] = find_complexes_repetitive(groups_indices, phis, showFig)
+function [complexes, phis_complexes, h] = find_complexes_repetitive(indices, phis, showFig)
 % find_compexes.m
-%  Find non-overlapping complexes by repetitively remove them. 
+%  Find non-overlapping complexes by repetitively removing them. 
 %
+% INPUT:
+%    indices: indices of the subsystems
+%    phis: the amount of integrated information for subsystems
+%    showFig: whether plot figures (showFig=1) or not (showFig=0, default). 
+%
+% OUPTUT:
+%    complexes: indices of the complexes
+%    phis_complexes: the amount of integrated information of the complexes
+%    h: figure handle of the bar graph 
+%
+% Jun Kitazono, 2018
 
+if nargin < 3
+    showFig = 0;
+end
 
 [phis_temp, index_sorted] = sort(phis, 'descend');
-groups_indices_temp = groups_indices(index_sorted);
+groups_indices_temp = indices(index_sorted);
 
 complexes = groups_indices_temp(1);
 phis_complexes = phis_temp(1);
@@ -26,12 +40,12 @@ if showFig
         complexes_str{i} =  num2str(complexes{i});
     end
     
-    figure
+    h = figure;
     bar(phis_complexes)
     set(gca, 'xticklabel', complexes_str)
     title('Complexes')
     ylabel('\Phi')
-    xlabel('indices')
+    xlabel('Indices of the complexes')
 end
 
 end
