@@ -1,7 +1,8 @@
 
 % Find the complex in a Boltzmann machine, 
-%   X^t = A*X^{t-1} + E,
-% where A is a connectivity matrix and E is gaussian noise.
+%   input = beta*W*x;
+%   prob(x=1) = sigmoid(input);
+% where W is a connectivity matrix.
 
 addpath(genpath('../PhiToolbox'))
 
@@ -10,20 +11,19 @@ addpath(genpath('../PhiToolbox'))
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 disp('Generating data...')
 
-N = 4; % number of units
+Z = [1 2 2 1 3 2 3 1];
+Z = [1 2 3 3 2 1];
+N = length(Z); % number of units
 T = 10^6; % number of iterations
 
 W = zeros(N,N);
-% Z = [1 2 2 1 2 1 2 1];
-%Z = [1 2 2 1 2 1];
-Z = [1 2 2 2];
 
 for i=1: N
     for j=1: N
         if i~=j
             if Z(i) == Z(j)
-                % W(i,j) = 0.2; % for N = 8
-                W(i,j) = 0.4;
+                % W(i,j) = 0.2; % for N=8
+                W(i,j) = 0.4; % for N=4
             else
                 W(i,j) = 0;
             end
@@ -57,6 +57,12 @@ R = corrcoef(x_t');
 disp('Correlation Matrix')
 disp(R);
 
+figure(2)
+[Z_sort, s_ind] = sort(Z);
+imagesc(R(s_ind,s_ind));
+set(gca, 'XTick', [1: 1: N], 'XTickLabel', s_ind); 
+set(gca, 'YTick', [1: 1: N], 'YTickLabel', s_ind); 
+
 %% select data
 n_vec = 1:N;
 X = x_t(n_vec,:);
@@ -83,7 +89,7 @@ type_of_MIPsearch = 'Queyranne';
 %    'Queyranne': 
 %    'REMCMC':
 
-tau = 4; % time delay
+tau = 1; % time delay
 N_st = 2;  % number of states
 
 %%% with pre-computed probabilities %%%

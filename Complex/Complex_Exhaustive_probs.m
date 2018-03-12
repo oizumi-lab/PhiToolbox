@@ -68,7 +68,7 @@ Zs = zeros(2^nClusters-1, N);
 idx = 0;
 for i = 1:nClusters
     group_indices_temp = nchoosek(1:nClusters, i);
-    for j = 1:size(group_indices_temp, 1);
+    for j = 1:size(group_indices_temp, 1)
         idx = idx + 1;
         group_indices{idx} = group_indices_temp(j,:);
         indices{idx} = [];
@@ -81,8 +81,9 @@ for i = 1:nClusters
 end
 
 parfor i = 1:length(group_indices)
-    %disp(['i/length_ind_groups: ', num2str(i), '/', num2str(length(ind_groups))])
     indices_temp = indices{i};
+    disp(indices_temp);
+    % disp(['i/length_ind_groups: ', num2str(i), '/', num2str(length(ind_groups))])
     probs_Sub = ExtractSubsystem( probs, indices_temp );
     if length(indices_temp) == 1
         phi_MIP = 0;%phi_comp_probs( type_of_phi, 1, probs_Sub );
