@@ -1,13 +1,14 @@
-addpath(genpath('minFunc_2012'));
+addpath(genpath('../PhiToolbox'))
 
-N = 6; % number of units
+N = 4; % number of units
 T = 10^6; % number of iterations
 tau = 4; % time delay
 N_st = 2;  % number of states
 
 W = zeros(N,N);
 % Z = [1 2 2 1 2 1 2 1];
-Z = [1 2 2 1 2 1];
+%Z = [1 2 2 1 2 1];
+Z = [1 2 2 1];
 
 for i=1: N
     for j=1: N
@@ -26,7 +27,7 @@ end
 
 beta = 4; % inverse temperature
 
-x_t = generate_Boltzman(beta,W,N,T); % generate time series of Boltzman machine
+x_t = generate_Boltzmann(beta,W,N,T); % generate time series of Boltzman machine
 
 %% 
 
@@ -45,6 +46,7 @@ subplot(3,2,5),imagesc(x_t(:,t_vec5));
 
 %% compute correlation
 R = corrcoef(x_t');
+disp('Correlation Matrix')
 disp(R);
 
 %% select data
@@ -67,33 +69,91 @@ X = x_t(n_vec,:);
 % 
 % %%
 % fprintf('phi*=%f SI=%f phi_I=%f\n',phi_star,SI,phi_I);
-% 
-%% find MIP with pre-computed probability distributions
-fprintf('Searching for MIP\n');
-[p_past, joint, p_present] = est_prior_joint(X,N_st,tau);
-probs{1} = p_past;
-probs{2} = joint;
-probs{3} = p_present;
-params(1) = N;
-params(2) = tau;
-params(3) = N_st;
-type_of_dist = 'dis';
-type_of_phi = 'MI';
+%
 
+
+
+%% find Minimum Information Partition (MIP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+type_of_dist = 'discrete';
+type_of_phi = 'MI1';
+
+%%%%%%%%%% with pre-computed probability distributions %%%%%%%%%% 
+disp('Find the MIP with pre-computed probability distributions')
+
+% compute probability distributions
+disp('Computing probability distributions...')
+probs = data_to_probs(type_of_dist, X, tau, N_st);
+
+%% Exhaustive Search %%
+disp('Exhaustive Search...')
 tic;
-[Z_MIP, phi_MIP, phis] =  MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
-disp(Z_MIP);
-fprintf('phi_MIP=%f\n',phi_MIP);
-toc;
+[Z_MIP_with, phi_MIP_with] = MIP_Exhaustive_probs( type_of_phi, probs );
+t_Exhaustive_with = toc;
+disp( ['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_with)])
+disp(['phi at the MIP: ', num2str(phi_MIP_with)])
+disp(['the MIP: ', num2str(Z_MIP_with)])
+disp(' ')
 
-%% find MIP without probability distributions
-fprintf('Searching for MIP\n');
-
+%% Queyeranne's algorithm %%%
+disp('Queyranne''s algorithm...')
 tic;
-[Z_MIP, phi_MIP, phis] =  MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
-disp(Z_MIP);
-fprintf('phi_MIP=%f\n',phi_MIP);
-toc;
+[Z_MIP_Q_with, phi_MIP_Q_with] = MIP_Queyranne_probs( type_of_phi, probs );
+t_Queyranne_with = toc;
+disp(['Queyranne''s algorithm finished. CalcTime=', num2str(t_Queyranne_with)])
+disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q_with)])
+disp(['the estimated MIP: ', num2str(Z_MIP_Q_with)])
+disp(' ')
 
+%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
+options.ShowFig = 0;
+options.nMCS = 100;
+disp('REMCMC...')
+tic;
+[Z_MIP_REMCMC_with, phi_MIP_REMCMC_with, ...
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
+    MIP_REMCMC_probs( type_of_phi, probs, options );
+t_REMCMC_with = toc;
+disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_with)])
+disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_with)])
+disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_with)])
+disp(' ')
+
+
+%%%%%%%%%% without pre-computed probability distributions %%%%%%%%%%
+disp('Find the MIP without pre-computed probability distributions')
+%% Exhaustive search %%
+disp('Exhaustive Search...')
+tic;
+[Z_MIP_without, phi_MIP_without] = MIP_Exhaustive( type_of_dist, type_of_phi, X, tau, N_st );
+t_Exhaustive_without = toc;
+disp(['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_without)] )
+disp(['phi at the MIP: ', num2str(phi_MIP_without)])
+disp(['the MIP: ', num2str(Z_MIP_without)])
+disp(' ')
+
+%% Queyranne's algorithm %%
+disp('Queyranne''s algorithm...')
+tic;
+[Z_MIP_Q_without, phi_MIP_Q_without] = MIP_Queyranne( type_of_dist, type_of_phi, X, tau, N_st );
+t_Queyranne_without = toc;
+disp(['Exhaustive Search finished. CalcTime=', num2str(t_Queyranne_without)])
+disp(['phi at the MIP: ', num2str(phi_MIP_Q_without)])
+disp(['the MIP: ', num2str(Z_MIP_Q_without)])
+disp(' ')
+
+%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
+options.ShowFig = 0;
+options.nMCS = 100;
+disp('REMCMC...')
+tic;
+[Z_MIP_REMCMC_without, phi_MIP_REMCMC_without, ...
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
+    MIP_REMCMC( type_of_dist, type_of_phi, X, tau, N_st, options );
+t_REMCMC_without = toc;
+disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_without)])
+disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_without)])
+disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_without)])
+disp(' ')
 
 

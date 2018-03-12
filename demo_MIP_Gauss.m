@@ -3,7 +3,9 @@
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
+
 %% generate data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 disp('Generating data...')
 
 %%% construct connectivity matrix %%%
@@ -16,7 +18,7 @@ for i = 1:n_block
 end
 A = A + 0.01*randn(N)/sqrt(N);
 
-figure(1)
+h_A = figure;
 imagesc(A)
 drawnow
 title('Connectivity Matrix A')
@@ -30,81 +32,102 @@ for t=2: T
     X(:,t) = A*X(:,t-1) + E;
 end
 
-%%% estimate covariance matrices %%%
-% Note: If the sample size is small and the number of elements is large, the
-% empirical estimators of covariance matrices below will be very unstable.
-% see https://en.wikipedia.org/wiki/Estimation_of_covariance_matrices.
-
-tau = 1; % time lag
-t_range1 = 1: 1: T-tau;
-t_range2 = 1+tau: 1: T;
-
-X1 = X(:,t_range1);
-X1 = bsxfun(@minus, X1, mean(X1,2)); % subtract mean
-X2 = X(:,t_range2);
-X2 = bsxfun(@minus, X2, mean(X2,2)); % subtract mean
-
-Cov_X = X1*X1'/(T-tau-1); % equal-time covariance matrix at "PAST"
-Cov_Y = X2*X2'/(T-tau-1); % equal-time covariance matrix at "PRESENT"
-Cov_XY = X1*X2'/(T-tau-1); % time-lagged covariance matrix
-
 
 %% find Minimum Information Partition (MIP)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+type_of_dist = 'Gauss';
+% type_of_dist:
+%    'Gauss': Gaussian distribution
+%    'discrete': discrete probability distribution
+
+type_of_phi = 'SI';
 % type_of_phi:
 %    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
 %    'MI': Multi (Mutual) information, e.g., I(X_1, Y_1; X_2, Y_2)
 %    'SI': phi_H, stochastic interaction
 %    'star': phi_star, based on mismatched decoding
 %    'Geo': phi_G, information geometry version
-type_of_phi = 'SI';
-type_of_dist = 'Gauss';
 
-%%% Exhaustive Search %%%
+
+
+%%%%%%%%%% with pre-computed covariances %%%%%%%%%%
+% estimate covariance matrices
+%   Note: If the sample size is small and the number of elements is large, the
+%   empirical estimators of covariance matrices below will be very unstable.
+%   see https://en.wikipedia.org/wiki/Estimation_of_covariance_matrices.
+disp('Find the MIP with pre-computed covariances')
+
+% compute covariances
+probs = data_to_probs(type_of_dist, X, tau);
+
+%% Exhaustive Search %%
 disp('Exhaustive Search...')
-
-%% pre-compute covariances
 tic;
-probs{1} = Cov_X;
-probs{2} = Cov_XY;
-probs{3} = Cov_Y;
-params(1) = N;
-params(2) = tau;
+[Z_MIP_withCovs, phi_MIP_withCovs] = MIP_Exhaustive_probs( type_of_phi, probs );
+t_Exhaustive_withCovs = toc;
+disp( ['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_withCovs)])
+disp(['phi at the MIP: ', num2str(phi_MIP_withCovs)])
+disp(['the MIP: ', num2str(Z_MIP_withCovs)])
+disp(' ')
 
-[Z_MIP, phi_MIP] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, params, probs);
-
-t_Exhaustive = toc;
-disp('Exhaustive Search finished.')
-disp(['phi at the MIP: ', num2str(phi_MIP)])
-disp(['the MIP: ', num2str(Z_MIP)])
-
-%% without covariances
+%% Queyeranne's algorithm %%%
+disp('Queyranne''s algorithm...')
 tic;
+[Z_MIP_Q_withCovs, phi_MIP_Q_withCovs] = MIP_Queyranne_probs( type_of_phi, probs );
+t_Queyranne_withCovs = toc;
+disp(['Queyranne''s algorithm finished. CalcTime=', num2str(t_Queyranne_withCovs)])
+disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q_withCovs)])
+disp(['the estimated MIP: ', num2str(Z_MIP_Q_withCovs)])
+disp(' ')
 
-[Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, X, params);
-t_Exhaustive = toc;
-disp('Exhaustive Search finished.')
-disp(['phi at the MIP: ', num2str(phi_MIP)])
-disp(['the MIP: ', num2str(Z_MIP)])
+%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
+options.ShowFig = 0;
+options.nMCS = 100;
+disp('REMCMC...')
+tic;
+[Z_MIP_REMCMC_withCovs, phi_MIP_REMCMC_withCovs, ...
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
+    MIP_REMCMC_probs( type_of_phi, probs, options );
+t_REMCMC_withCovs = toc;
+disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_withCovs)])
+disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_withCovs)])
+disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_withCovs)])
+disp(' ')
 
-%%% Queyeranne's algorithm %%%
-% disp('Queyranne''s algorithm...')
-% tic;
-% [Z_MIP_Q, phi_MIP_Q] = MIP_Queyranne( type_of_phi, Cov_X, Cov_XY, Cov_Y );
-% t_Queyeranne = toc;
-% disp('Queyranne''s algorithm finished.')
-% disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q)])
-% disp(['the estimated MIP: ', num2str(Z_MIP_Q)])
-% 
-% %%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%%
-% options = [];
-% disp('REMCMC...')
-% tic;
-% [Z_MIP_REMCMC, phi_MIP_REMCMC, ...
-%     Energy_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
-%     MIP_REMCMC( type_of_phi, options, Cov_X, Cov_XY, Cov_Y );
-% t_REMCMC = toc;
-% disp('REMCMC finished.')
-% disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC)])
-% disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC)])
-% 
+%%%%%%%%%% without pre-computed covariances %%%%%%%%%%
+disp('Find the MIP without pre-computed covariances')
+
+%% Exhaustive search %%
+disp('Exhaustive Search...')
+tic;
+[Z_MIP_withoutCovs, phi_MIP_withoutCovs] = MIP_Exhaustive( type_of_dist, type_of_phi, X, tau );
+t_Exhaustive_withoutCovs = toc;
+disp(['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_withoutCovs)] )
+disp(['phi at the MIP: ', num2str(phi_MIP_withoutCovs)])
+disp(['the MIP: ', num2str(Z_MIP_withoutCovs)])
+disp(' ')
+
+%% Queyranne's algorithm %%
+disp('Queyranne''s algorithm...')
+tic;
+[Z_MIP_Q_withoutCovs, phi_MIP_Q_withoutCovs] = MIP_Queyranne( type_of_dist, type_of_phi, X, tau );
+t_Queyranne_withoutCovs = toc;
+disp(['Exhaustive Search finished. CalcTime=', num2str(t_Queyranne_withoutCovs)])
+disp(['phi at the MIP: ', num2str(phi_MIP_Q_withoutCovs)])
+disp(['the MIP: ', num2str(Z_MIP_Q_withoutCovs)])
+disp(' ')
+
+%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
+options.ShowFig = 0;
+options.nMCS = 100;
+disp('REMCMC...')
+tic;
+[Z_MIP_REMCMC_withoutCovs, phi_MIP_REMCMC_withoutCovs, ...
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
+    MIP_REMCMC( type_of_dist, type_of_phi, X, tau, options );
+t_REMCMC_withoutCovs = toc;
+disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_withoutCovs)])
+disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_withoutCovs)])
+disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_withoutCovs)])
+disp(' ')

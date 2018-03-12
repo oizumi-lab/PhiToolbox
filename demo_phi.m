@@ -2,7 +2,7 @@
 % X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
-addpath(genpath('minFunc_2012')) % Add 'minFunc_2012' to search path
+addpath(genpath('../PhiToolbox'))
 
 N = 2; % the number of elements
 A = [0.2 0.1; 0.5 0.2]; % connectivity matrix
