@@ -16,20 +16,28 @@ X = X_AwakeEyesClosed(:, 1:subsampling_freq:window_length);
 
 %% 
 % pre-define groups
-groups = my_groups( 'Chibi' );
+% groups = my_groups( 'Chibi' );
+groups = anatomical_groups( 'Chibi' );
+
+X(groups{9},:)=[];
+groups(9)=[];
 
 % plot pre-defined groups
-groups_for_gscatter = zeros(64,1);
+N = 62;
+groups_for_gscatter = zeros(N,1);
 for i = 1:length(groups)
     groups_for_gscatter(groups{i}) = i;
 end
 CortexMap = load('ChibiMap_bipolar.mat');
-figure
+figure(1)
 imagesc(CortexMap.I), axis equal
 hold on
-gscatter(CortexMap.X, CortexMap.Y, groups_for_gscatter, [], [], 20)
+gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
 title('Pre-defined groups')
 drawnow
+
+pause;
+
 
 %% find the complex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,7 +86,7 @@ t = toc;
 
 
 %% plot the comlex
-figure
+figure(2)
 imagesc(CortexMap.I), axis equal
 hold on
 scatter(CortexMap.X, CortexMap.Y, 'r')

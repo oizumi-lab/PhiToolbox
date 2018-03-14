@@ -1,6 +1,4 @@
 function groupMember = my_groups( SubjectName )
-%UNTITLED3 この関数の概要をここに記述
-%   詳細説明をここに記述
 
 switch SubjectName
     case 'Chibi'
