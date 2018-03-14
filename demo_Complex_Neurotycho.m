@@ -16,7 +16,7 @@ X = X_AwakeEyesClosed(:, 1:subsampling_freq:window_length);
 
 %% 
 % pre-define groups
-groups = my_groups( 'Chibi' );
+groups = my_groups( 'Chibi', 'Large');
 
 % plot pre-defined groups
 groups_for_gscatter = zeros(64,1);
@@ -27,7 +27,8 @@ CortexMap = load('ChibiMap_bipolar.mat');
 figure
 imagesc(CortexMap.I), axis equal
 hold on
-gscatter(CortexMap.X, CortexMap.Y, groups_for_gscatter, [], [], 20)
+clrs = hsv(length(groups));
+scatter(CortexMap.X, CortexMap.Y, 30, clrs(groups_for_gscatter,:), 'filled')
 title('Pre-defined groups')
 drawnow
 
