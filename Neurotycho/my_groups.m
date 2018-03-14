@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 function groupMember = my_groups( SubjectName, SorL )
 %UNTITLED3 この関数の概要をここに記述
 %   詳細説明をここに記述
+=======
+function groupMember = my_groups( SubjectName )
+>>>>>>> 34c460271bbc9750957f66b24ff0e6e6a1f60ed8
 
 switch SubjectName
     case 'Chibi'

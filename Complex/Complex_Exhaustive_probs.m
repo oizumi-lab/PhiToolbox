@@ -82,7 +82,7 @@ end
 
 parfor i = 1:length(group_indices)
     indices_temp = indices{i};
-%     disp(indices_temp);
+   disp(indices_temp);
     % disp(['i/length_ind_groups: ', num2str(i), '/', num2str(length(ind_groups))])
     probs_Sub = ExtractSubsystem( probs, indices_temp );
     if length(indices_temp) == 1
