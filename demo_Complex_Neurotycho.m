@@ -16,15 +16,11 @@ X = X_AwakeEyesClosed(:, 1:subsampling_freq:window_length);
 
 %% 
 % pre-define groups
-<<<<<<< HEAD
-groups = my_groups( 'Chibi', 'Large');
-=======
 % groups = my_groups( 'Chibi' );
 groups = anatomical_groups( 'Chibi' );
 
 X(groups{9},:)=[];
 groups(9)=[];
->>>>>>> 34c460271bbc9750957f66b24ff0e6e6a1f60ed8
 
 % plot pre-defined groups
 N = 62;
@@ -36,12 +32,7 @@ CortexMap = load('ChibiMap_bipolar.mat');
 figure(1)
 imagesc(CortexMap.I), axis equal
 hold on
-<<<<<<< HEAD
-clrs = hsv(length(groups));
-scatter(CortexMap.X, CortexMap.Y, 30, clrs(groups_for_gscatter,:), 'filled')
-=======
 gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
->>>>>>> 34c460271bbc9750957f66b24ff0e6e6a1f60ed8
 title('Pre-defined groups')
 drawnow
 
