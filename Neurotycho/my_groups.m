@@ -1,7 +1,6 @@
 function groupMember = my_groups( SubjectName, SorL )
 %UNTITLED3 この関数の概要をここに記述
 %   詳細説明をここに記述
-function groupMember = my_groups( SubjectName )
 
 switch SubjectName
     case 'Chibi'
