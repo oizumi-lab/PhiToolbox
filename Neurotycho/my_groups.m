@@ -1,8 +1,10 @@
-function groupMember = my_groups( SubjectName )
+function groupMember = my_groups( SubjectName, SorL )
+%UNTITLED3 この関数の概要をここに記述
+%   詳細説明をここに記述
 
 switch SubjectName
     case 'Chibi'
-        groupMember = {...
+        groupMember_temp = {...
             [1, 2, 3, 5];
             [4, 6, 63, 64];
             [59, 60, 61, 62];
@@ -20,6 +22,18 @@ switch SubjectName
             [38, 39, 44, 45];
             [50, 51, 56, 57]...
             };
+        switch SorL
+            case 'Small'
+                groupMember = groupMember_temp;
+            case 'Large'
+                groupMember = {...
+                    [groupMember_temp{1:3}];
+                    [groupMember_temp{4:6},groupMember_temp{9}]; ...
+                    [groupMember_temp{7:8},groupMember_temp{10:11}];...
+                    [groupMember_temp{12:13}];...
+                    [groupMember_temp{14:16}]...
+                    };
+        end
 end
 
 end
