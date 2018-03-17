@@ -14,11 +14,11 @@ window_length = 60*1000; % 1 minute
 subsampling_freq = 10; % Down-sample from 1kHz to 100Hz
 
 switch condition
-    case awake
+    case 'awake'
         load('Neurotycho/Data_AwakeEyesClosed.mat')
         X = X_AwakeEyesClosed(:, 1:subsampling_freq:window_length);
         % X_AwakeEyesClosed: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes * 60 sec. * 1000Hz) matrix.
-    case anes
+    case 'anes'
         load('Neurotycho/Data_Anesthetized.mat')
         X = X_Anesthetized(:, 1:subsampling_freq:window_length);
         % X_Anesthetized: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes* 60 sec. * 1000Hz) matrix.
