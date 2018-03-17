@@ -5,14 +5,26 @@
 addpath(genpath('../PhiToolbox'))
 
 %% load datasets
-load('Neurotycho/Data_AwakeEyesClosed.mat')
-% X_AwakeEyesClosed: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes * 60 sec. * 1000Hz) matrix. 
-% X_Anesthetized: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes* 60 sec. * 1000Hz) matrix. 
+
+condition = 'awake'; 
+% condition = 'anes';
 
 % extract 1-minute signal
 window_length = 60*1000; % 1 minute
 subsampling_freq = 10; % Down-sample from 1kHz to 100Hz
-X = X_AwakeEyesClosed(:, 1:subsampling_freq:window_length);
+
+switch condition
+    case awake
+        load('Neurotycho/Data_AwakeEyesClosed.mat')
+        X = X_AwakeEyesClosed(:, 1:subsampling_freq:window_length);
+        % X_AwakeEyesClosed: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes * 60 sec. * 1000Hz) matrix.
+    case anes
+        load('Neurotycho/Data_Anesthetized.mat')
+        X = X_Anesthetized(:, 1:subsampling_freq:window_length);
+        % X_Anesthetized: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes* 60 sec. * 1000Hz) matrix.
+end
+        
+
 
 %% 
 % pre-define groups
@@ -35,8 +47,6 @@ hold on
 gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
 title('Pre-defined groups')
 drawnow
-
-pause;
 
 
 %% find the complex

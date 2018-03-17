@@ -34,8 +34,6 @@ scatter(CortexMap.X(1:N), CortexMap.Y(1:N), 30, clrs(groups_for_gscatter,:))
 title('Pre-defined groups')
 drawnow
 
-pause;
-
 
 %% find the complex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
