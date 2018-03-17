@@ -1,4 +1,4 @@
-function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive_probs( type_of_phi, probs)
+function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, probs)
 %-----------------------------------------------------------------------
 % FUNCTION: MIP_Exhaustive_probs.m
 % PURPOSE: Find the Minimum Informamtion Partition by the exhaustive search
@@ -40,7 +40,7 @@ parfor i=1: nComb
     Z = ones(1,N);
     Z(subcluster) = 2;
     % compute phi
-    phis(i) = phi_comp_probs(type_of_phi, Z, probs);
+    phis(i) = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
     Zs(i,:) = Z;
 end
 

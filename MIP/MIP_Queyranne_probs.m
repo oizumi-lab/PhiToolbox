@@ -1,4 +1,4 @@
-function [Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_phi, probs )
+function [Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_dist, type_of_phi, probs )
 %-----------------------------------------------------------------------
 % FUNCTION: MIP_Queyranne.m
 % PURPOSE: Find the minimum information partition (MIP) using Queyranne's
@@ -22,7 +22,7 @@ function [Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_phi, probs )
 %-----------------------------------------------------------------------
 
 N = probs.number_of_elements;
-F = @(indices)phi_comp_probs(type_of_phi, indices2bipartition(indices, N), probs);
+F = @(indices)phi_comp_probs(type_of_dist, type_of_phi, indices2bipartition(indices, N), probs);
 
 [IndexOutput] = QueyranneAlgorithm( F, 1:N );
 phi_MIP = F(IndexOutput);

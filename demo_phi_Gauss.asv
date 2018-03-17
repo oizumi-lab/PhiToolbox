@@ -29,23 +29,23 @@ type_of_dist = 'Gauss';
 %    'star': phi_star, based on mismatched decoding
 %    'Geo': phi_G, information geometry version
 
-Z = [1 2]; % partition with which phi is computed
+Z = [1 2]; % labels of subsystems
 
 % mutual information
 type_of_phi = 'MI1';
-MI = phi_comp(type_of_dist, type_of_phi, Z, X, tau);
+MI = phi_comp(type_of_dist, type_of_phi, X, tau);
 
 % stochastic interaction
 type_of_phi = 'SI';
-SI = phi_comp(type_of_dist, type_of_phi, Z, X, tau);
+SI = phi_comp_probs(type_of_dist, type_of_phi, X, tau);
 
 % phi*
 type_of_phi = 'star';
-phi_star = phi_comp(type_of_dist, type_of_phi, Z, X, tau);
+phi_star = phi_comp_probs(type_of_dist, type_of_phi, X, tau);
 
 % geometric phi
 type_of_phi = 'Geo';
-phi_G = phi_comp(type_of_dist, type_of_phi, Z, X, tau);
+phi_G = phi_comp_probs(type_of_dist, type_of_phi, X, tau);
 
 %%
 fprintf('MI=%f SI=%f phi*=%f phi_G=%f\n',MI,SI,phi_star,phi_G);

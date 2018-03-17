@@ -64,7 +64,7 @@ probs = data_to_probs(type_of_dist, X, tau);
 %% Exhaustive Search %%
 disp('Exhaustive Search...')
 tic;
-[Z_MIP_withCovs, phi_MIP_withCovs] = MIP_Exhaustive_probs( type_of_phi, probs );
+[Z_MIP_withCovs, phi_MIP_withCovs] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, probs );
 t_Exhaustive_withCovs = toc;
 disp( ['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_withCovs)])
 disp(['phi at the MIP: ', num2str(phi_MIP_withCovs)])
@@ -74,7 +74,7 @@ disp(' ')
 %% Queyeranne's algorithm %%%
 disp('Queyranne''s algorithm...')
 tic;
-[Z_MIP_Q_withCovs, phi_MIP_Q_withCovs] = MIP_Queyranne_probs( type_of_phi, probs );
+[Z_MIP_Q_withCovs, phi_MIP_Q_withCovs] = MIP_Queyranne_probs( type_of_dist, type_of_phi, probs );
 t_Queyranne_withCovs = toc;
 disp(['Queyranne''s algorithm finished. CalcTime=', num2str(t_Queyranne_withCovs)])
 disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q_withCovs)])
@@ -88,7 +88,7 @@ disp('REMCMC...')
 tic;
 [Z_MIP_REMCMC_withCovs, phi_MIP_REMCMC_withCovs, ...
     phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
-    MIP_REMCMC_probs( type_of_phi, probs, options );
+    MIP_REMCMC_probs( type_of_dist, type_of_phi, probs, options );
 t_REMCMC_withCovs = toc;
 disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_withCovs)])
 disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_withCovs)])

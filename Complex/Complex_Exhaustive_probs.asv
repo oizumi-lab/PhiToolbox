@@ -43,7 +43,7 @@ N = probs.number_of_elements;
 groups = [];
 options = [];
 
-num_params_other_than_groups_and_options = 4;
+num_params_other_than_groups_and_options = 3;
 if nargin > num_params_other_than_groups_and_options
     for i = 1:2:nargin-num_params_other_than_groups_and_options
         switch varargin{i}
@@ -84,7 +84,7 @@ parfor i = 1:length(group_indices)
     indices_temp = indices{i};
    disp(indices_temp);
     % disp(['i/length_ind_groups: ', num2str(i), '/', num2str(length(ind_groups))])
-    probs_Sub = ExtractSubsystem( type_of_dist, probs, indices_temp );
+    probs_Sub = ExtractSubsystem( probs, indices_temp );
     if length(indices_temp) == 1
         phi_MIP = 0;%phi_comp_probs( type_of_phi, 1, probs_Sub );
         Z_MIP = 1;
@@ -93,9 +93,9 @@ parfor i = 1:length(group_indices)
             case 'Exhaustive'
                 [Z_MIP, phi_MIP] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, probs_Sub );
             case 'Queyranne'
-                [Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_dist, type_of_phi, probs_Sub );
+                [Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_phi, probs_Sub );
             case 'REMCMC'
-                [Z_MIP, phi_MIP] = MIP_REMCMC_probs( type_of_dist, type_of_phi, probs_Sub, options );
+                [Z_MIP, phi_MIP] = MIP_REMCMC_probs( type_of_phi, probs_Sub, options );
         end
     end
     

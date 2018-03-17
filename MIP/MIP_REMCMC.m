@@ -58,6 +58,6 @@ end
 probs = data_to_probs(type_of_dist, X, tau, numSt);
 
 [Z_MIP, phi_MIP, phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
-    MIP_REMCMC_probs( type_of_phi, probs, options );
+    MIP_REMCMC_probs( type_of_dist, type_of_phi, probs, options );
 
 end

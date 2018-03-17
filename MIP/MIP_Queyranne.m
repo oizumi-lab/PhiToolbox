@@ -35,6 +35,6 @@ end
 
 probs = data_to_probs(type_of_dist, X, tau, numSt);
 
-[Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_phi, probs );
+[Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_dist, type_of_phi, probs );
 
 end

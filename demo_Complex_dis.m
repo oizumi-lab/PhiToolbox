@@ -35,7 +35,7 @@ end
 
 beta = 4; % inverse temperature
 
-x_t = generate_Boltzmann(beta,W,N,T); % generate time series of Boltzman machine
+X = generate_Boltzmann(beta,W,N,T); % generate time series of Boltzman machine
 
 %% 
 
@@ -46,14 +46,14 @@ t_vec2 = 2*10^3: 2*10^3+T_seg;
 t_vec3 = 10^4: 10^4+T_seg;
 t_vec4 = 10^5: 10^5+T_seg;
 t_vec5 = T-300: T;
-subplot(3,2,1),imagesc(x_t(:,t_vec1));
-subplot(3,2,2),imagesc(x_t(:,t_vec2));
-subplot(3,2,3),imagesc(x_t(:,t_vec3));
-subplot(3,2,4),imagesc(x_t(:,t_vec4));
-subplot(3,2,5),imagesc(x_t(:,t_vec5));
+subplot(3,2,1),imagesc(X(:,t_vec1));
+subplot(3,2,2),imagesc(X(:,t_vec2));
+subplot(3,2,3),imagesc(X(:,t_vec3));
+subplot(3,2,4),imagesc(X(:,t_vec4));
+subplot(3,2,5),imagesc(X(:,t_vec5));
 
 %% compute correlation
-R = corrcoef(x_t');
+R = corrcoef(X');
 disp('Correlation Matrix')
 disp(R);
 
@@ -62,10 +62,6 @@ figure(2)
 imagesc(R(s_ind,s_ind));
 set(gca, 'XTick', [1: 1: N], 'XTickLabel', s_ind); 
 set(gca, 'YTick', [1: 1: N], 'YTickLabel', s_ind); 
-
-%% select data
-n_vec = 1:N;
-X = x_t(n_vec,:);
 
 %% find the complex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

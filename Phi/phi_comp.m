@@ -19,15 +19,26 @@ function phi = phi_comp(type_of_dist, type_of_phi, Z, X, tau, varargin)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
 %           X: time series data in the form (unit x time)
-%           params: parameters for computing phi
-%              params(1) = the number of units, params(2) = time delay (tau)
-%              For the discrete distribution,  params(3) = the number of states
+%           tau: time delay
+%           vargin: the number of states (only for discrete distributions)
 %
 % OUTPUT:
 %           phi: integrated information
 %-----------------------------------------------------------------------
 
-probs = data_to_probs(type_of_dist, X, tau, varargin);
+numSt = []; % number of states
+
+num_params_other_than_varargin = 5;
+switch type_of_dist
+    case 'discrete'
+        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
+            error('Number of states must be identified.')
+        else
+            numSt = varargin{1};
+        end
+end
+
+probs = data_to_probs(type_of_dist, X, tau, numSt);
 phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
 
 

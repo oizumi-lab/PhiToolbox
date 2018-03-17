@@ -1,6 +1,6 @@
 function [Z_MIP, phi_MIP, ...
     phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
-    MIP_REMCMC_probs( type_of_phi, probs, options )
+    MIP_REMCMC_probs( type_of_dist, type_of_phi, probs, options )
 % FUNCTION: MIP_REMCMC_probs.m
 % PURPOSE: Find the minimum information partition (MIP) using Replica
 % Exchange Monte Carlo Method (REMCMC)
@@ -47,7 +47,7 @@ end
 %     error('type_of_phi must be selected from MI1, MI, SI, star or Geo!')
 % end
 
-calc_E = @(Z)phi_comp_probs(type_of_phi, Z, probs);
+calc_E = @(Z)phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
 
 [min_phi_each_temperature, State_min_phi_each_temperature, phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
     REMCMC_partition( calc_E, probs.number_of_elements, options );

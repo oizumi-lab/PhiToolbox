@@ -1,11 +1,10 @@
-function probs_Sub = ExtractSubsystem( probs, indices )
+function probs_Sub = ExtractSubsystem( type_of_dist, probs, indices )
 % ExtractSubsystem
 % 
 
-probs_Sub.type_of_dist = probs.type_of_dist;
 probs_Sub.number_of_elements = length(indices);
 
-switch probs.type_of_dist
+switch type_of_dist
     case 'Gauss'
         probs_Sub.Cov_X = probs.Cov_X(indices, indices);
         probs_Sub.Cov_XY = probs.Cov_XY(indices, indices);

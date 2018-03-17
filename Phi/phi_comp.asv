@@ -1,13 +1,12 @@
-function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs)
-
+function phi = phi_comp(type_of_dist, type_of_phi, Z, X, tau, varargin)
 %-----------------------------------------------------------------------
-% FUNCTION: phi_comp_probs.m
-% PURPOSE: Compute phi from probability distributions
+% FUNCTION: phi_comp.m
+% PURPOSE: Compute phi from time series data
 %
 % INPUTS: 
 %           type_of_dist:
 %              'Gauss': Gaussian distribution
-%              'dis': discrete probability distribution
+%              'discrete': discrete probability distribution
 %           type_of_phi:
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version
@@ -19,17 +18,17 @@ function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs)
 %         - Ex.1:  (1:n) (atomic partition)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
-%           probs: probability distributions for computing phi
+%           X: time series data in the form (unit x time)
+%           tau: time delay
+%           vargin: the number of states (only for discrete distributions)
 %
 % OUTPUT:
 %           phi: integrated information
 %-----------------------------------------------------------------------
 
-switch type_of_dist
-    case 'Gauss'
-        phi = phi_Gauss( type_of_phi, Z, probs.Cov_X, probs.Cov_XY, probs.Cov_Y);
-    case 'discrete'
-        phi = phi_dis(type_of_phi, Z, probs.number_of_states, probs.past, probs.joint, probs.present);
-end
+number_of_states = varagin{1};
+probs = data_to_probs(type_of_dist, X, tau, number_of_states);
+phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
+
 
 end
