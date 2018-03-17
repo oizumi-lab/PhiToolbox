@@ -1,6 +1,5 @@
 function probs = data_to_probs(type_of_dist, X, tau, number_of_states)
 
-probs.type_of_dist = type_of_dist;
 probs.number_of_elements = size(X, 1);
 
 switch type_of_dist

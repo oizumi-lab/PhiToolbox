@@ -1,4 +1,4 @@
-function phi = phi_comp_probs(type_of_phi, Z, probs)
+function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs)
 
 %-----------------------------------------------------------------------
 % FUNCTION: phi_comp_probs.m
@@ -26,7 +26,7 @@ function phi = phi_comp_probs(type_of_phi, Z, probs)
 %           phi: integrated information
 %-----------------------------------------------------------------------
 
-switch probs.type_of_dist
+switch type_of_dist
     case 'Gauss'
         phi = phi_Gauss( type_of_phi, Z, probs.Cov_X, probs.Cov_XY, probs.Cov_Y);
     case 'discrete'

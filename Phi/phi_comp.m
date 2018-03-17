@@ -28,7 +28,7 @@ function phi = phi_comp(type_of_dist, type_of_phi, Z, X, tau, varargin)
 %-----------------------------------------------------------------------
 
 probs = data_to_probs(type_of_dist, X, tau, varargin);
-phi = phi_comp_probs(type_of_phi, Z, probs);
+phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
 
 
 end

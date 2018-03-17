@@ -2,15 +2,12 @@ addpath(genpath('../PhiToolbox'))
 
 N = 4; % number of units
 T = 10^6; % number of iterations
-tau = 1; % time delay
+tau = 4; % time delay
 N_st = 2;  % number of states
 
-%% generate time series from Boltzman machine
-beta = 4; % inverse temperature
-
-% connectivity matrix
 W = zeros(N,N);
 community = [1 2 2 1];
+
 for i=1: N
     for j=1: N
         if i~=j
@@ -25,6 +22,9 @@ for i=1: N
         end
     end
 end
+
+%% generate time series of Boltzman machine
+beta = 4; % inverse temperature
 X = generate_Boltzmann(beta,W,N,T); 
 
 %% 
@@ -47,6 +47,10 @@ R = corrcoef(X');
 disp('Correlation Matrix')
 disp(R);
 
+%% select data
+n_vec = 1:N;
+X = X(n_vec,:);
+
 %% find Minimum Information Partition (MIP)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 type_of_dist = 'discrete';
@@ -56,7 +60,7 @@ type_of_phi = 'MI1';
 disp('Find the MIP with pre-computed probability distributions')
 
 %% estimate probability distributions
-disp('Estimating probability distributions...')
+disp('Com probability distributions...')
 probs = data_to_probs(type_of_dist, X, tau, N_st);
 
 %% Exhaustive Search %%
