@@ -80,7 +80,7 @@ probs = data_to_probs(type_of_dist, X, tau);
 disp('Searching the Complex...')
 tic;
 [indices_Complex, phi_Complex, indices, phis, Zs] = ...
-    Complex_Exhaustive_probs( type_of_phi, type_of_MIPsearch, probs, 'groups', groups );
+    Complex_Exhaustive_probs( type_of_dist, type_of_phi, type_of_MIPsearch, probs, 'groups', groups );
 t = toc;
 %  indices_Complex: indices of elements in the complex
 %  phi_Complex: the amount of integrated information at the (estimated) MIP of the complex 
