@@ -41,12 +41,12 @@ for i = 1:length(groups)
     groups_for_gscatter(groups{i}) = i;
 end
 CortexMap = load('ChibiMap_bipolar.mat');
-figure(1)
-imagesc(CortexMap.I), axis equal
-hold on
-gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
-title('Pre-defined groups')
-drawnow
+% figure(1)
+% imagesc(CortexMap.I), axis equal
+% hold on
+% gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
+% title('Pre-defined groups')
+% drawnow
 
 
 %% find the complex
@@ -78,6 +78,10 @@ probs = data_to_probs(type_of_dist, X, tau);
 
 %%% with pre-computed covariances %%%
 disp('Searching the Complex...')
+
+% numCores = feature('numCores');
+% parpool(numCores);
+
 tic;
 [indices_Complex, phi_Complex, indices, phis, Zs] = ...
     Complex_Exhaustive_probs( type_of_dist, type_of_phi, type_of_MIPsearch, probs, 'groups', groups );
