@@ -29,8 +29,8 @@ figure(1)
 imagesc(CortexMap.I), axis equal
 hold on
 clrs = hsv(length(groups));
-scatter(CortexMap.X, CortexMap.Y, 30, clrs(groups_for_gscatter,:), 'filled')
-scatter(CortexMap.X(1:N), CortexMap.Y(1:N), 30, clrs(groups_for_gscatter,:))
+%scatter(CortexMap.X, CortexMap.Y, 30, clrs(groups_for_gscatter,:), 'filled')
+scatter(CortexMap.X(1:N), CortexMap.Y(1:N), 30, clrs(groups_for_gscatter,:), 'filled')
 title('Pre-defined groups')
 drawnow
 

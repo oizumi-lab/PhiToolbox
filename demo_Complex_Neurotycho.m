@@ -44,7 +44,9 @@ CortexMap = load('ChibiMap_bipolar.mat');
 figure(1)
 imagesc(CortexMap.I), axis equal
 hold on
-gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
+%gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
+clrs = hsv(length(groups));
+scatter(CortexMap.X(1:N), CortexMap.Y(1:N), 30, clrs(groups_for_gscatter,:), 'filled')
 title('Pre-defined groups')
 drawnow
 
