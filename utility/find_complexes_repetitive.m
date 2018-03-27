@@ -26,7 +26,7 @@ phis_complexes = phis_temp(1);
 
 [groups_indices_temp, phis_temp] = exclude_overlapping_subsets( groups_indices_temp, phis_temp );
 
-while length(groups_indices_temp) > 1
+while length(groups_indices_temp) > 0
     complexes = [complexes; groups_indices_temp(1)];
     phis_complexes = [phis_complexes; phis_temp(1)];
     
