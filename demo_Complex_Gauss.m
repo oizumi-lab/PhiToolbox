@@ -75,5 +75,5 @@ tau = 1; % time lag
 [complexes, phis_complexes] = find_complexes_repetitive(indices, phis, 1);
 
 numTops = 4;
-[WeightedSubsets, AveragedPhi] = AverageTopSubsets( indices, phis, N, numTops );
+[WeightedRatio, AveragedPhi] = AverageTopSubsets( indices, phis, N, numTops );
 
