@@ -3,6 +3,8 @@
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
+clear all;
+
 addpath(genpath('../PhiToolbox'))
 
 
@@ -35,12 +37,12 @@ end
 %% find the complex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-type_of_dist = 'Gauss';
+options.type_of_dist = 'Gauss';
 % type_of_dist:
 %    'Gauss': Gaussian distribution
 %    'discrete': discrete probability distribution
 
-type_of_phi = 'MI1';
+options.type_of_phi = 'star';
 % type_of_phi:
 %    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
 %    'MI': Multi (Mutual) information, e.g., I(X_1, Y_1; X_2, Y_2)
@@ -48,13 +50,13 @@ type_of_phi = 'MI1';
 %    'star': phi_star, based on mismatched decoding
 %    'Geo': phi_G, information geometry version
 
-type_of_MIPsearch = 'Queyranne';
+options.type_of_MIPsearch = 'Queyranne';
 % type_of_MIPsearch: 
 %    'exhaustive': 
 %    'Queyranne': 
 %    'REMCMC':
 
-tau = 1; % time lag
+params.tau = 1; % time lag
 
 % Convert data to covariance matrices
 % probs = data_to_probs(type_of_dist, X, tau);
@@ -65,7 +67,7 @@ tau = 1; % time lag
 
 % %%% without pre-computed covariances %%%
 [ indices_Complex, phi_Complex, indices, phis, Zs ] = ...
-   Complex_Exhaustive( type_of_dist, type_of_phi, type_of_MIPsearch, X, tau);
+   Complex_Exhaustive( X, params, options);
 %  indices_Complex: indices of elements in the complex
 %  phi_Complex: the amount of integrated information at the (estimated) MIP of the complex 
 %  indices: the indices of every subsystem

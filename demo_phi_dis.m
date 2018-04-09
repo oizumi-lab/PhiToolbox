@@ -1,9 +1,15 @@
+clear all;
+
 addpath(genpath('../PhiToolbox'))
 
 %% parameters for computing phi
 Z = [1 2]; % partition
 tau = 1; % time delay
-N_st = 2;  % number of states
+N_s = 2;  % number of states
+
+%% important
+params.tau = tau;
+params.number_of_states = N_s;
 
 %% generate time series from Boltzman machine
 N = 2; % number of units
@@ -13,7 +19,7 @@ beta = 4; % inverse temperature
 X = generate_Boltzmann(beta,W,N,T); 
 
 %% compute phi from time series data X
-type_of_dist = 'discrete';
+options.type_of_dist = 'discrete';
 % type_of_dist:
 %    'Gauss': Gaussian distribution
 %    'discrete': discrete probability distribution
@@ -24,38 +30,38 @@ type_of_dist = 'discrete';
 %    'star': phi_star, based on mismatched decoding
 
 % mutual information
-type_of_phi = 'MI1';
-MI = phi_comp(type_of_dist, type_of_phi, Z, X, tau, N_st);
-
-% stochastic interaction
-type_of_phi = 'SI';
-SI = phi_comp(type_of_dist, type_of_phi, Z, X, tau, N_st);
+options.type_of_phi = 'MI1';
+MI = phi_comp(X, Z, params, options);
 
 % phi*
-type_of_phi = 'star';
-phi_star = phi_comp(type_of_dist, type_of_phi, Z, X, tau, N_st);
+options.type_of_phi = 'star';
+phi_star = phi_comp(X, Z, params, options);
+
+% stochastic interaction
+options.type_of_phi = 'SI';
+SI = phi_comp(X, Z, params, options);
+
 
 %%
-fprintf('MI=%f SI=%f phi*=%f\n',MI,SI,phi_star);
+fprintf('MI=%f phi*=%f SI=%f\n',MI,phi_star,SI);
 
 %% compute phi from pre-computed covariance matrices
 
-%% estimate probability distributions
-disp('Estimating probability distributions from time series data...')
-probs = data_to_probs(type_of_dist, X, tau, N_st);
-
-%% compute phi
 % mutual information
-type_of_phi = 'MI1';
-MI = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
-
-% stochastic interaction
-type_of_phi = 'SI';
-SI = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
+isjoint = 0;
+probs = est_p(X,N_s,tau,isjoint);
+q_probs = est_q(Z,N_s,probs);
+MI = MI1_dis(probs,q_probs);
 
 % phi*
-type_of_phi = 'star';
-phi_star = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
+isjoint = 1;
+probs = est_p(X,N_s,tau,isjoint);
+q_probs = est_q(Z,N_s,probs);
+phi_star = phi_star_dis(probs,q_probs);
+
+% stochastic interaction
+SI = SI_dis(probs,q_probs);
+
 
 %%
-fprintf('MI=%f SI=%f phi*=%f\n',MI,SI,phi_star);
+fprintf('MI=%f phi*=%f SI=%f\n',MI,phi_star,SI);

@@ -2,10 +2,7 @@ function probs_Sub = ExtractSubsystem( type_of_dist, probs, indices )
 % ExtractSubsystem
 % 
 
-N_sub = length(indices);
-probs_Sub.number_of_elements = N_sub;
-N_st = probs.number_of_states;
-N = probs.number_of_elements;
+probs_Sub.number_of_elements = length(indices);
 
 switch type_of_dist
     case 'Gauss'
@@ -23,17 +20,18 @@ switch type_of_dist
             sigma_table(:,i) = sigma;
         end
         
+        N_sub = length(indices);
         i_vec = 0: N_sub-1;
-        pow_vec = N_st.^i_vec;
+        pow_vec = probs.number_of_states.^i_vec;
         %%
         
         if isfield(probs,'past')
-            probs_Sub.past = marginalize_table(probs.past, indices, N_st, sigma_table, pow_vec);
-            probs_Sub.joint = marginalize_table(probs.joint, indices, N_st, sigma_table, pow_vec);
-            probs_Sub.present = marginalize_table(probs.present, indices, N_st, sigma_table, pow_vec);
+            probs_Sub.past = marginalize_table(probs.past, indices, probs.number_of_states, sigma_table, pow_vec);
+            probs_Sub.joint = marginalize_table(probs.joint, indices,probs.number_of_states, sigma_table, pow_vec);
+            probs_Sub.present = marginalize_table(probs.present, indices, probs.number_of_states, sigma_table, pow_vec);
         end
         if isfield(probs,'p')
-            probs_Sub.p = marginalize_table(probs.p, indices, N_st, sigma_table, pow_vec);
+            probs_Sub.p = 
         end
 end
 

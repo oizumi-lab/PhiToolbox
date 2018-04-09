@@ -1,4 +1,4 @@
-function [Z_MIP, phi_MIP] = MIP_Queyranne( type_of_dist, type_of_phi, X, tau, varargin )
+function [Z_MIP, phi_MIP] = MIP_Queyranne( probs, options)
 %-----------------------------------------------------------------------
 % FUNCTION: MIP_Queyranne.m
 % PURPOSE: Find the minimum information partition (MIP) using Queyranne's
@@ -21,20 +21,21 @@ function [Z_MIP, phi_MIP] = MIP_Queyranne( type_of_dist, type_of_phi, X, tau, va
 %           phi: amount of integrated information at the estimated MIP
 %-----------------------------------------------------------------------
 
-numSt = [];
+N = probs.number_of_elements;
+type_of_dist = options.type_of_dist;
+type_of_phi = options.type_of_phi;
 
-num_params_other_than_varargin = 4;
-switch type_of_dist
-    case 'discrete'
-        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
-            error('Number of states must be identified.')
-        else
-            numSt = varargin{1};
-        end
+F = @(indices)phi_comp_probs(type_of_dist, type_of_phi, indices2bipartition(indices, N), probs);
+
+[IndexOutput] = QueyranneAlgorithm( F, 1:N );
+phi_MIP = F(IndexOutput);
+
+if ismember(1, IndexOutput)
+    Z_MIP = 2*ones(1,N);
+    Z_MIP(IndexOutput) = 1;
+else
+    Z_MIP = ones(1, N);
+    Z_MIP(IndexOutput) = 2;
 end
-
-probs = data_to_probs(type_of_dist, X, tau, numSt);
-
-[Z_MIP, phi_MIP] = MIP_Queyranne_probs( type_of_dist, type_of_phi, probs );
 
 end

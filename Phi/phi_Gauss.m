@@ -1,4 +1,4 @@
-function phi = phi_Gauss( type_of_phi, Z, Cov_X, Cov_XY, Cov_Y, phi_G_OptimMethod)
+function phi = phi_Gauss( type_of_phi, Z, probs, phi_G_OptimMethod)
 %-----------------------------------------------------------------------
 % FUNCTION: phi_Gauss.m
 % PURPOSE:  
@@ -25,6 +25,12 @@ function phi = phi_Gauss( type_of_phi, Z, Cov_X, Cov_XY, Cov_Y, phi_G_OptimMetho
 % OUTPUT:
 %           phi: amount of integrated information 
 %-----------------------------------------------------------------------
+
+Cov_X = probs.Cov_X;
+if ~strcmp(type_of_phi,'MI1')
+    Cov_XY = probs.Cov_XY;
+    Cov_Y = probs.Cov_Y;
+end
 
 % check type_of_phi
 assert( isa( type_of_phi, 'char' ) )
@@ -55,22 +61,22 @@ if ~isequal( max(nZr,nZc), nXr, nXc)
     error('Sizes of Z and Cov_X do not match! Z: 1 by n vector, Cov_X: n by n matrix')
 end
 
-% check Cov_XY and Cov_Y
-if nargin >= 4
-    %     if strcmp( type_of_phi, 'MI1' )
-    %         error('Cov_XY and Cov_Y are not needed for computation of MI1!')
-    %     end
-    assert( isa( Cov_XY, 'double' ) )
-    assert( isa( Cov_Y, 'double' ) )
-    [nYr, nYc] = size(Cov_Y);
-    [nXYr, nXYc] = size(Cov_XY);
-    if ~isequal(max(nZr,nZc), nYr, nYc, nXYr, nXYc)
-        error('Sizes of Cov_X and Cov_Y (Cov_XY) do not match!')
-    end
-end
+% % check Cov_XY and Cov_Y
+% if nargin >= 4
+%     %     if strcmp( type_of_phi, 'MI1' )
+%     %         error('Cov_XY and Cov_Y are not needed for computation of MI1!')
+%     %     end
+%     assert( isa( Cov_XY, 'double' ) )
+%     assert( isa( Cov_Y, 'double' ) )
+%     [nYr, nYc] = size(Cov_Y);
+%     [nXYr, nXYc] = size(Cov_XY);
+%     if ~isequal(max(nZr,nZc), nYr, nYc, nXYr, nXYc)
+%         error('Sizes of Cov_X and Cov_Y (Cov_XY) do not match!')
+%     end
+% end
 
 % check Geo_OptimMethod
-if nargin == 6
+if nargin == 4
     %     if ~strcmp( type_of_phi, 'Geo' )
     %         error('The option phi_G_OptimMethod is available only for phi_G!')
     %     end

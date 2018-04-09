@@ -1,12 +1,13 @@
-function phi = phi_comp(X, Z, params, options)
+function [Z_MIP, phi_MIP] = MIP_search( X, params, options)
 %-----------------------------------------------------------------------
-% FUNCTION: phi_comp.m
-% PURPOSE: Compute phi from time series data
+% FUNCTION: MIP_Exhaustive.m
+% PURPOSE: Find the Minimum Information Partition (MIP) by the exhaustive
+% search from time series data
 %
 % INPUTS: 
 %           type_of_dist:
 %              'Gauss': Gaussian distribution
-%              'discrete': discrete probability distribution
+%              'dis': discrete probability distribution
 %           type_of_phi:
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version
@@ -19,17 +20,17 @@ function phi = phi_comp(X, Z, params, options)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
 %           X: time series data in the form (unit x time)
-%           tau: time delay
-%           vargin: the number of states (only for discrete distributions)
+%           params: parameters for computing phi
 %
 % OUTPUT:
-%           phi: integrated information
+%           Z_MIP: the MIP
+%           phi_MIP: the amount of integrated information at the MIP
 %-----------------------------------------------------------------------
-
+%
+% Jun Kitazono, 2018
 
 
 probs = data_to_probs(X, params, options);
-phi = phi_comp_probs(options.type_of_dist, options.type_of_phi, Z, probs);
-
+[Z_MIP, phi_MIP] = MIP_search_probs( probs, options);
 
 end

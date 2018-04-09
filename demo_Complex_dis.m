@@ -2,10 +2,11 @@
 % Find the complex in a Boltzmann machine, 
 %   input = beta*W*x;
 %   prob(x=1) = sigmoid(input);
-% where W is a connectivity matrix.
+% where W is a connectivity matrix
+
+clear all;
 
 addpath(genpath('../PhiToolbox'))
-
 
 %% generate data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,12 +67,12 @@ set(gca, 'YTick', [1: 1: N], 'YTickLabel', s_ind);
 %% find the complex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-type_of_dist = 'discrete';
+options.type_of_dist = 'discrete';
 % type_of_dist:
 %    'Gauss': Gaussian distribution
 %    'discrete': discrete probability distribution
 
-type_of_phi = 'MI1';
+options.type_of_phi = 'SI';
 % type_of_phi:
 %    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
 %    'MI': Multi (Mutual) information, e.g., I(X_1, Y_1; X_2, Y_2)
@@ -79,14 +80,14 @@ type_of_phi = 'MI1';
 %    'star': phi_star, based on mismatched decoding
 %    'Geo': phi_G, information geometry version
 
-type_of_MIPsearch = 'Queyranne';
-% type_of_MIPsearch: 
+options.type_of_MIPsearch = 'Queyranne';
+% type_of_search: 
 %    'exhaustive': 
 %    'Queyranne': 
 %    'REMCMC':
 
-tau = 1; % time delay
-N_st = 2;  % number of states
+params.tau = 1; % time delay
+params.number_of_states = 2;  % number of states
 
 %%% with pre-computed probabilities %%%
 % Convert data to probabilities
@@ -96,7 +97,7 @@ N_st = 2;  % number of states
 
 % %%% without pre-computed probabilities %%%
 [ indices_Complex, phi_Complex, indices, phis, Zs ] = ...
-   Complex_Exhaustive( type_of_dist, type_of_phi, type_of_MIPsearch, X, tau, N_st);
+   Complex_Exhaustive( X, params, options);
 %  indices_Complex: indices of elements in the complex
 %  phi_Complex: the amount of integrated information at the (estimated) MIP of the complex 
 %  indices: the indices of every subsystem

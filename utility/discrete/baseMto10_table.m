@@ -1,4 +1,4 @@
-function x = baseMto10(sigma, M)
+function x = baseMto10_table(sigma, pow_vec)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: convert base M to base 10
@@ -24,7 +24,5 @@ N = length(sigma);
 
 x = 0;
 for i=1: N
-    x = x + M^(i-1)*sigma(i);
-end
-
+    x = x + pow_vec(i)*sigma(i);
 end

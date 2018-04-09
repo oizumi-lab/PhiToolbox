@@ -1,7 +1,7 @@
 function [Z_MIP, phi_MIP, ...
-    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] ...
-    = MIP_REMCMC( type_of_dist, type_of_phi, X, tau, varargin )
-% FUNCTION: MIP_REMCMC.m
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
+    MIP_REMCMC( probs, options )
+% FUNCTION: MIP_REMCMC_probs.m
 % PURPOSE: Find the minimum information partition (MIP) using Replica
 % Exchange Monte Carlo Method (REMCMC)
 %
@@ -30,34 +30,25 @@ function [Z_MIP, phi_MIP, ...
 %    for a discrete distribution. 
 %
 %    Available options:
-%       MIP_REMCMC( 'Gauss', ..., tau, options )
-%       MIP_REMCMC( 'discrete', ..., number_of_state, options )
+%       MIP_REMCMC( 'Gauss', ..., tau, 'options', options )
+%       MIP_REMCMC( 'discrete', ..., number_of_state, 'options', options )
 %
 % Jun Kitazono, 2018
 
+N = probs.number_of_elements;
+type_of_dist = options.type_of_dist;
+type_of_phi = options.type_of_phi;
 
-options = [];
-numSt = [];
+calc_E = @(Z)phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
 
-num_params_other_than_varargin = 4;
-length_varargin = nargin - num_params_other_than_varargin;
-isdiscrete = 0;
-switch type_of_dist
-    case 'discrete'
-        isdiscrete = 1;
-        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
-            error('Number of states must be identified.')
-        else
-            numSt = varargin{1};
-        end
+[min_phi_each_temperature, State_min_phi_each_temperature, phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
+    REMCMC_partition( calc_E, N, options );
+
+[phi_MIP, i_T_MIP] = min(min_phi_each_temperature);
+Z_MIP = State_min_phi_each_temperature(:, i_T_MIP)';
+
+if Z_MIP(1) ~= 1
+    Z_MIP = 3 - Z_MIP;
 end
-if length_varargin > isdiscrete
-    options = varargin{isdiscrete + 1};
-end
-
-probs = data_to_probs(type_of_dist, X, tau, numSt);
-
-[Z_MIP, phi_MIP, phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
-    MIP_REMCMC_probs( type_of_dist, type_of_phi, probs, options );
 
 end

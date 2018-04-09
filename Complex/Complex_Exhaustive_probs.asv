@@ -1,5 +1,5 @@
 function [indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex, group_indices] = ...
-    Complex_Exhaustive_probs( probs, options )
+    Complex_Exhaustive_probs( probs, params, options )
 %Complex_Exhaustive_probs: Find main complex using the exhaustive search
 %
 % INPUTS:
@@ -41,11 +41,25 @@ function [indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex
 
 N = probs.number_of_elements;
 type_of_MIPsearch = options.type_of_MIPsearch;
-type_of_dist = options.type_of_dist;
+groups = params.g
 
-if isfield(options,'groups')
-    groups = options.groups;
-else
+
+% groups = [];
+% options = [];
+% 
+% num_params_other_than_groups_and_options = 4;
+% if nargin > num_params_other_than_groups_and_options
+%     for i = 1:2:nargin-num_params_other_than_groups_and_options
+%         switch varargin{i}
+%             case 'groups'
+%                 groups = varargin{i+1};
+%             case 'options'
+%                 options = varargin{i+1};
+%         end
+%     end
+% end
+
+if isempty(groups)
     groups = num2cell( (1:N)' );
 end
 
@@ -82,11 +96,11 @@ parfor i = 1:length(group_indices)
     else
         switch type_of_MIPsearch
             case 'Exhaustive'
-                [Z_MIP, phi_MIP] = MIP_Exhaustive( probs_Sub, options);
+                [Z_MIP, phi_MIP] = MIP_Exhaustive( type_of_dist, type_of_phi, probs_Sub );
             case 'Queyranne'
-                [Z_MIP, phi_MIP] = MIP_Queyranne( probs_Sub, options );
+                [Z_MIP, phi_MIP] = MIP_Queyranne( type_of_dist, type_of_phi, probs_Sub );
             case 'REMCMC'
-                [Z_MIP, phi_MIP] = MIP_REMCMC( probs_Sub, options );
+                [Z_MIP, phi_MIP] = MIP_REMCMC( type_of_dist, type_of_phi, probs_Sub, options );
         end
     end
     

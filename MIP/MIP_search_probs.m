@@ -1,4 +1,4 @@
-function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, probs)
+function [Z_MIP, phi_MIP, Zs, phis] = MIP_search_probs( probs, options)
 %-----------------------------------------------------------------------
 % FUNCTION: MIP_Exhaustive_probs.m
 % PURPOSE: Find the Minimum Informamtion Partition by the exhaustive search
@@ -29,26 +29,13 @@ function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive_probs( type_of_dist, type_o
 %
 % Jun Kitazono & Masafumi Oizumi, 2018
 
-N = probs.number_of_elements;
-all_comb = power_set(2:N);
-nComb = length(all_comb);
-phis = zeros(nComb,1);
-Zs = zeros(nComb,N);
 
-parfor i=1: nComb
-    subcluster = all_comb{i};
-    Z = ones(1,N);
-    Z(subcluster) = 2;
-    % compute phi
-    phis(i) = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
-    Zs(i,:) = Z;
-end
-
-[phi_MIP, MIP_ind] = min(phis);
-
-Z_MIP = ones(1,N);
-Z_MIP(all_comb{MIP_ind}) = 2;
-
-
-
+switch options.type_of_MIPsearch
+    case 'Exhaustive'
+        [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive( probs, options);
+    case 'Queyranne'
+        [Z_MIP, phi_MIP] = MIP_Queyranne( probs, options);
+    case 'REMCMC'
+         [Z_MIP, phi_MIP, ...
+    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = MIP_REMCMC( probs, options);
 end

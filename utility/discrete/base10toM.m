@@ -14,13 +14,13 @@ function sigma = base10toM(C,N,M)
 %
 % Masafumi Oizumi, 2018
 
-assert( isa( C, 'double' ) );
-assert( isa( N, 'double' ) );
-assert( isa( M, 'double' ) );
+% assert( isa( C, 'double' ) );
+% assert( isa( N, 'double' ) );
+% assert( isa( M, 'double' ) );
 
-assert( all( size(C) == [1 1] ) );
-assert( all( size(N) == [1 1]) ); 
-assert( all( size(M) == [1 1]) ); 
+% assert( all( size(C) == [1 1] ) );
+% assert( all( size(N) == [1 1]) ); 
+% assert( all( size(M) == [1 1]) ); 
 
 sigma = zeros(N,1);
 

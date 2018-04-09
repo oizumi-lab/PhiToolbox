@@ -27,9 +27,9 @@ function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs)
 
 switch type_of_dist
     case 'Gauss'
-        phi = phi_Gauss( type_of_phi, Z, probs.Cov_X, probs.Cov_XY, probs.Cov_Y);
+        phi = phi_Gauss( type_of_phi, Z, probs);
     case 'discrete'
-        phi = phi_dis(type_of_phi, Z, probs.number_of_states, probs.past, probs.joint, probs.present);
+        phi = phi_dis(type_of_phi, Z, probs);
 end
 
 end

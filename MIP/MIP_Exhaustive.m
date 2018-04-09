@@ -1,8 +1,8 @@
-function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive( type_of_dist, type_of_phi, X, tau, varargin )
+function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive( probs, options)
 %-----------------------------------------------------------------------
-% FUNCTION: MIP_Exhaustive.m
-% PURPOSE: Find the Minimum Information Partition (MIP) by the exhaustive
-% search from time series data
+% FUNCTION: MIP_Exhaustive_probs.m
+% PURPOSE: Find the Minimum Informamtion Partition by the exhaustive search
+% from probability distirubtions
 %
 % INPUTS: 
 %           type_of_dist:
@@ -27,23 +27,32 @@ function [Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive( type_of_dist, type_of_phi,
 %           phi_MIP: the amount of integrated information at the MIP
 %-----------------------------------------------------------------------
 %
-% Jun Kitazono, 2018
+% Jun Kitazono & Masafumi Oizumi, 2018
 
-numSt = [];
+N = probs.number_of_elements;
+type_of_dist = options.type_of_dist;
+type_of_phi = options.type_of_phi;
 
-num_params_other_than_varargin = 4;
-switch type_of_dist
-    case 'discrete'
-        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
-            error('Number of states must be identified.')
-        else
-            numSt = varargin{1};
-        end
+all_comb = power_set(2:N);
+nComb = length(all_comb);
+phis = zeros(nComb,1);
+Zs = zeros(nComb,N);
+
+
+parfor i=1: nComb
+    subcluster = all_comb{i};
+    Z = ones(1,N);
+    Z(subcluster) = 2;
+    % compute phi
+    phis(i) = phi_comp_probs(type_of_dist, type_of_phi, Z, probs);
+    Zs(i,:) = Z;
 end
 
-probs = data_to_probs(type_of_dist, X, tau, numSt);
+[phi_MIP, MIP_ind] = min(phis);
 
-[Z_MIP, phi_MIP, Zs, phis] = MIP_Exhaustive_probs( type_of_dist, type_of_phi, probs );
+Z_MIP = ones(1,N);
+Z_MIP(all_comb{MIP_ind}) = 2;
+
 
 
 end

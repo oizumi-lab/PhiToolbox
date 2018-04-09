@@ -1,4 +1,4 @@
-function [phi_star, I, H] = phi_star_dis(Z, N_st, p_past, p_joint, p_present)
+function [phi_star, I, H] = phi_star_dis(probs, q_probs)
 
 %-------------------------------------------------------------------------------------------------
 % PURPOSE: calculate integrated information "phi_star" in discretized
@@ -21,17 +21,15 @@ function [phi_star, I, H] = phi_star_dis(Z, N_st, p_past, p_joint, p_present)
 %
 % Masafumi Oizumi, 2018
 
-if nargin < 4
-    p_present = p_past;
-end
+p_past = probs.past;
+p_joint = probs.joint;
+p_present = probs.present;
+q_TPM = q_probs.TPM;
 
 TNS = length(p_past); % total number of all possible states
 
-% q_TPM: \prod_i q(M_i^t|M_i^(t-\tau))
-q_TPM = est_q(p_past, p_joint, p_present, N_st, Z);
-
 %% find beta by a quasi-Newton method
-beta =  2; % initial value
+beta =  1; % initial value
 
 % set options of minFunc
 Options.Method = 'lbfgs';
@@ -46,6 +44,10 @@ phi_star = I - I_s;
 fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
 
     function [minus_I_s, minus_I_s_d] = I_s_I_s_d(beta)
+        if beta < 10^-20
+            beta = 10^-20;
+        end
+        
         I_s1 = 0; % the first term in Eq. (20)
         I_s2 = 0; % the second term in Eq. (20)
         

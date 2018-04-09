@@ -52,10 +52,35 @@ function [ indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Comple
 % Jun Kitazono, 2018
 
 
-probs = data_to_probs(X, params, options);
+groups = [];
+options = [];
+numSt = [];
+
+num_params_other_than_varargin = 5;
+length_varargin = nargin - num_params_other_than_varargin;
+isdiscrete = 0;
+switch type_of_dist
+    case 'discrete'
+        isdiscrete = 1;
+        if nargin <= num_params_other_than_varargin || ~isa(varargin{1}, 'numeric')
+            error('Number of states must be given.')
+        else
+            numSt = varargin{1};
+        end
+end
+for i = (isdiscrete+1):2:length_varargin
+    switch varargin{i}
+        case 'groups'
+            groups = varargin{i + 1};
+        case 'options'
+            options = varargin{i + 1};
+    end
+end
+
+probs = data_to_probs(type_of_dist, type_of_phi, X, tau, numSt);
 
 [indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex, group_indices] = ...
-    Complex_Exhaustive_probs( probs, options );
+    Complex_Exhaustive_probs( type_of_dist, type_of_phi, type_of_MIPsearch, probs, 'groups', groups, 'options', options );
 
 
 end
