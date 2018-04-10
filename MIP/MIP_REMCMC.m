@@ -1,22 +1,12 @@
 function [Z_MIP, phi_MIP, ...
     phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ... 
     MIP_REMCMC( probs, options )
-% FUNCTION: MIP_REMCMC_probs.m
+% FUNCTION: MIP_REMCMC.m
 % PURPOSE: Find the minimum information partition (MIP) using Replica
 % Exchange Monte Carlo Method (REMCMC)
 %
 % INPUTS:
-%    type_of_dist:
-%       'Gauss': Gaussian distribution
-%       'discrete': discrete probability distribution
-%    type_of_phi: 
-%       'SI': phi_H, stochastic interaction
-%       'Geo': phi_G, information geometry version
-%       'star': phi_star, based on mismatched decoding
-%       'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%       'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%    X: time series data in the form (element x time)
-%    tau: time lag between past and present states
+%   see MIP_search_probs
 %
 % OUTPUT:
 %    Z_MIP: the MIP

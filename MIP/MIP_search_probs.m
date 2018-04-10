@@ -1,26 +1,39 @@
 function [Z_MIP, phi_MIP, Zs, phis] = MIP_search_probs( probs, options)
 %-----------------------------------------------------------------------
-% FUNCTION: MIP_Exhaustive_probs.m
+% FUNCTION: MIP_search_probs.m
 % PURPOSE: Find the Minimum Informamtion Partition by the exhaustive search
 % from probability distirubtions
 %
 % INPUTS: 
-%           type_of_dist:
+%           probs: probability distributions for computing phi
+%           
+%           In the Gaussian case
+%               probs.Cov_X: covariance of data X (past, t-tau)
+%               probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
+%               probs.Cov_Y: covariance of data Y (present, t)
+%           In the discrete case
+%               probs.past: probability distribution of past state (X^t-tau)
+%               probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%               probs.present: probability distribution of present state (X^t-tau)
+%
+%               probs.p: probability distribution of X (only used for MI)
+%
+%           options: options for computing phi and for MIP search
+%           
+%           options.type_of_dist:
 %              'Gauss': Gaussian distribution
-%              'dis': discrete probability distribution
-%           type_of_phi:
+%              'discrete': discrete probability distribution
+%           options.type_of_phi:
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version
 %              'star': phi_star, based on mismatched decoding
 %              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%           Z: partition
-%         - 1 by n matrix. Each element indicates the group number. 
-%         - Ex.1:  (1:n) (atomic partition)
-%         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
-%         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
-%           X: time series data in the form (unit x time)
-%           params: parameters for computing phi
+%           options.type_of_MIPsearch
+%              'Exhaustive': exhaustive search
+%              'Queyranne': Queyranne algorithm
+%              'REMCMC': Replica Exchange Monte Carlo Method 
+
 %
 % OUTPUT:
 %           Z_MIP: the MIP

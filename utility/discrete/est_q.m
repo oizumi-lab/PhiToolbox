@@ -11,11 +11,15 @@ function q_probs = est_q(Z, N_st, probs)
 %   Z: partition with which integrated information is computed
 %
 % OUTPUTS:
-%   q_TPM: mismatched conditional probability distribution of present state
-%   given past state (q(X^t|X^t-tau))
-%   q_past: mismatached probability distribution of past state (X^t-tau)
-%   q_joint: mismatched joint distribution of X^t (present) and X^(t-\tau) (past)
-%   q_present: mismatched probability distribution of present state (X^t)
+%   q_probs: mismatched probability distributions q
+%       q_probs.TPM: mismatched conditional probability distribution of present state
+%                              given past state (q(X^t|X^t-tau))
+%       q_probs.past: mismatached probability distribution of past state (X^t-tau)
+%       q_probs.joint: mismatched joint distribution of X^t (present) and X^(t-\tau) (past)
+%       q_probs.present: mismatched probability distribution of present state (X^t)
+%       
+%       q_probs.q: mismtached probability distribution of X only used for mutual
+%       information (MI)
 %-------------------------------------------------------------------------------------------------
 %
 % Masafumi Oizumi, 2018

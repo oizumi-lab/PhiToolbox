@@ -6,14 +6,23 @@ function probs = Cov_comp(X,tau,isjoint)
 % INPUTS:
 %           X: time series data in the form (units X time)
 %           tau: time lag between past and present states
-%           isjoint: whether or not joint covraiance matrices are computed
+%           params.number_of_states: number of states (only for the discrete case)
+%           
+%           options: options for computing phi
+%           
+%           options.type_of_dist:
+%              'Gauss': Gaussian distribution
+%              'discrete': discrete probability distribution
+%           options.type_of_phi:
+%              'SI': phi_H, stochastic interaction
+%              'Geo': phi_G, information geometry version
+%              'star': phi_star, based on mismatched decoding
+%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%           
 %
 % OUTPUT:
-%           probs: coraince matrices
-%               probs.Cov_X: covariance of data X (past, t-tau)
-%               probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
-%               probs.Cov_Y: covariance of data Y (present, t)
-%
+%           phi: integrated information
 %-----------------------------------------------------------------------
 
 

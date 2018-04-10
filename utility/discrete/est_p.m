@@ -8,11 +8,16 @@ function probs = est_p(X, N_s, tau, isjoint)
 %   X: discretized time series data in form units x time
 %   N_s: the number of states in each unit
 %   tau: time lag between past and present
+%   isjoint:  whether or not joint probability distributions are computed
 %
 % OUTPUTS:
-%   probs.past: probability distribution of past state (X^t-tau)
-%   probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%   probs.present: probability distribution of present state (X^t)
+%   probs: probability distributions computed from X
+%       probs.past: probability distribution of past state (X^t-tau)
+%       probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%       probs.present: probability distribution of present state (X^t)
+%      
+%       probs.p: probability distribution of X only used for mutual
+%       information (MI)
 %
 %-------------------------------------------------------------------------------------------------
 %

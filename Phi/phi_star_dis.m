@@ -5,18 +5,23 @@ function [phi_star, I, H] = phi_star_dis(probs, q_probs)
 % data. See Oizumi et al., 2016, PLoS Comp for the details of phi_star. The
 % equation number in the codes refers to Oizumi et al., 2016, PLoS Comp.
 % 
-%
 % INPUTS:
-%   Z: partition
-%   N_st: number of states in each unit
-%   p_past: probability distribution of past state (X^t-tau)
-%   joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%   p_present: probability distribution of present state (X^t-tau)
-%
-% OUTPUTS:
-%   phi_star: integrated information based on mismatched decoding (Oizumi et al., 2016, PLoS Comp)
-%   I: mutual information between X^t and X^(t-\tau)
-%   H: entropy of X^t
+%   probs: probability distributions computed from X
+%       probs.past: probability distribution of past state (X^t-tau)
+%       probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%       probs.present: probability distribution of present state (X^t)
+%      
+%       probs.p: probability distribution of X only used for mutual
+%       information (MI)
+%   q_probs: mismatched probability distributions q
+%       q_probs.TPM: mismatched conditional probability distribution of present state
+%                              given past state (q(X^t|X^t-tau))
+%       q_probs.past: mismatached probability distribution of past state (X^t-tau)
+%       q_probs.joint: mismatched joint distribution of X^t (present) and X^(t-\tau) (past)
+%       q_probs.present: mismatched probability distribution of present state (X^t)
+%       
+%       q_probs.q: mismtached probability distribution of X only used for mutual
+%       information (MI)
 %-------------------------------------------------------------------------------------------------
 %
 % Masafumi Oizumi, 2018

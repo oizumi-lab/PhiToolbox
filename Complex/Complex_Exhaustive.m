@@ -3,21 +3,33 @@ function [ indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Comple
 %Complex_Exhaustive: Find main complex using the exhaustive search
 %
 % INPUTS:
-%    type_of_dist:
-%       'Gauss': Gaussian distribution
-%       'discrete': discrete probability distribution
-%    type_of_phi: 
-%       'SI': phi_H, stochastic interaction
-%       'Geo': phi_G, information geometry version
-%       'star': phi_star, based on mismatched decoding
-%       'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%       'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%    type_of_MIPsearch: 
-%       'exhaustive': 
-%       'Queyranne': 
-%       'REMCMC': 
-%    X: time series data in the form (element x time)
-%    tau: time lag between past and present states
+%           X: time series data in the form (units X time)
+%           params: parameters used for estimating probability distributions
+%           (covariances in the case of Gaussian distribution) from time
+%           series data
+%
+%           params.tau: time lag between past and present states
+%           params.number_of_states: number of states (only for the discrete case)
+%           
+%           options: options for computing phi and for MIP search
+%           
+%           options.type_of_dist:
+%              'Gauss': Gaussian distribution
+%              'discrete': discrete probability distribution
+%           options.type_of_phi:
+%              'SI': phi_H, stochastic interaction
+%              'Geo': phi_G, information geometry version
+%              'star': phi_star, based on mismatched decoding
+%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%           options.type_of_MIPsearch
+%              'Exhaustive': exhaustive search
+%              'Queyranne': Queyranne algorithm
+%              'REMCMC': Replica Exchange Monte Carlo Method 
+%           options.groups: search complex based on predefined groups.
+%           A group is considered as an element, which is not subdivided
+%           further.
+%               
 %
 % OUTPUTS:
 %    indices_Complex: indices of elements in the complex

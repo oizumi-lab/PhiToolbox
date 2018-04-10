@@ -1,6 +1,4 @@
 function [ IndexOutput ] = QueyranneAlgorithm_phi_Gauss( type_of_phi, Cov_X, Cov_XY, Cov_Y )
-%UNTITLED この関数の概要をここに記述
-%   詳細説明をここに記述
 
 assert( isa( type_of_phi, 'char' ) )
 assert( isa( Cov_X, 'double' ) )
