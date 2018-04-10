@@ -4,7 +4,6 @@ function probs_Sub = ExtractSubsystem( type_of_dist, probs, indices )
 
 N_sub = length(indices);
 probs_Sub.number_of_elements = N_sub;
-N_st = probs.number_of_states;
 N = probs.number_of_elements;
 
 switch type_of_dist
@@ -15,7 +14,8 @@ switch type_of_dist
             probs_Sub.Cov_Y = probs.Cov_Y(indices, indices);
         end
     case 'discrete'
-        probs_Sub.number_of_states = probs.number_of_states;
+        N_st = probs.number_of_states;
+        probs_Sub.number_of_states = N_st;
         %% prepare tables
         sigma_table = zeros(N,N_st^N);
         for i=1: N_st^N
