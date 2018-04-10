@@ -72,7 +72,7 @@ options.type_of_dist = 'discrete';
 %    'Gauss': Gaussian distribution
 %    'discrete': discrete probability distribution
 
-options.type_of_phi = 'SI';
+options.type_of_phi = 'star';
 % type_of_phi:
 %    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
 %    'MI': Multi (Mutual) information, e.g., I(X_1, Y_1; X_2, Y_2)
