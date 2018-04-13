@@ -31,11 +31,12 @@ end
 % groups = my_groups( 'Chibi' );
 groups = anatomical_groups( 'Chibi' );
 
+target_ch = setdiff(1:64, groups{9});
+N = length(target_ch);
 X(groups{9},:)=[];
 groups(9)=[];
 
 % plot pre-defined groups
-N = 62;
 groups_for_gscatter = zeros(N,1);
 for i = 1:length(groups)
     groups_for_gscatter(groups{i}) = i;
@@ -47,7 +48,7 @@ imagesc(CortexMap.I), axis equal
 hold on
 %gscatter(CortexMap.X(1:N), CortexMap.Y(1:N), groups_for_gscatter, [], [], 20)
 clrs = hsv(length(groups));
-scatter(CortexMap.X(1:N), CortexMap.Y(1:N), 30, clrs(groups_for_gscatter,:), 'filled')
+scatter(CortexMap.X(target_ch), CortexMap.Y(target_ch), 30, clrs(groups_for_gscatter,:), 'filled')
 title('Pre-defined groups')
 drawnow
 
@@ -98,6 +99,15 @@ t = toc;
 figure(2)
 imagesc(CortexMap.I), axis equal
 hold on
-scatter(CortexMap.X, CortexMap.Y, 'r')
+scatter(CortexMap.X(target_ch), CortexMap.Y(target_ch), 'r')
 scatter(CortexMap.X(complexes{1}), CortexMap.Y(complexes{1}), 'r', 'filled') 
 title('Complex')
+
+% plot Average of the subsets with the top (numTops) phi
+numTops = 6; % The average is taken for Top (numTops) phi
+type_of_heatmap = 1;
+bipolar = 1;
+[WeightedRatio, AveragedPhi] = AverageTopSubsets( indices, phis, N, numTops ); %Calculate average
+figure(3)
+make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio, type_of_heatmap, bipolar )
+title(['Average of the top ', num2str(numTops)])
