@@ -23,8 +23,6 @@ switch condition
         X = X_Anesthetized(:, 1:subsampling_freq:window_length);
         % X_Anesthetized: 9 minutes signals of 64 channeles. 64 by 54000 (=9 minutes* 60 sec. * 1000Hz) matrix.
 end
-        
-
 
 %% 
 % pre-define groups
@@ -93,7 +91,6 @@ t = toc;
 
 [complexes, phis_complexes] = find_complexes_repetitive(indices, phis, 1);
 
-
 %% plot the comlex
 figure(2)
 imagesc(CortexMap.I), axis equal
@@ -101,3 +98,5 @@ hold on
 scatter(CortexMap.X, CortexMap.Y, 'r')
 scatter(CortexMap.X(complexes{1}), CortexMap.Y(complexes{1}), 'r', 'filled') 
 title('Complex')
+
+%%
