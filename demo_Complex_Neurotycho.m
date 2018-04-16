@@ -101,7 +101,6 @@ scatter(CortexMap.X(complexes{1}), CortexMap.Y(complexes{1}), 'r', 'filled')
 title('Complex')
 
 %%
-=======
 % plot Average of the subsets with the top (numTops) phi
 numTops = 6; % The average is taken for Top (numTops) phi
 type_of_heatmap = 1;
