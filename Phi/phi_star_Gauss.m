@@ -88,9 +88,9 @@ S_right = X_D\YX_D'/C_D_cond;
 I_s_d_Const_part = 1/2*N;
 
 %% find beta by a quasi-Newton method
-if nargin < 3
-    beta_init = 1;
-end
+% if nargin < 3
+%     beta_init = 1;
+% end
 beta = beta_init;
 
 % set options of minFunc
