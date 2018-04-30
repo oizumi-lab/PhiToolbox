@@ -80,9 +80,9 @@ options.type_of_phi = 'star';
 %    'star': phi_star, based on mismatched decoding
 %    'Geo': phi_G, information geometry version
 
-options.type_of_MIPsearch = 'Queyranne';
+options.type_of_MIPsearch = 'Exhaustive';
 % type_of_search: 
-%    'exhaustive': 
+%    'Exhaustive': 
 %    'Queyranne': 
 %    'REMCMC':
 
