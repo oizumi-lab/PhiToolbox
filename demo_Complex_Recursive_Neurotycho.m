@@ -89,3 +89,9 @@ bipolar = 1;
 figure(3)
 make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio, type_of_heatmap, bipolar )
 title(['Average of subsets with the top', num2str(numTops)])
+
+% Subsets and their phis
+figure(4)
+hoge = sortrows([Res.phi, Res.Z], -1);
+subplot(2,1,1), imagesc(hoge(:,2:end)'),title('Subsets')
+subplot(2,1,2), plot(hoge(:,1)), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
