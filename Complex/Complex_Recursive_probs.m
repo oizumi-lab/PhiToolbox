@@ -1,10 +1,11 @@
-function [complexes, phis, Res] = Complex_Recursive_probs( probs, options )
+function [complexes, phis, Res, main_complexes, main_phis] = Complex_Recursive_probs( probs, options )
 
 Res = Complex_RecursiveFunction( probs, options );
 % [phi_Largest, row_Largest_phi] = max(Res.phi);
 % indices_Largest_phi = find(Res.Z(row_Largest_phi,:));
 
 [complexes, phis] = find_Complexes(Res);
+[main_complexes, main_phis] = find_main_Complexes(complexes, phis);
 
 end
 
@@ -110,4 +111,3 @@ phis = Res.phi(isComplex);
 
 
 end
-

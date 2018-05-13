@@ -8,6 +8,7 @@ addpath(genpath('../PhiToolbox'))
 
 condition = 'awake'; 
 % condition = 'anes';
+fprintf('condition=%s\n', condition);
 
 % extract 1-minute signal
 window_length = 60*1000; % 1 minute
@@ -70,7 +71,7 @@ imagesc(CortexMap.I*(1/3)+2*256/3), axis equal
 hold on
 scatter(CortexMap.X(target_ch), CortexMap.Y(target_ch), 'r')
 scatter(CortexMap.X(complex_phi_largest), CortexMap.Y(complex_phi_largest), 'r', 'filled') 
-title('Complex with the largest phi')
+title('Complex with max \phi')
 
 % plot the weighted average of complexes
 numComplexes = length(phis_complex)-1; % Discard the trivial complex, i.e., the entire system.
@@ -79,7 +80,7 @@ bipolar = 1;
 [WeightedRatio_Complexes, AveragedPhi_Complexes] = AverageTopSubsets( complexes(1:end-1), phis_complex(1:end-1), N, numComplexes ); %Calculate average
 figure(2)
 make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio_Complexes, type_of_heatmap, bipolar )
-title(['Average of complexes. The number of complexes is ', num2str(numComplexes)])
+title(['Average of all ', num2str(numComplexes), ' complexes'])
 
 % plot the weighted average of subsets
 numTops = 10;
@@ -88,10 +89,44 @@ bipolar = 1;
 [WeightedRatio, AveragedPhi] = AverageTopSubsets( bipartitions2indices(Res.Z), Res.phi, N, numTops ); %Calculate average
 figure(3)
 make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio, type_of_heatmap, bipolar )
-title(['Average of subsets with the top', num2str(numTops)])
+title(['Average of top' ,num2str(numTops), ' subsets'])
 
 % Subsets and their phis
 figure(4)
 hoge = sortrows([Res.phi, Res.Z], -1);
 subplot(2,1,1), imagesc(hoge(:,2:end)'),title('Subsets')
 subplot(2,1,2), plot(hoge(:,1)), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
+
+
+
+%% all
+% figure(1)
+% subplot(1,3,1),imagesc(CortexMap.I*(1/3)+2*256/3), axis equal
+% hold on
+% subplot(1,3,1),scatter(CortexMap.X(target_ch), CortexMap.Y(target_ch), 'r')
+% subplot(1,3,1),scatter(CortexMap.X(complex_phi_largest), CortexMap.Y(complex_phi_largest), 'r', 'filled') 
+% title('Complex with max \phi')
+% 
+% % plot the weighted average of complexes
+% numComplexes = length(phis_complex)-1; % Discard the trivial complex, i.e., the entire system.
+% type_of_heatmap = 1;
+% bipolar = 1;
+% [WeightedRatio_Complexes, AveragedPhi_Complexes] = AverageTopSubsets( complexes(1:end-1), phis_complex(1:end-1), N, numComplexes ); %Calculate average
+% subplot(1,3,2),
+% make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio_Complexes, type_of_heatmap, bipolar )
+% title(['Average of all ', num2str(numComplexes), ' complexes'])
+% 
+% % plot the weighted average of subsets
+% numTops = 10;
+% type_of_heatmap = 1;
+% bipolar = 1;
+% [WeightedRatio, AveragedPhi] = AverageTopSubsets( bipartitions2indices(Res.Z), Res.phi, N, numTops ); %Calculate average
+% subplot(1,3,3),
+% make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio, type_of_heatmap, bipolar )
+% title(['Average of top' ,num2str(numTops), ' subsets'])
+% 
+% % Subsets and their phis
+% figure(2)
+% hoge = sortrows([Res.phi, Res.Z], -1);
+% subplot(2,1,1), imagesc(hoge(:,2:end)'),title('Subsets')
+% subplot(2,1,2), plot(hoge(:,1)), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')

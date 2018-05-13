@@ -65,7 +65,7 @@ probs = data_to_probs( X, params, options );
 
 
 % Res = Complex_Search_Recursive( probs, options );
-[Complexes, phis, Res] = Complex_Recursive_probs( probs, options );
+[Complexes, phis, Res, main_Complexes, main_phis] = Complex_Recursive_probs( probs, options );
 
 figure
 hoge = sortrows([Res.phi, Res.Z], -1);
