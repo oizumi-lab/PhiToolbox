@@ -45,21 +45,44 @@
 %         Complex_Recursive_probs( probss{i}, options );
 % end
 
+load('Data_Grant_Figures_20180516.mat')
 
-inds = [2 20];
-for i = 1:length(inds)
-    Colors = hsv(length(main_Complexes{inds(i)}));
-    NodeColors = 0.9*ones(nElems,3);
-    for j = 1:length(main_Complexes{inds(i)})
-        for k = 1:length(main_Complexes{inds(i)}{j})
-            NodeColors(main_Complexes{inds(i)}{j}(k),:) = Colors(j,:);
-        end
+% inds = [2 20];
+% for i = 1:length(inds)
+%     Colors = hsv(length(main_Complexes{inds(i)}));
+%     NodeColors = 0.9*ones(nElems,3);
+%     for j = 1:length(main_Complexes{inds(i)})
+%         for k = 1:length(main_Complexes{inds(i)}{j})
+%             NodeColors(main_Complexes{inds(i)}{j}(k),:) = Colors(j,:);
+%         end
+%     end
+%     subplot(2,2,i), imagesc(As{inds(i)});
+%     subplot(2,2,2+i), plot(Gs{inds(i)}, 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+%     xticks([])
+%     yticks([])
+% end
+
+ind = 2;
+Colors = hsv(length(main_Complexes{ind}));
+NodeColors = 0.9*ones(nElems,3);
+for j = 1:length(main_Complexes{ind})
+    for k = 1:length(main_Complexes{ind}{j})
+        NodeColors(main_Complexes{ind}{j}(k),:) = Colors(j,:);
     end
-    subplot(2,2,i), imagesc(As{inds(i)});
-    subplot(2,2,2+i), plot(Gs{inds(i)}, 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
-    xticks([])
-    yticks([])
 end
+
+randperm_nElems = randperm(nElems);
+subplot(2,2,1), imagesc(As{ind}(randperm_nElems, randperm_nElems));
+subplot(2,2,3), plot(Gs{ind}, 'XData', randn(nElems,1), 'YData', randn(nElems,1), 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+xticks([])
+yticks([])
+
+subplot(2,2,2), imagesc(As{ind});
+subplot(2,2,4), plot(Gs{ind}, 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+xticks([])
+yticks([])
+
+
 
 
 
