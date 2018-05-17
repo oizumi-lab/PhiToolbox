@@ -1,4 +1,4 @@
-% addpath(genpath('../PhiToolbox'))
+addpath(genpath('../../PhiToolbox'))
 % 
 % nElems = 50;
 % nElems_Sub = 10;
@@ -62,6 +62,30 @@ load('Data_Grant_Figures_20180516.mat')
 %     yticks([])
 % end
 
+PointCoordinates % /PhiToolbox/utility/demo
+[X, map] = imread('MashioBrain.png');
+
+% ind = 2;
+% Colors = hsv(length(main_Complexes{ind}));
+% NodeColors = 0.9*ones(nElems,3);
+% for j = 1:length(main_Complexes{ind})
+%     for k = 1:length(main_Complexes{ind}{j})
+%         NodeColors(main_Complexes{ind}{j}(k),:) = Colors(j,:);
+%     end
+% end
+% 
+% randperm_nElems = randperm(nElems);
+% subplot(2,2,1), imagesc(As{ind}(randperm_nElems, randperm_nElems));
+% subplot(2,2,3), plot(Gs{ind}, 'XData', randn(nElems,1), 'YData', randn(nElems,1), 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+% xticks([])
+% yticks([])
+% 
+% subplot(2,2,2), imagesc(As{ind});
+% subplot(2,2,4), plot(Gs{ind}, 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+% xticks([])
+% yticks([])
+
+
 ind = 2;
 Colors = hsv(length(main_Complexes{ind}));
 NodeColors = 0.9*ones(nElems,3);
@@ -70,19 +94,26 @@ for j = 1:length(main_Complexes{ind})
         NodeColors(main_Complexes{ind}{j}(k),:) = Colors(j,:);
     end
 end
-
 randperm_nElems = randperm(nElems);
-subplot(2,2,1), imagesc(As{ind}(randperm_nElems, randperm_nElems));
-subplot(2,2,3), plot(Gs{ind}, 'XData', randn(nElems,1), 'YData', randn(nElems,1), 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+figure(1), imagesc(As{ind}), axis equal tight
+figure(2), image(X), axis equal, hold on
+plot(Gs{ind}, 'XData', XData, 'YData', YData, 'NodeColor', NodeColors, 'MarkerSize', 15, 'NodeLabel', {});
 xticks([])
 yticks([])
 
-subplot(2,2,2), imagesc(As{ind});
-subplot(2,2,4), plot(Gs{ind}, 'NodeColor', NodeColors, 'MarkerSize', 10, 'NodeLabel', {});
+ind = 11;
+Colors = hsv(length(main_Complexes{ind}));
+NodeColors = 0.9*ones(nElems,3);
+for j = 1:length(main_Complexes{ind})
+    for k = 1:length(main_Complexes{ind}{j})
+        NodeColors(main_Complexes{ind}{j}(k),:) = Colors(j,:);
+    end
+end
+figure(3), imagesc(As{ind}), axis equal tight
+figure(4), image(X), axis equal, hold on
+plot(Gs{ind}, 'XData', XData, 'YData', YData, 'NodeColor', NodeColors, 'MarkerSize', 15, 'NodeLabel', {});
 xticks([])
 yticks([])
-
-
 
 
 
