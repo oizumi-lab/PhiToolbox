@@ -78,7 +78,7 @@ t = toc;
 % [ indices_Complex, phi_Complex, indices, phis, Zs ] = ...
 %    Complex_Exhaustive( type_of_dist, type_of_phi, type_of_MIPsearch, X, tau);
 
-[complexes, phis_complexes] = find_complexes_repetitive(indices, phis, 1);
+[complexes, phis_complexes, ] = find_complexes_repetitive(indices, phis, 1);
 
 
 %% plot the comlex

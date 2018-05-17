@@ -57,7 +57,7 @@ params.tau = 1; % time lag
 
 probs = data_to_probs( X, params, options );
 
-[complexes, phis_complex, Res] = Complex_Recursive_probs( probs, options );
+[complexes, phis_complex, Res, main_complexes, main_phis] = Complex_Recursive_probs( probs, options );
 
 [phi_largest, row_phi_largest] = max(phis_complex);
 complex_phi_largest = complexes{row_phi_largest};

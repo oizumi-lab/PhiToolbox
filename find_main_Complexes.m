@@ -14,7 +14,6 @@ for i=1: nSubsets
                 disp(cand)
                 disp(tmp)
                 fprintf('i=%d cand_phi=%f tmp_phi=%f\n',i,phi,phis(j));
-                pause;
                 break;
             end
         end
