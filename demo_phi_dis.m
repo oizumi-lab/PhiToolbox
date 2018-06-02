@@ -45,7 +45,7 @@ SI = phi_comp(X, Z, params, options);
 %%
 fprintf('MI=%f phi*=%f SI=%f\n',MI,phi_star,SI);
 
-%% compute phi from pre-computed covariance matrices
+%% compute phi from pre-computed probability distributions
 
 % mutual information
 isjoint = 0;

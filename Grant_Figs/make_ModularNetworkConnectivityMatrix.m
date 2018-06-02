@@ -4,7 +4,10 @@ nElems = length(Z);
 nModules = length(unique(Z));
 
 A_base = zeros(nElems);
+
+ration_intra = 0.5
 for i = 1:nModules
+    rand(nnz(Z==i),nnz(Z==i))
     A_base(Z==i, Z==i) = w_intra;
 end
 [row, col] = find(A_base==0);
