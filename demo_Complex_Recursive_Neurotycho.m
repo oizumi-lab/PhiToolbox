@@ -66,11 +66,12 @@ complex_phi_largest = complexes{row_phi_largest};
 CortexMap = load('ChibiMap_bipolar.mat');
 
 % plot the comlex with largest phi
-figure(1)
-imagesc(CortexMap.I*(1/3)+2*256/3), axis equal
-hold on
-scatter(CortexMap.X(target_ch), CortexMap.Y(target_ch), 'r')
-scatter(CortexMap.X(complex_phi_largest), CortexMap.Y(complex_phi_largest), 'r', 'filled') 
+type_of_heatmap = 1;
+bipolar = 1;
+Weight = zeros(1, length(target_ch));
+Weight(complex_phi_largest) = 1;
+h_max = figure;
+make_ECoG_HeatMap( 'Chibi', target_ch, Weight, type_of_heatmap, bipolar )
 title('Complex with max \phi')
 
 % plot the weighted average of complexes
@@ -78,7 +79,7 @@ numComplexes = length(phis_complex)-1; % Discard the trivial complex, i.e., the 
 type_of_heatmap = 1;
 bipolar = 1;
 [WeightedRatio_Complexes, AveragedPhi_Complexes] = AverageTopSubsets( complexes(1:end-1), phis_complex(1:end-1), N, numComplexes ); %Calculate average
-figure(2)
+h_Ave_all = figure;
 make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio_Complexes, type_of_heatmap, bipolar )
 title(['Average of all ', num2str(numComplexes), ' complexes'])
 
@@ -87,7 +88,7 @@ numTops = 10;
 type_of_heatmap = 1;
 bipolar = 1;
 [WeightedRatio, AveragedPhi] = AverageTopSubsets( bipartitions2indices(Res.Z), Res.phi, N, numTops ); %Calculate average
-figure(3)
+h_Ave_Tops = figure;
 make_ECoG_HeatMap( 'Chibi', target_ch, WeightedRatio, type_of_heatmap, bipolar )
 title(['Average of top' ,num2str(numTops), ' subsets'])
 
