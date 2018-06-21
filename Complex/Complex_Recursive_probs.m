@@ -24,7 +24,6 @@ function Res = Complex_RecursiveFunction( probs, options )
 %
 
 N = probs.number_of_elements;
-disp(num2str(N))
 
 type_of_MIPsearch = options.type_of_MIPsearch;
 type_of_dist = options.type_of_dist;
@@ -74,7 +73,7 @@ Res.parent = zeros(nRows_L+nRows_R+1, 1);
 Res.parent(1:nRows_R, 1) = Res_R.parent;
 Res.parent((nRows_R+1):(nRows_R+nRows_L),1) = nRows_R + Res_L.parent;
 
-if nRows_R > 0;
+if nRows_R > 0
     Res.parent(nRows_R, 1) = nRows_L+nRows_R+1;
 end
 if nRows_R+nRows_L>0
@@ -83,7 +82,7 @@ end
 
 end
 
-function [complexes, phis] = find_Complexes(Res)
+function [complexes, phis, isComplex] = find_Complexes(Res)
 
 nSubsets = length(Res.phi);
 phi_temp_max = zeros(nSubsets, 1);

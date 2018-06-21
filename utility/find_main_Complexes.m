@@ -11,9 +11,9 @@ for i=1: nSubsets
         if isequal(tmp, intersect(cand,tmp))
             if phi < phis(j)
                 isMainComplex(i) = false;
-                disp(cand)
-                disp(tmp)
-                fprintf('i=%d cand_phi=%f tmp_phi=%f\n',i,phi,phis(j));
+%                 disp(cand)
+%                 disp(tmp)
+%                 fprintf('i=%d cand_phi=%f tmp_phi=%f\n',i,phi,phis(j));
                 break;
             end
         end

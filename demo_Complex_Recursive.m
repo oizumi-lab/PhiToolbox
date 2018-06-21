@@ -67,9 +67,29 @@ probs = data_to_probs( X, params, options );
 % Res = Complex_Search_Recursive( probs, options );
 [Complexes, phis, Res, main_Complexes, main_phis] = Complex_Recursive_probs( probs, options );
 
-figure
-hoge = sortrows([Res.phi, Res.Z], -1);
-subplot(2,1,1), imagesc(hoge(:,2:end)'),title('Subsets')
-subplot(2,1,2), plot(hoge(:,1)), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
+
+[phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
+h1 = figure;
+subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
+subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
+
+h2 = figure;
+VisualizeComplexes(Res, 1);
+ylabel('\Phi')
+xlabel('Indices')
+
+[main_phis_sorted, idx_main_phis_sorted] = sort(main_phis, 'descend');
+main_Complexes_str = cell(size(main_Complexes));
+for i = 1:length(main_Complexes)
+    main_Complexes_str{i} =  num2str(main_Complexes{idx_main_phis_sorted(i)});
+end
+h3 = figure;
+bar(main_phis_sorted)
+set(gca, 'xticklabel', main_Complexes_str)
+title('Main Complexes')
+ylabel('\Phi')
+xlabel('Indices of the main complexes')
+
+
 
 
