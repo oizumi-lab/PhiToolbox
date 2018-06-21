@@ -16,6 +16,9 @@ function probs = Cov_comp(X,tau,isjoint)
 %
 %-----------------------------------------------------------------------
 
+if nargin < 3
+    isjoint = 1;
+end
 
 T = size(X,2);
 

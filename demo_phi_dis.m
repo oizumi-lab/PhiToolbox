@@ -48,14 +48,20 @@ fprintf('MI=%f phi*=%f SI=%f\n',MI,phi_star,SI);
 %% compute phi from pre-computed probability distributions
 
 % mutual information
-isjoint = 0;
+isjoint = 0; %  whether or not joint probability distributions are computed
 probs = est_p(X,N_s,tau,isjoint);
+% probs.p: probability distribution of X 
+
 q_probs = est_q(Z,N_s,probs);
 MI = MI1_dis(probs,q_probs);
 
 % phi*
-isjoint = 1;
+isjoint = 1; % whether or not joint probability distributions are computed
 probs = est_p(X,N_s,tau,isjoint);
+%  probs.past: probability distribution of past state (X^t-tau)
+%  probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%  probs.present: probability distribution of present state (X^t)
+
 q_probs = est_q(Z,N_s,probs);
 phi_star = phi_star_dis(probs,q_probs);
 
