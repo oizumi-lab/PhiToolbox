@@ -73,19 +73,19 @@ h1 = figure;
 subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
 subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
 
-h2 = figure;
-VisualizeComplexes(Res, 1);
-ylabel('\Phi')
-xlabel('Indices')
+% h2 = figure;
+% VisualizeComplexes(Res, 1);
+% ylabel('\Phi')
+% xlabel('Indices')
 
-[main_phis_sorted, idx_main_phis_sorted] = sort(phis_main_complexes, 'descend');
-main_Complexes_str = cell(size(main_complexes));
+%[main_phis_sorted, idx_main_phis_sorted] = sort(phis_main_complexes, 'descend');
+main_complexes_str = cell(size(main_complexes));
 for i = 1:length(main_complexes)
-    main_Complexes_str{i} =  num2str(main_complexes{idx_main_phis_sorted(i)});
+    main_complexes_str{i} =  num2str(main_complexes{i});
 end
 h3 = figure;
-bar(main_phis_sorted)
-set(gca, 'xticklabel', main_Complexes_str)
+bar(phis_main_complexes)
+set(gca, 'xticklabel', main_complexes_str)
 title('Main Complexes')
 ylabel('\Phi')
 xlabel('Indices of the main complexes')
@@ -93,3 +93,9 @@ xlabel('Indices of the main complexes')
 
 [complexes_E, phis_complexes_E, main_complexes_E, phis_main_complexes_E, Res_E] = ...
     Complex_Exhaustive_probs( probs, options );
+
+
+
+
+
+

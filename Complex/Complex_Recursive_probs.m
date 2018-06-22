@@ -84,7 +84,7 @@ end
 
 end
 
-function [complexes, phis, isComplex] = find_Complexes_fromRes(Res)
+function [complexes, phis] = find_Complexes_fromRes(Res)
 
 nSubsets = length(Res.phi);
 phi_temp_max = zeros(nSubsets, 1);
@@ -110,5 +110,8 @@ end
 
 phis = Res.phi(isComplex);
 
+[phis_sorted, idx_phis_sorted] = sort(phis, 'descend');
+phis = phis_sorted;
+complexes = complexes(idx_phis_sorted);
 
 end
