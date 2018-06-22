@@ -1,4 +1,4 @@
-function [ indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex, group_indices ] = ...
+function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
    Complex_Exhaustive( X, params, options)
 %Complex_Exhaustive: Find main complex using the exhaustive search
 %
@@ -66,7 +66,7 @@ function [ indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Comple
 
 probs = data_to_probs(X, params, options);
 
-[indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex, group_indices] = ...
+[complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
     Complex_Exhaustive_probs( probs, options );
 
 

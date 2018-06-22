@@ -1,4 +1,4 @@
-function [indices_Complex, phi_Complex, indices, phis, Zs, group_indices_Complex, group_indices] = ...
+function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
     Complex_Exhaustive_probs( probs, options )
 %Complex_Exhaustive_probs: Find main complex using the exhaustive search
 %
@@ -70,30 +70,30 @@ else
 end
 
 nClusters = length(groups);
-group_indices = cell(2^nClusters-1, 1);
-indices = cell(2^nClusters-1, 1);
+group_indices_all = cell(2^nClusters-1, 1);
+subsets_all = cell(2^nClusters-1, 1);
 
-phis = zeros(2^nClusters-1, 1);
-Zs = zeros(2^nClusters-1, N);
+phis_all = zeros(2^nClusters-1, 1);
+MIPs_all = zeros(2^nClusters-1, N);
 
 idx = 0;
 for i = 1:nClusters
     group_indices_temp = nchoosek(1:nClusters, i);
     for j = 1:size(group_indices_temp, 1)
         idx = idx + 1;
-        group_indices{idx} = group_indices_temp(j,:);
-        indices{idx} = [];
+        group_indices_all{idx} = group_indices_temp(j,:);
+        subsets_all{idx} = [];
 %         labels{idx} = [];
         for k = 1:length(group_indices_temp(j,:))
-            indices{idx} = [indices{idx}, groups{group_indices_temp(j,k)}];
+            subsets_all{idx} = [subsets_all{idx}, groups{group_indices_temp(j,k)}];
 %             labels{idx} = [labels{idx}, ', ', label_groups{k}];
         end
     end
 end
 
-parfor i = 1:length(group_indices)
-    indices_temp = indices{i};
-   disp(indices_temp);
+parfor i = 1:length(group_indices_all)
+    indices_temp = subsets_all{i};
+   % disp(indices_temp);
     % disp(['i/length_ind_groups: ', num2str(i), '/', num2str(length(ind_groups))])
     probs_Sub = ExtractSubsystem( type_of_dist, probs, indices_temp );
     if length(indices_temp) == 1
@@ -110,16 +110,20 @@ parfor i = 1:length(group_indices)
         end
     end
     
-    phis(i, 1) = phi_MIP;
+    phis_all(i, 1) = phi_MIP;
     Z_temp = zeros(1, N);
     Z_temp(1,indices_temp) = Z_MIP;
-    Zs(i, :) = Z_temp;
+    MIPs_all(i, :) = Z_temp;
 end
 
-[phi_Complex, i_Complex] = max(phis);
+[complexes, phis_complexes] = find_Complexes( subsets_all, phis_all );
+[main_complexes, phis_main_complexes] = find_main_Complexes( complexes, phis_complexes );
 
-indices_Complex = indices{i_Complex};
-group_indices_Complex = group_indices{i_Complex};
+Res.subsets_all = subsets_all;
+Res.phis_all = phis_all;
+Res.MIPs_all = MIPs_all;
+Res.group_indices_all = group_indices_all;
+
 
 end
 
