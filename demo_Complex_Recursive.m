@@ -35,7 +35,6 @@ for t=2: T
     X(:,t) = A*X(:,t-1) + E;
 end
 
-
 %% find the complex
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -54,19 +53,19 @@ options.type_of_phi = 'MI1';
 
 options.type_of_MIPsearch = 'Queyranne';
 % type_of_MIPsearch: 
-%    'exhaustive': 
+%    'Exhaustive': 
 %    'Queyranne': 
 %    'REMCMC':
 
+options.type_of_complexsearch = 'Exhaustive';
+% type_of_complexsearch:
+%    'Exhaustive': 
+%    'Recursive': 
+     
 params.tau = 1; % time lag
 
-% Convert data to covariance matrices
-probs = data_to_probs( X, params, options );
-
-
-% Res = Complex_Search_Recursive( probs, options );
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
-    Complex_Recursive_probs( probs, options );
+    Complex_search(X, options, params);
 
 [phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
 h1 = figure;
