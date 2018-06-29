@@ -1,8 +1,26 @@
-% Find Minimum Information Partition (MIP) in a multivariate autoregressive model, 
+%% Find Minimum Information Partition (MIP) in a multivariate autoregressive model, 
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
+%% options
+%           options: options for computing phi and MIP search
+%           
+%           options.type_of_dist:
+%              'Gauss': Gaussian distribution
+%              'discrete': discrete probability distribution
+%           options.type_of_phi:
+%              'SI': phi_H, stochastic interaction
+%              'Geo': phi_G, information geometry version
+%              'star': phi_star, based on mismatched decoding
+%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%           options.type_of_MIPsearch
+%              'Exhaustive': exhau stive search
+%              'Queyranne': Queyranne algorithm
+%              'REMCMC': Replica Exchange Monte Carlo Method 
+
 clear all;
+addpath(genpath('../../PhiToolbox'))
 
 %% generate time series data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,7 +54,7 @@ end
 params.tau = 1; % time delay
 
 %% options
-options.type_of_dist = 'Gauss'; % type of probability distribution
+options.type_of_dist = 'Gauss'; % type of probability distributions
 options.type_of_phi = 'Geo'; % type of phi
 options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
 

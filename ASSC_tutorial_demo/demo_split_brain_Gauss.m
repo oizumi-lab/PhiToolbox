@@ -1,43 +1,36 @@
-%% Find the complex in a multivariate autoregressive model, 
+
+% Find the complex in a multivariate autoregressive model, 
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
-%% options
-%           options: options for computing phi, MIP search, and complex
-%           search
-%           
-%           options.type_of_dist:
-%              'Gauss': Gaussian distribution
-%              'discrete': discrete probability distribution
-%           options.type_of_phi:
-%              'SI': phi_H, stochastic interaction
-%              'Geo': phi_G, information geometry version
-%              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%           options.type_of_MIPsearch
-%              'Exhaustive': exhau stive search
-%              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
-%           options.type_of_complexsearch
-%               'Exhaustive': exhaustive search
-%               'Recursive': recursive MIP search
-
 clear all;
 addpath(genpath('../../PhiToolbox'))
-
 
 %% generate data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 disp('Generating data...')
 
 %%% construct connectivity matrix %%%
-N = 7; % the number of elements
-A = eye(N)/N; % A: connectivity matrix
-A(3:N-2, 3:N-2) = 1/N;
-A(1:2, 1:2) = 1/N;
-A(6:7, 6:7) = 0.5/N;
-A = A + 0.01*randn(N)/sqrt(N);
+N = 10; % the number of elements
+
+Z = zeros(N,1); % 1: left, 2:right
+Z(1:N/2) = 1;
+Z(N/2+1:N) = 2;
+
+A_intra = 0.2;
+A_inter = 0.4;
+
+A = 0.1*eye(N); % A: connectivity matrix
+for i=1: N
+    for j=i+1: N
+        if Z(i) == Z(j)
+            A(i,j) = A_intra;
+        else
+            A(i,j) = A_inter;
+        end
+        A(j,i) = A(i,j);
+    end
+end
 
 figure(1)
 imagesc(A)
@@ -83,9 +76,10 @@ switch options.type_of_complexsearch
         [phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
         figure(3)
         subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
-        title('Candidates of complexes')
+        title('Complexes')
         subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
         title('\Phi_{MIP}')
+        
         
         figure(4)
         VisualizeComplexes(Res, 1);
