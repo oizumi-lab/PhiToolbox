@@ -1,7 +1,5 @@
-function phi = phi_Gauss( type_of_phi, Z, probs, phi_G_OptimMethod)
-%-----------------------------------------------------------------------
-% FUNCTION: phi_Gauss.m
-% PURPOSE:  
+function phi = phi_Gauss( type_of_phi, Z, probs, options)
+% Compute phi for Gaussian disbributions
 %
 % INPUTS:   
 %     type_of_phi:
@@ -16,12 +14,20 @@ function phi = phi_Gauss( type_of_phi, Z, probs, phi_G_OptimMethod)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
 %         - Not accept [1, 3], [1,2,4,2] (Group indices must be consecutive numbers from 1 to K) 
-%     Cov_X: covariance of data X (past, t-tau)
-%     Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
-%     Cov_Y: covariance of data Y (present, t)
-%     phi_G_OptimMethod: Optimization method of phi_G, {'AL', 'LI'}.
-%              
 %
+%     probs: probability distributions for computing phi
+%         probs.Cov_X: covariance of data X (past, t-tau)
+%         probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
+%         probs.Cov_Y: covariance of data Y (present, t)
+% 
+%     options
+%         options.normalization: 
+%             0: without normalization by Entropy (default)
+%             1: with normalization by Entropy
+%         options.phi_G_OptimMethod: 
+%             'AL': Augmented Lagrangian
+%             'LI': a combination of LBFGS method and Iterative method 
+%   
 % OUTPUT:
 %           phi: amount of integrated information 
 %-----------------------------------------------------------------------
@@ -76,31 +82,39 @@ end
 % end
 
 % check Geo_OptimMethod
-if nargin == 4
-    %     if ~strcmp( type_of_phi, 'Geo' )
-    %         error('The option phi_G_OptimMethod is available only for phi_G!')
-    %     end
-    assert( isa( phi_G_OptimMethod, 'char' ) )
-    if ~any(strcmp(phi_G_OptimMethod, {'AL', 'LI'}))
-        error('OptimMethod of phi_G must be AL or LI!')
-    end
+% if nargin == 4
+%     %     if ~strcmp( type_of_phi, 'Geo' )
+%     %         error('The option phi_G_OptimMethod is available only for phi_G!')
+%     %     end
+%     assert( isa( phi_G_OptimMethod, 'char' ) )
+%     if ~any(strcmp(phi_G_OptimMethod, {'AL', 'LI'}))
+%         error('OptimMethod of phi_G must be AL or LI!')
+%     end
+% end
+
+if isfield(options, 'normalization')
+    normalization = options.normalization;
+else
+    normalization = [];
+end
+if isfield(options, 'phi_G_OptimMethod')
+    phi_G_OptimMethod = options.phi_G_OptimMethod;
+else
+    phi_G_OptimMethod = [];
 end
 
 switch type_of_phi
     case 'MI1'
-        phi = MI1_Gauss(Cov_X, Z);
+        phi = MI1_Gauss(Cov_X, Z, normalization);
     case 'MI'
-        phi = MI_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
+        phi = MI_Gauss(Cov_X, Cov_XY, Cov_Y, Z, normalization);
     case 'SI'
-        phi = SI_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
+        phi = SI_Gauss(Cov_X, Cov_XY, Cov_Y, Z, normalization);
     case 'star'
-        phi = phi_star_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
+        beta_init = 1;
+        phi = phi_star_Gauss(Cov_X, Cov_XY, Cov_Y, Z, beta_init, normalization);
     case 'Geo'
-        if nargin < 6
-            phi = phi_G_Gauss(Cov_X, Cov_XY, Cov_Y, Z);
-        else
-            phi = phi_G_Gauss(Cov_X, Cov_XY, Cov_Y, Z, phi_G_OptimMethod);
-        end
+        phi = phi_G_Gauss(Cov_X, Cov_XY, Cov_Y, Z, phi_G_OptimMethod, normalization);
 end
 
 

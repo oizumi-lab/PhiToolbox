@@ -1,24 +1,44 @@
-% compute several measures of integrated information in a multivariate autoregressive model, 
+%% compute integrated information in a multivariate autoregressive model, 
 % X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
-clear all;
+%% options
+%           options: options for computing phi, MIP search, and complex
+%           search
+%           
+%           options.type_of_dist:
+%              'Gauss': Gaussian distribution
+%              'discrete': discrete probability distribution
+%           options.type_of_phi:
+%              'SI': phi_H, stochastic interaction
+%              'Geo': phi_G, information geometry version
+%              'star': phi_star, based on mismatched decoding
+%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%           options.normalization: 
+%              0: without normalization by Entropy
+%              1: with normalization by Entropy
 
+
+clear all;
 addpath(genpath('../PhiToolbox'))
 
-%% parameters for computing phi
-Z = [1 2]; % partition with which phi is computed
-tau = 1; % time delay
-
-%% important
-params.tau = tau;
-
 %% generate random gaussian time series X
-N = 2; % the number of elements
-A = [0.2 0.1; 0.5 0.2]; % connectivity matrix
+N = 4; % the number of elements
+
+A_diag = [0.2 0.5; 0.5 0.2];
+A_off = zeros(2,2);
+A = [A_diag A_off; A_off A_diag];
+
+figure(1)
+imagesc(A);
+title('Connectivity Matrix A');
+colorbar;
+
 Cov_E = eye(N,N); % covariance matrix of E
-T = 10^5;
-X = zeros(N,T);
+T = 10^5; % the total length of time series
+X = zeros(N,T); % time series data
+
 X(:,1) = randn(N,1);
 for t=2: T
     E = randn(N,1);
@@ -26,54 +46,20 @@ for t=2: T
 end
 
 
-%% compute phi from time series 
-options.type_of_dist = 'Gauss';
-% type_of_dist:
-%    'Gauss': Gaussian distribution
-%    'discrete': discrete probability distribution
+%% params
+params.tau= 1; % time delay
 
-% available options of type_of_phi for Gaussian distributions:
-%    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
-%    'SI': phi_H, stochastic interaction
-%    'star': phi_star, based on mismatched decoding
-%    'Geo': phi_G, information geometry version
+%% options
+options.type_of_dist = 'Gauss'; % type of probability distributions
+options.type_of_phi = 'star'; % type of phi
+options.normalization = 0; % normalization by Entropy
 
-% mutual information
-options.type_of_phi = 'MI1';
-MI = phi_comp(X, Z, params, options);
+Z = [1 1 2 2]; % partition with which phi is computed
+% Z = [1 2 1 2]; % partition with which phi is computed
 
-% stochastic interaction
-options.type_of_phi = 'SI';
-SI = phi_comp(X, Z, params, options);
+phi = phi_comp(X, Z, params, options);
 
-% phi*
-options.type_of_phi = 'star';
-phi_star = phi_comp(X, Z, params, options);
-
-% geometric phi
-options.type_of_phi = 'Geo';
-phi_G = phi_comp(X, Z, params, options);
-
-%%
-fprintf('MI=%f SI=%f phi*=%f phi_G=%f\n',MI,SI,phi_star,phi_G);
-
-%% compute phi from pre-computed covariance matrices
-% mutual information
-isjoint = 0;
-probs = Cov_comp(X,tau,isjoint);
-MI = MI1_Gauss(probs.Cov_X,Z);
-
-% stochastic interaction
-isjoint = 1;
-probs = Cov_comp(X,tau,isjoint);
-SI = SI_Gauss(probs.Cov_X,probs.Cov_XY,probs.Cov_Y,Z);
-
-% phi*
-phi_star = phi_star_Gauss(probs.Cov_X,probs.Cov_XY,probs.Cov_Y,Z);
-
-% geometric phi
-type_of_phi = 'Geo';
-phi_G = phi_G_Gauss(probs.Cov_X,probs.Cov_XY,probs.Cov_Y,Z);
-
-%%
-fprintf('MI=%f SI=%f phi*=%f phi_G=%f\n',MI,SI,phi_star,phi_G);
+%% show the resullts
+fprintf('partition\n')
+disp(Z);
+fprintf('phi=%f\n',phi);

@@ -1,29 +1,27 @@
-function MI1 = MI1_Gauss(Cov_X,Z)
-
-%-----------------------------------------------------------------------
-% FUNCTION: MI_Gauss.m
-% PURPOSE:  calculate Multi (Mutual) Information given covariance of data
+function MI1 = MI1_Gauss(Cov_X,Z,normalization)
+% Calculate Multi (Mutual) Information given covariance of data
 %
 % (Ay, 2001; Ay, 2015, Entropy; Barrett & Seth, 2011, PLoS Comp Biol)  
 %
 % INPUTS:   
-%           Cov_X: covariance of data X (past, t-tau)
-%           Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
-%           Cov_Y: covariance of data Y (present, t)
+%           Cov_X: covariance of data X
 %           Z: partition of each channel (default: atomic partition)
+%           normalization: 
+%              0: without normalization by Entropy (default)
+%              1: with normalization by Entropy
 %
 % OUTPUT:
-%           MI: multi interaction SI(Y|X) among subsystems
+%           MI1: multi information among subsystems. When the partition is a
+%           bi-partition, this becomes mutual information MI(X_1; X_2).
 %
 %  Jun Kitazono, 2017
-%-----------------------------------------------------------------------
 
 N = size(Cov_X,1); % number of channels
-% if nargin < 3
-%     Cov_Y = Cov_X;
-% end
-if nargin < 2
+if nargin < 2 || isempty(Z)
     Z = 1: 1: N;
+end
+if nargin < 3 || isempty(normalization)
+    normalization = 0;
 end
 
 H = H_gauss(Cov_X);
@@ -39,8 +37,14 @@ for i=1: N_c
     H_p(i) = H_gauss(Cov_X_p);
 end
 
-%% stochastic interaction
 MI1 = sum(H_p) - H;
+if normalization == 1
+    if N_c == 1
+        MI1 = MI1/H_p(1);
+    else
+        MI1 = MI1/( (N_c-1)*min(H_p) );
+    end
+end
 
 
 end

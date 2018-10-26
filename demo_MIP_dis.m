@@ -84,19 +84,19 @@ disp(['phi at the MIP: ', num2str(phi_MIP_Q_without)])
 disp(['the MIP: ', num2str(Z_MIP_Q_without)])
 disp(' ')
 
-%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
-options.type_of_MIPsearch = 'REMCMC';
-
-options.ShowFig = 0;
-options.nMCS = 100;
-disp('REMCMC...')
-tic;
-[Z_MIP_REMCMC_without, phi_MIP_REMCMC_without] = MIP_search(X, params, options);
-t_REMCMC_without = toc;
-disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_without)])
-disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_without)])
-disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_without)])
-disp(' ')
+% %% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
+% options.type_of_MIPsearch = 'REMCMC';
+% 
+% options.ShowFig = 0;
+% options.nMCS = 100;
+% disp('REMCMC...')
+% tic;
+% [Z_MIP_REMCMC_without, phi_MIP_REMCMC_without] = MIP_search(X, params, options);
+% t_REMCMC_without = toc;
+% disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_without)])
+% disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_without)])
+% disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_without)])
+% disp(' ')
 
 
 %%%%%%%%%% with pre-computed probability distributions %%%%%%%%%% 
@@ -126,18 +126,18 @@ disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q_with)])
 disp(['the estimated MIP: ', num2str(Z_MIP_Q_with)])
 disp(' ')
 
-%% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
-options.ShowFig = 0;
-options.nMCS = 100;
-disp('REMCMC...')
-tic;
-[Z_MIP_REMCMC_with, phi_MIP_REMCMC_with, ...
-    phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
-    MIP_REMCMC( probs, options );
-t_REMCMC_with = toc;
-disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_with)])
-disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_with)])
-disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_with)])
-disp(' ')
+% %% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
+% options.ShowFig = 0;
+% options.nMCS = 100;
+% disp('REMCMC...')
+% tic;
+% [Z_MIP_REMCMC_with, phi_MIP_REMCMC_with, ...
+%     phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
+%     MIP_REMCMC( probs, options );
+% t_REMCMC_with = toc;
+% disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_with)])
+% disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_with)])
+% disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_with)])
+% disp(' ')
 
 

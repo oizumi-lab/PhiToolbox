@@ -1,10 +1,37 @@
-
-% Find the complex in a multivariate autoregressive model, 
+%% Find the complex in a multivariate autoregressive model, 
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
-clear all;
+%% options
+%           options: options for computing phi, MIP search, and complex
+%           search
+%           
+%           options.type_of_dist:
+%              'Gauss': Gaussian distribution
+%              'discrete': discrete probability distribution
+%           options.type_of_phi:
+%              'SI': phi_H, stochastic interaction
+%              'Geo': phi_G, information geometry version
+%              'star': phi_star, based on mismatched decoding
+%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%           options.type_of_MIPsearch
+%              'Exhaustive': exhaustive search
+%              'Queyranne': Queyranne algorithm
+%              'REMCMC': Replica Exchange Monte Carlo Method 
+%           options.type_of_complexsearch
+%               'Exhaustive': exhaustive search
+%               'Recursive': recursive MIP search
+%           options.normalization
+%              (Available only when the dist. is 'Gauss' and the complex search is 'Exhaustive')
+%              Regarding normalization of phi by Entropy when searching
+%              the MIPs. 
+%                 0: without normalization (default)
+%                 1: with normalization
+%              Note that, after finding the MIPs, phi wo/ normalization at
+%              the MIPs is used to compare subsets and find the complexes in both options. 
 
+clear all;
 addpath(genpath('../PhiToolbox'))
 
 
@@ -18,8 +45,9 @@ A = eye(N)/N; % A: connectivity matrix
 A(3:N-2, 3:N-2) = 1/N;
 A(1:2, 1:2) = 1/N;
 A(6:7, 6:7) = 0.5/N;
+A = A + 0.01*randn(N)/sqrt(N);
 
-h_A = figure;
+figure(1)
 imagesc(A)
 title('Connectivity Matrix A')
 drawnow
@@ -33,49 +61,44 @@ for t=2: T
     X(:,t) = A*X(:,t-1) + E;
 end
 
-
-%% find the complex
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-options.type_of_dist = 'Gauss';
-% type_of_dist:
-%    'Gauss': Gaussian distribution
-%    'discrete': discrete probability distribution
-
-options.type_of_phi = 'star';
-% type_of_phi:
-%    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
-%    'MI': Multi (Mutual) information, e.g., I(X_1, Y_1; X_2, Y_2)
-%    'SI': phi_H, stochastic interaction
-%    'star': phi_star, based on mismatched decoding
-%    'Geo': phi_G, information geometry version
-
-options.type_of_MIPsearch = 'Queyranne';
-% type_of_MIPsearch: 
-%    'exhaustive': 
-%    'Queyranne': 
-%    'REMCMC':
-
+%% params
 params.tau = 1; % time lag
 
-% Convert data to covariance matrices
-% probs = data_to_probs(type_of_dist, X, tau);
+%% options
+options.type_of_dist = 'Gauss'; % type of probability distributions
+options.type_of_phi = 'star'; % type of phi
+options.type_of_MIPsearch = 'Exhaustive'; % type of MIP search
+options.type_of_complexsearch = 'Exhaustive'; % type of complex search
+options.normalization = 1; % normalization of phi by Entropy
 
-%%% with pre-computed covariances %%%
-% [indices_Complex, phi_Complex, indices, phis, Zs] = ...
-%     Complex_Exhaustive_probs( type_of_phi, type_of_MIPsearch, probs );
+%% Find complexes and main complexes
+[complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
+    Complex_search( X, params, options );
 
-% %%% without pre-computed covariances %%%
-[ indices_Complex, phi_Complex, indices, phis, Zs ] = ...
-   Complex_Exhaustive( X, params, options);
-%  indices_Complex: indices of elements in the complex
-%  phi_Complex: the amount of integrated information at the (estimated) MIP of the complex 
-%  indices: the indices of every subsystem
-%  phis: the amount of integrated information for every subsystem
-%  Zs: the (estimated) MIP of every subsystem
+%% show results
+main_complexes_str = cell(size(main_complexes));
+for i = 1:length(main_complexes)
+    main_complexes_str{i} =  num2str(main_complexes{i});
+end
+figure(2)
+bar(phis_main_complexes)
+set(gca, 'xticklabel', main_complexes_str)
+title('Main Complexes')
+ylabel('\Phi_{MIP}')
+xlabel('Indices of the main complexes')
 
-[complexes, phis_complexes] = find_complexes_repetitive(indices, phis, 1);
-
-numTops = 4;
-[WeightedRatio, AveragedPhi] = AverageTopSubsets( indices, phis, N, numTops );
-
+switch options.type_of_complexsearch
+    case 'Recursive'
+        [phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
+        figure(3)
+        subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
+        title('Candidates of complexes')
+        subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
+        title('\Phi_{MIP}')
+        
+        figure(4)
+        VisualizeComplexes(Res, 1);
+        ylabel('\Phi_{MIP}')
+        xlabel('Indices')
+        title('Candidates of complexes')
+end

@@ -1,8 +1,5 @@
-function [phi_star, I, beta_opt] = phi_star_Gauss(Cov_X,Cov_XY,Cov_Y,Z,beta_init)
-
-%-----------------------------------------------------------------------
-% FUNCTION: phi_star_Gauss.m
-% PURPOSE:  calculate integrated information "phi_star" based on mismatched decoding 
+function [phi_star, I, beta_opt] = phi_star_Gauss(Cov_X,Cov_XY,Cov_Y,Z,beta_init, normalization)
+% Calculate integrated information "phi_star" based on mismatched decoding 
 % See Oizumi et al., 2016, PLoS Comp for the details
 % http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004654
 % 
@@ -12,11 +9,14 @@ function [phi_star, I, beta_opt] = phi_star_Gauss(Cov_X,Cov_XY,Cov_Y,Z,beta_init
 %           Cov_Y: covariance of data Y (PRESENT, t)
 %           Z: partition of each channel (default: atomic partition)
 %           beta_init: initial value of beta (default: beta_int=1)
+%           normalization: 
+%              0: without normalization by Entropy (default)
+%              1: with normalization by Entropy
 %
 % OUTPUT:
 %           phi_star: integrated information based on mismatched decoding
 %           I: mutual information between X (past, t-tau) and Y (present, t)
-%-----------------------------------------------------------------------
+% 
 %
 %  Masafumi Oizumi, 2016
 %  Jun Kitazono, 2017
@@ -34,14 +34,17 @@ function [phi_star, I, beta_opt] = phi_star_Gauss(Cov_X,Cov_XY,Cov_Y,Z,beta_init
 % Last update: Feb 12, 2018
 
 N = size(Cov_X,1); % number of channels
-if nargin < 3
+if nargin < 3 || isempty(Cov_Y)
     Cov_Y = Cov_X;
 end
-if nargin < 4
+if nargin < 4 || isempty(Z)
     Z = 1: 1: N;
 end
-if nargin < 5
+if nargin < 5 || isempty(beta_init)
     beta_init = 1;
+end
+if nargin < 6 || isempty(normalization)
+    normalization = 0;
 end
 
 Cov_Y_X = Cov_cond(Cov_Y,Cov_XY',Cov_X); % conditional covariance matrix
@@ -104,6 +107,20 @@ I_s = -minus_I_s;
 
 %% 
 phi_star = I - I_s;
+
+if normalization == 1
+    H_p = zeros(N_c,1);
+    for i=1: N_c
+        M = M_cell{i};
+        Cov_X_p = Cov_X(M,M); 
+        H_p(i) = H_gauss(Cov_X_p);
+    end
+    if N_c == 1
+        phi_star = phi_star/H_p(1);
+    else
+        phi_star = phi_star/( (N_c-1)*min(H_p) );
+    end
+end
 
     function [minus_I_s, minus_I_s_d] = I_s_I_s_d(beta)
         C_D_beta_inv = beta*C_D_beta1_inv; % 2nd term of eq. (26)

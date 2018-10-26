@@ -1,7 +1,5 @@
-function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss_AL( Cov_X, Cov_E, A, Z )
-
-%------------------------------------------------------------------------------------------
-%PURPOSE: calculate integrated information "phi_G" based on information geometry 
+function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss_AL( Cov_X, Cov_E, A, Z, normalization )
+% Calculate integrated information "phi_G" based on information geometry 
 % with an augmented Lagrangian method 
 % 
 % See Oizumi et al., 2016, PNAS for the details of phi_G
@@ -19,12 +17,14 @@ function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss_AL( Cov_X, Cov_E, A, Z )
 %         - Ex.1:  (1:n) (atomic partition)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascendeing order)
+%     normalization: 
+%         0: without normalization by Entropy (default)
+%         1: with normalization by Entropy
 %     
 % OUTPUTS:
 %     phi_G: integrated information based on information geometry
 %     Cov_E_p: covariance of noise E in the disconnected model
 %     A_p: connectivity matrix in the disconnected model
-%------------------------------------------------------------------------------------------
 %
 % Masafumi Oizumi, 2016
 % Jun Kitazono, 2017
@@ -40,17 +40,24 @@ mu = 2;
 alpha = 0.9;
 gamma = 1.01;
 
+if nargin < 4
+    Z = 1: 1: N;
+end
+if nargin < 5
+    normalization = 0;
+end
+
 n = size(Cov_X,1);
 
-n_c = max(Z); % number of groups
-M_cell = cell(n_c,1);
-for i=1: n_c
+N_c = max(Z); % number of groups
+M_cell = cell(N_c,1);
+for i=1: N_c
     M_cell{i} = find(Z==i);
 end
 
 % set initial values of the connectivity matrix in disconnected model
 A_p = zeros(n,n);
-for i=1: n_c
+for i=1: N_c
      M = M_cell{i};
      A_p(M,M) = A(M,M);
 end
@@ -72,7 +79,7 @@ for iter = 1:maxiter
         (1 + bsxfun(@ldivide, diag(D_Cov_E_p), diag(D_Cov_X)')/mu) ) * Q';
 
     B = A_p/2 ;
-    for i=1: n_c
+    for i=1: N_c
         M = M_cell{i};
         B(M,M) = B(M,M)*2;
     end
@@ -96,6 +103,20 @@ end
 
 phi_G = (logdet(Cov_E_p)-logdet(Cov_E))/2;
 % disp(['iter: ', num2str(iter), ', phi: ', num2str(phi_G)])
+
+if normalization == 1
+    H_p = zeros(N_c,1);
+    for i=1: N_c
+        M = M_cell{i};
+        Cov_X_p = Cov_X(M,M); 
+        H_p(i) = H_gauss(Cov_X_p);
+    end
+    if N_c == 1
+        phi_G = phi_G/H_p(1);
+    else
+        phi_G = phi_G/( (N_c-1)*min(H_p) );
+    end
+end
 
 end
 

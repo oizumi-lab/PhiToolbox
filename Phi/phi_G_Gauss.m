@@ -1,8 +1,6 @@
-function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss( Cov_X, Cov_XY, Cov_Y, Z, method )
-
-%------------------------------------------------------------------------------------------
-%PURPOSE: calculate integrated information "phi_G" based on information geometry 
-% See Oizumi et al., 2016, PNAS for the details
+function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss( Cov_X, Cov_XY, Cov_Y, Z, method, normalization )
+% Calculate integrated information "phi_G" based on information geometry. 
+% See Oizumi et al., 2016, PNAS for the details.
 % http://www.pnas.org/content/113/51/14817.full
 % 
 % INPUTS:
@@ -17,15 +15,19 @@ function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss( Cov_X, Cov_XY, Cov_Y, Z, method 
 %     method: optimization method, 'AL'|'LI'
 %         - 'AL': Augmented Lagrangian
 %         - 'LI': a combination of LBFGS method and Iterative method
-%     Note: AL is faster than LI when the number of gropus K is small 
+%     Note: AL tends to be faster than LI when the number of gropus K is small 
 %     but is slower when K is large. Thus, by default, this function
-%     chooses AL when K<=3 and LI when K>3. 
+%     chooses AL when K<=3 and LI when K>3.
+% 
+%     normalization: 
+%         0: without normalization by Entropy (default)
+%         1: with normalization by Entropy
+% 
 % 
 % OUTPUTS:
 %     phi_G: integrated information based on information geometry
 %     Cov_E_p: covariance of noise E in the disconnected model
 %     A_p: connectivity matrix in the disconnected model
-%------------------------------------------------------------------------------------------
 %
 % Jun Kitazono & Masafumi Oizumi, 2017
 
@@ -34,11 +36,11 @@ function [ phi_G, Cov_E_p, A_p ] = phi_G_Gauss( Cov_X, Cov_XY, Cov_Y, Z, method 
 A = Cov_XY'/Cov_X;
 Cov_E = Cov_Y - Cov_XY'/Cov_X*Cov_XY;
 
-if nargin < 4
+if nargin < 4 || isempty(Z)
     n = size(Cov_X,1);
     Z = 1:n;
 end
-if nargin < 5
+if nargin < 5 || isempty(method)
     K = length(unique(Z));
     if K <= 3
         method = 'AL';
@@ -46,12 +48,15 @@ if nargin < 5
         method = 'LI';
     end
 end
+if nargin < 6 || isempty(normalization)
+    normalization = 0;
+end
 
 switch method
     case 'AL'
-        [phi_G, Cov_E_p, A_p] = phi_G_Gauss_AL( Cov_X, Cov_E, A, Z );
+        [phi_G, Cov_E_p, A_p] = phi_G_Gauss_AL( Cov_X, Cov_E, A, Z, normalization );
     case 'LI'
-        [phi_G, Cov_E_p, A_p] = phi_G_Gauss_LBFGS( Cov_X, Cov_E, A, Z );
+        [phi_G, Cov_E_p, A_p] = phi_G_Gauss_LBFGS( Cov_X, Cov_E, A, Z, normalization );
 end
 
 

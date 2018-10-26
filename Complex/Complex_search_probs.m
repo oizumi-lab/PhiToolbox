@@ -1,7 +1,6 @@
 function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
    Complex_search_probs( probs, options)
-% Complex_search_probs: Find complexes and main complexes from probability
-% distributions
+% Find complexes and main complexes from probability distributions
 %
 % INPUTS:
 %           probs: probability distributions for computing phi
@@ -30,12 +29,20 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
 %           options.type_of_MIPsearch
-%              'Exhaustive': exhau stive search
+%              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
 %              'REMCMC': Replica Exchange Monte Carlo Method 
 %           options.type_of_complexsearch
 %               'Exhaustive': exhaustive search
 %               'Recursive': recursive MIP search
+%           options.normalization
+%              (Available only when the dist. is 'Gauss' and the complex search is 'Exhaustive')
+%              Regarding normalization of phi by Entropy when searching
+%              the MIPs. 
+%                 0: without normalization (default)
+%                 1: with normalization
+%              Note that, after finding the MIPs, phi wo/ normalization at
+%              the MIPs is used to compare subsets and find the complexes in both options. 
 %               
 % OUTPUTS:
 %    complexes: indices of elements in complexes
@@ -48,10 +55,10 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 switch options.type_of_complexsearch
     case 'Exhaustive'
         [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
-   Complex_Exhaustive( probs, options);
+   Complex_Exhaustive( probs, options );
     case 'Recursive'
          [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
-   Complex_Recursive( probs, options);
+   Complex_Recursive( probs, options );
 end
 
 end

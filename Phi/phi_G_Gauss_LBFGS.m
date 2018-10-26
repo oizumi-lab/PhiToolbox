@@ -1,7 +1,5 @@
-function [phi_G, Cov_E_p, A_p] = phi_G_Gauss_LBFGS( Cov_X, Cov_E, A, Z )
-
-%------------------------------------------------------------------------------------------
-%PURPOSE: calculate integrated information "phi_G" based on information geometry 
+function [phi_G, Cov_E_p, A_p] = phi_G_Gauss_LBFGS( Cov_X, Cov_E, A, Z, normalization )
+% Calculate integrated information "phi_G" based on information geometry 
 % with a combination of an interative method and a quasi-Newton (LBFGS) method. 
 % 
 % See Oizumi et al., 2016, PNAS for the details of phi_G
@@ -20,12 +18,15 @@ function [phi_G, Cov_E_p, A_p] = phi_G_Gauss_LBFGS( Cov_X, Cov_E, A, Z )
 %         - Ex.1:  (1:n) (atomic partition)
 %         - Ex.2:  [1, 2,2,2, 3,3, ..., K,K] (K is the number of groups) 
 %         - Ex.3:  [3, 1, K, 2, 2, ..., K, 2] (Groups don't have to be sorted in ascending order)
+%     normalization: 
+%         0: without normalization by Entropy (default)
+%         1: with normalization by Entropy
 %     
 % OUTPUTS:
 %     phi_G: integrated information based on information geometry
 %     Cov_E_p: covariance of noise E in the disconnected model
 %     A_p: connectivity matrix in the disconnected model
-%------------------------------------------------------------------------------------------
+%
 %
 % Masafumi Oizumi, 2016
 % Jun Kitazono, 2017
@@ -41,6 +42,13 @@ function [phi_G, Cov_E_p, A_p] = phi_G_Gauss_LBFGS( Cov_X, Cov_E, A, Z )
 % [Copyright 2005-2015 Mark Schmidt. All rights reserved]
 
 addpath(genpath('minFunc_2012'))
+
+if nargin < 4
+    Z = 1: 1: N;
+end
+if nargin < 5
+    normalization = 0;
+end
 
 n = size(Cov_X,1);
 
@@ -92,6 +100,20 @@ end
 
 phi_G = 1/2*(logdet(Cov_E_p)-logdet(Cov_E));
 % disp(['iter: ', num2str(iter), ', phi: ', num2str(phi_G)])
+
+if normalization == 1
+    H_p = zeros(N_c,1);
+    for i=1: N_c
+        M = M_cell{i};
+        Cov_X_p = Cov_X(M,M); 
+        H_p(i) = H_gauss(Cov_X_p);
+    end
+    if N_c == 1
+        phi_G = phi_G/H_p(1);
+    else
+        phi_G = phi_G/( (N_c-1)*min(H_p) );
+    end
+end
 
 end
 

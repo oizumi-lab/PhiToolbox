@@ -1,8 +1,5 @@
-function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs)
-
-%-----------------------------------------------------------------------
-% FUNCTION: phi_comp_probs.m
-% PURPOSE: Compute phi from probability distributions
+function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs, options)
+% Compute phi from probability distributions
 %
 % INPUTS: 
 %           type_of_dist:
@@ -32,14 +29,20 @@ function phi = phi_comp_probs(type_of_dist, type_of_phi, Z, probs)
 %
 %               probs.p: probability distribution of X (only used for MI)
 %
+%           options.normalization (available only for Gaussian dist.)
+%              0: without normalization by Entropy (default)
+%              1: with normalization by Entropy
+%           options.phi_G_OptimMethod (available only for Gaussian dist.)
+%              'AL': Augmented Lagrangian
+%              'LI': a combination of LBFGS method and Iterative method
+%
 %
 % OUTPUT:
 %           phi: integrated information
-%-----------------------------------------------------------------------
 
 switch type_of_dist
     case 'Gauss'
-        phi = phi_Gauss( type_of_phi, Z, probs);
+        phi = phi_Gauss( type_of_phi, Z, probs, options);
     case 'discrete'
         phi = phi_dis(type_of_phi, Z, probs);
 end

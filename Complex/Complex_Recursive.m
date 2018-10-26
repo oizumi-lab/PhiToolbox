@@ -1,5 +1,5 @@
 function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = Complex_Recursive( probs, options )
-%Complex_Recursive: Find complexes using the recursive MIP algorithm
+% Find complexes using the recursive MIP algorithm
 %
 % INPUTS:
 %           probs: probability distributions for computing phi
@@ -46,6 +46,8 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %    Res.parent: index of the parent of each candidate of complexes.
 %    indices correspond to Res.cands_MIP
 %
+% 
+% Jun Kitazono, 2018
 
 Res = Complex_RecursiveFunction( probs, options );
 % [phi_Largest, row_Largest_phi] = max(Res.phi);

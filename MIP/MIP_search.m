@@ -1,8 +1,5 @@
-function [Z_MIP, phi_MIP] = MIP_search( X, params, options)
-%-----------------------------------------------------------------------
-% FUNCTION: MIP_search.m
-% PURPOSE: Find the Minimum Information Partition (MIP) from time series
-% data X
+function [Z_MIP, phi_MIP] = MIP_search( X, params, options )
+% Find the Minimum Information Partition from time series data X
 %
 % INPUTS:
 %           X: time series data in the form (units X time)
@@ -21,15 +18,17 @@ function [Z_MIP, phi_MIP] = MIP_search( X, params, options)
 %              'discrete': discrete probability distribution
 %           options.type_of_phi:
 %              'SI': phi_H, stochastic interaction
-%              'Geo': phi_G, information geometry version
+%              'Geo': phi_G, information geometry version (only for 'Gauss')
 %              'star': phi_star, based on mismatched decoding
 %              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
-%           
+%              'REMCMC': Replica Exchange Monte Carlo Method (Not available now.)
+%           options.normalization (available only for Gaussian dist.)
+%              0: without normalization of phi by Entropy (default)
+%              1: with normalization of phi by Entropy
 %
 % OUTPUT:
 %           Z_MIP: the MIP
@@ -37,7 +36,7 @@ function [Z_MIP, phi_MIP] = MIP_search( X, params, options)
 %-----------------------------------------------------------------------
 
 
-probs = data_to_probs(X, params, options);
-[Z_MIP, phi_MIP] = MIP_search_probs( probs, options);
+probs = data_to_probs( X, params, options );
+[Z_MIP, phi_MIP] = MIP_search_probs( probs, options );
 
 end

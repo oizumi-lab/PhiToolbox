@@ -1,7 +1,5 @@
 function phi = phi_comp(X, Z, params, options)
-%-----------------------------------------------------------------------
-% FUNCTION: phi_comp.m
-% PURPOSE: Compute phi from time series data
+% Compute phi from time series data
 %
 % INPUTS:
 %           X: time series data in the form (units X time)
@@ -28,16 +26,18 @@ function phi = phi_comp(X, Z, params, options)
 %              'star': phi_star, based on mismatched decoding
 %              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%           options.normalization (available only for Gaussian dist.)
+%              0: without normalization by Entropy (default)
+%              1: with normalization by Entropy
+%           options.phi_G_OptimMethod (available only for Gaussian dist.)
+%              'AL': Augmented Lagrangian
+%              'LI': a combination of LBFGS method and Iterative method
 %           
 %
 % OUTPUT:
 %           phi: integrated information
-%-----------------------------------------------------------------------
-
-
 
 probs = data_to_probs(X, params, options);
-phi = phi_comp_probs(options.type_of_dist, options.type_of_phi, Z, probs);
-
+phi = phi_comp_probs(options.type_of_dist, options.type_of_phi, Z, probs, options);
 
 end

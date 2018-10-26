@@ -1,6 +1,6 @@
 function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
-   Complex_search( X, params, options)
-% Complex_search: Find complexes and main complexes from time series X
+   Complex_search( X, params, options )
+% Find complexes and main complexes from time series X
 %
 % INPUTS:
 %           X: time series data in the form (units X time)
@@ -30,6 +30,14 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           options.type_of_complexsearch
 %               'Exhaustive': exhaustive search
 %               'Recursive': recursive MIP search
+%           options.normalization
+%              (Available only when the dist. is 'Gauss' and the complex search is 'Exhaustive')
+%              Regarding normalization of phi by Entropy when searching
+%              the MIPs. 
+%                 0: without normalization (default)
+%                 1: with normalization
+%              Note that, after finding the MIPs, phi wo/ normalization at
+%              the MIPs is used to compare subsets and find the complexes in both options. 
 %               
 % OUTPUTS:
 %    complexes: indices of elements in complexes
@@ -37,6 +45,7 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %    main_complexes: indices of elements in main complexes
 %    phis_main_complexes: phi at the MIP of main complexes
 %
+% 
 % Jun Kitazono & Masafumi Oizumi, 2018
 
 
