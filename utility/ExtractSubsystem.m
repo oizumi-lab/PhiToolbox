@@ -35,7 +35,10 @@ switch type_of_dist
         if isfield(probs,'p')
             probs_Sub.p = marginalize_table(probs.p, indices, N_st, sigma_table, pow_vec);
         end
+    case 'UndirectedGraph'
+        probs_Sub.g = probs.g(indices, indices);
+        
 end
 
-end
 
+end
