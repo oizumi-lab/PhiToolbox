@@ -1,3 +1,4 @@
+addpath(genpath('../PhiToolbox'))
 
 g = zeros(7,7);  % creat a graph
 g(1,[2,4]) = [3 2];  g(2,[3,4]) = [2 1];
