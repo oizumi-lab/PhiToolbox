@@ -72,13 +72,15 @@ options.type_of_MIPsearch = 'Queyranne';
 %    'Queyranne': 
 %    'REMCMC':
 
+options.type_of_complexsearch = 'Exhaustive';
+
 options.groups = groups;
 
 params.tau = 1; % time lag
 
 tic;
 [indices_Complex, phi_Complex, indices, phis, Zs] = ...
-    Complex_Exhaustive( X, params, options );
+    Complex_search( X, params, options );
 t = toc;
 %  indices_Complex: indices of elements in the complex
 %  phi_Complex: the amount of integrated information at the (estimated) MIP of the complex 

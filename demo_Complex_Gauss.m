@@ -66,10 +66,10 @@ params.tau = 1; % time lag
 
 %% options
 options.type_of_dist = 'Gauss'; % type of probability distributions
-options.type_of_phi = 'star'; % type of phi
+options.type_of_phi = 'MI1'; % type of phi
 options.type_of_MIPsearch = 'Exhaustive'; % type of MIP search
-options.type_of_complexsearch = 'Exhaustive'; % type of complex search
-options.normalization = 1; % normalization of phi by Entropy
+options.type_of_complexsearch = 'Recursive'; % type of complex search
+options.normalization = 0; % normalization of phi by Entropy
 
 %% Find complexes and main complexes
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
