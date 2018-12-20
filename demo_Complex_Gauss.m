@@ -10,11 +10,11 @@
 %              'Gauss': Gaussian distribution
 %              'discrete': discrete probability distribution
 %           options.type_of_phi:
-%              'SI': phi_H, stochastic interaction
-%              'Geo': phi_G, information geometry version
-%              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
+%              'SI': phi_H, stochastic interaction
+%              'star': phi_star, based on mismatched decoding
+%              'Geo': phi_G, information geometry version
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
