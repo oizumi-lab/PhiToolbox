@@ -9,6 +9,7 @@
 %           options.type_of_dist:
 %              'Gauss': Gaussian distribution
 %              'discrete': discrete probability distribution
+%              'UndirectedGraph': Undirected Graph
 %           options.type_of_phi:
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
 %              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
@@ -19,6 +20,7 @@
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
 %              'REMCMC': Replica Exchange Monte Carlo Method 
+%              'StoerWagner': mincut search algorithm for undirected graphs
 %           options.type_of_complexsearch
 %               'Exhaustive': exhaustive search
 %               'Recursive': recursive MIP search
@@ -60,6 +62,8 @@ for t=2: T
     X(:,t) = A*X(:,t-1) + E;
 end
 
+
+%% Converg data to an undirected graph using pairwise phi
 params_ToGenerateGraph.tau = 1;
 
 options_ToGenerateGraph.type_of_dist = 'Gauss';
@@ -70,7 +74,6 @@ probs_ToGenerateGraph = data_to_probs(X, params_ToGenerateGraph, options_ToGener
 g = zeros(N,N);
 for i=1:N
     for j = (i+1):N
-        
         probs_pair = ExtractSubsystem(...
             options_ToGenerateGraph.type_of_dist, ...
             probs_ToGenerateGraph, ...
@@ -96,3 +99,15 @@ tic;
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
     Complex_Recursive( probs, options );
 t = toc;
+
+%% show results
+main_complexes_str = cell(size(main_complexes));
+for i = 1:length(main_complexes)
+    main_complexes_str{i} =  num2str(main_complexes{i});
+end
+figure(2)
+bar(phis_main_complexes)
+set(gca, 'xticklabel', main_complexes_str)
+title('Main Complexes')
+ylabel('\Phi_{MIP}')
+xlabel('Indices of the main complexes')

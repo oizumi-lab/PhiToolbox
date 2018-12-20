@@ -60,7 +60,7 @@ params.tau = 1; % time delay
 options.type_of_dist = 'Gauss'; % type of probability distributions
 options.type_of_phi = 'star'; % type of phi
 options.type_of_MIPsearch = 'Exhaustive'; % type of MIP search
-options.normalization = 1; % normalization by Entropy
+options.normalization = 0; % normalization by Entropy
 
 %% find Minimum Information Partition (MIP)
 tic;

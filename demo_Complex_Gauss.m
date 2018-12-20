@@ -9,6 +9,7 @@
 %           options.type_of_dist:
 %              'Gauss': Gaussian distribution
 %              'discrete': discrete probability distribution
+%              'UndirectedGraph': Undirected Graph
 %           options.type_of_phi:
 %              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
 %              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
@@ -19,6 +20,7 @@
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
 %              'REMCMC': Replica Exchange Monte Carlo Method 
+%              'StoerWagner': mincut search algorithm for undirected graphs
 %           options.type_of_complexsearch
 %               'Exhaustive': exhaustive search
 %               'Recursive': recursive MIP search
@@ -33,7 +35,6 @@
 
 clear all;
 addpath(genpath('../PhiToolbox'))
-
 
 %% generate data
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,9 +68,15 @@ params.tau = 1; % time lag
 %% options
 options.type_of_dist = 'Gauss'; % type of probability distributions
 options.type_of_phi = 'MI1'; % type of phi
-options.type_of_MIPsearch = 'Exhaustive'; % type of MIP search
+options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
 options.type_of_complexsearch = 'Recursive'; % type of complex search
 options.normalization = 0; % normalization of phi by Entropy
+
+% options.type_of_dist = 'Gauss'; % type of probability distributions
+% options.type_of_phi = 'star'; % type of phi
+% options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
+% options.type_of_complexsearch = 'Exhaustive'; % type of complex search
+% options.normalization = 0; % normalization of phi by Entropy
 
 %% Find complexes and main complexes
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
