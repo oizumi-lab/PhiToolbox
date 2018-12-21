@@ -29,45 +29,12 @@ options.type_of_dist = 'discrete';
 %    'SI': phi_H, stochastic interaction
 %    'star': phi_star, based on mismatched decoding
 
-% mutual information
-options.type_of_phi = 'MI1';
-MI = phi_comp(X, Z, params, options);
 
-% phi*
+% options.type_of_phi = 'MI1';
 options.type_of_phi = 'star';
-phi_star = phi_comp(X, Z, params, options);
+phi = phi_comp(X, Z, params, options);
 
-% stochastic interaction
-options.type_of_phi = 'SI';
-SI = phi_comp(X, Z, params, options);
-
-
-%%
-fprintf('MI=%f phi*=%f SI=%f\n',MI,phi_star,SI);
-
-%% compute phi from pre-computed probability distributions
-
-% mutual information
-isjoint = 0; %  whether or not joint probability distributions are computed
-probs = est_p(X,N_s,tau,isjoint);
-% probs.p: probability distribution of X 
-
-q_probs = est_q(Z,N_s,probs);
-MI = MI1_dis(probs,q_probs);
-
-% phi*
-isjoint = 1; % whether or not joint probability distributions are computed
-probs = est_p(X,N_s,tau,isjoint);
-%  probs.past: probability distribution of past state (X^t-tau)
-%  probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%  probs.present: probability distribution of present state (X^t)
-
-q_probs = est_q(Z,N_s,probs);
-phi_star = phi_star_dis(probs,q_probs);
-
-% stochastic interaction
-SI = SI_dis(probs,q_probs);
-
-
-%%
-fprintf('MI=%f phi*=%f SI=%f\n',MI,phi_star,SI);
+%% show the resullts
+fprintf('partition\n')
+disp(Z);
+fprintf('phi=%f\n',phi);

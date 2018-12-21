@@ -68,21 +68,16 @@ params_ToGenerateGraph.tau = 1;
 
 options_ToGenerateGraph.type_of_dist = 'Gauss';
 options_ToGenerateGraph.type_of_phi = 'MI1';
-probs_ToGenerateGraph = data_to_probs(X, params_ToGenerateGraph, options_ToGenerateGraph);
 
 %%% Compute pairwise phi and set it as the weight of the graph %%%
 g = zeros(N,N);
+Z = [1 2];
 for i=1:N
-    for j = (i+1):N
-        probs_pair = ExtractSubsystem(...
-            options_ToGenerateGraph.type_of_dist, ...
-            probs_ToGenerateGraph, ...
-            [i,j]);
-        g(i,j) = phi_comp_probs(options_ToGenerateGraph.type_of_dist, ...
-            options_ToGenerateGraph.type_of_phi, [1,2],probs_pair, options_ToGenerateGraph);
+    for j = (i+1):N     
+        g(i,j) = phi_comp(X([i j],:),Z,params_ToGenerateGraph,options_ToGenerateGraph);
+        g(j,i) = g(i,j);
     end
 end
-g = g + g';
 
 
 %% params

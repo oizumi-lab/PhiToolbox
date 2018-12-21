@@ -51,6 +51,7 @@ params.tau= 1; % time delay
 
 %% options
 options.type_of_dist = 'Gauss'; % type of probability distributions
+% options.type_of_phi = 'MI1'; % type of phi
 options.type_of_phi = 'star'; % type of phi
 options.normalization = 0; % normalization by Entropy
 

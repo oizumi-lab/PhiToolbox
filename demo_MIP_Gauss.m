@@ -17,9 +17,8 @@
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhau stive search
 %              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
 %           options.normalization: 
-%              0: without normalization of phi by Entropy
+%              0: without normalization of phi
 %              1: with normalization of phi by Entropy
 
 clear all;
@@ -59,7 +58,7 @@ params.tau = 1; % time delay
 %% options
 options.type_of_dist = 'Gauss'; % type of probability distributions
 options.type_of_phi = 'star'; % type of phi
-options.type_of_MIPsearch = 'Exhaustive'; % type of MIP search
+options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
 options.normalization = 0; % normalization by Entropy
 
 %% find Minimum Information Partition (MIP)

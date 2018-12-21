@@ -46,7 +46,7 @@ I_s = -minus_I_s;
 [I, H, H_cond] = I_dis(p_past,p_joint,p_present);
 phi_star = I - I_s;
 
-fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
+% fprintf('beta=%f phi_star=%f I=%f H=%f\n',beta, phi_star, I, H);
 
     function [minus_I_s, minus_I_s_d] = I_s_I_s_d(beta)
         if beta < 10^-20

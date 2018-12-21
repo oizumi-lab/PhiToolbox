@@ -53,91 +53,18 @@ R = corrcoef(X');
 disp('Correlation Matrix')
 disp(R);
 
-%% find Minimum Information Partition (MIP)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% options
 options.type_of_dist = 'discrete';
 options.type_of_phi = 'star';
+options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
+options.normalization = 0; % normalization by Entropy
 
-%%%%%%%%%% without pre-computed probability distributions %%%%%%%%%%
-disp('Find the MIP without pre-computed probability distributions')
-%% Exhaustive search %%
-options.type_of_MIPsearch = 'Exhaustive';
-
-disp('Exhaustive Search...')
+%% find Minimum Information Partition (MIP)
 tic;
-[Z_MIP_without, phi_MIP_without] = MIP_search(X, params, options);
-t_Exhaustive_without = toc;
-disp(['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_without)] )
-disp(['phi at the MIP: ', num2str(phi_MIP_without)])
-disp(['the MIP: ', num2str(Z_MIP_without)])
+[Z_MIP, phi_MIP] = MIP_search(X, params, options );
+CalcTime = toc;
+
+disp( ['CalcTime=', num2str(CalcTime)])
+disp(['phi at the MIP: ', num2str(phi_MIP)])
+disp(['the MIP: ', num2str(Z_MIP)])
 disp(' ')
-
-%% Queyranne's algorithm %%
-options.type_of_MIPsearch = 'Queyranne';
-
-disp('Queyranne''s algorithm...')
-tic;
-[Z_MIP_Q_without, phi_MIP_Q_without] = MIP_search( X, params, options);
-t_Queyranne_without = toc;
-disp(['Exhaustive Search finished. CalcTime=', num2str(t_Queyranne_without)])
-disp(['phi at the MIP: ', num2str(phi_MIP_Q_without)])
-disp(['the MIP: ', num2str(Z_MIP_Q_without)])
-disp(' ')
-
-% %% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
-% options.type_of_MIPsearch = 'REMCMC';
-% 
-% options.ShowFig = 0;
-% options.nMCS = 100;
-% disp('REMCMC...')
-% tic;
-% [Z_MIP_REMCMC_without, phi_MIP_REMCMC_without] = MIP_search(X, params, options);
-% t_REMCMC_without = toc;
-% disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_without)])
-% disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_without)])
-% disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_without)])
-% disp(' ')
-
-
-%%%%%%%%%% with pre-computed probability distributions %%%%%%%%%% 
-disp('Find the MIP with pre-computed probability distributions')
-
-%% estimate probability distributions
-disp('Estimating probability distributions...')
-probs = data_to_probs(X, params, options);
-
-%% Exhaustive Search %%
-disp('Exhaustive Search...')
-tic;
-[Z_MIP_with, phi_MIP_with, Zs, phis] = MIP_Exhaustive( probs, options );
-t_Exhaustive_with = toc;
-disp( ['Exhaustive Search finished. CalcTime=', num2str(t_Exhaustive_with)])
-disp(['phi at the MIP: ', num2str(phi_MIP_with)])
-disp(['the MIP: ', num2str(Z_MIP_with)])
-disp(' ')
-
-%% Queyeranne's algorithm %%%
-disp('Queyranne''s algorithm...')
-tic;
-[Z_MIP_Q_with, phi_MIP_Q_with] = MIP_Queyranne( probs, options);
-t_Queyranne_with = toc;
-disp(['Queyranne''s algorithm finished. CalcTime=', num2str(t_Queyranne_with)])
-disp(['phi at the estimated MIP: ', num2str(phi_MIP_Q_with)])
-disp(['the estimated MIP: ', num2str(Z_MIP_Q_with)])
-disp(' ')
-
-% %% Replica Exchange Markov Chain Monte Carlo (REMCMC) %%
-% options.ShowFig = 0;
-% options.nMCS = 100;
-% disp('REMCMC...')
-% tic;
-% [Z_MIP_REMCMC_with, phi_MIP_REMCMC_with, ...
-%     phi_history, State_history, Exchange_history, T_history, wasConverged, NumCalls] = ...
-%     MIP_REMCMC( probs, options );
-% t_REMCMC_with = toc;
-% disp(['REMCMC finished. CalcTime=', num2str(t_REMCMC_with)])
-% disp(['phi at the estimated MIP: ', num2str(phi_MIP_REMCMC_with)])
-% disp(['the estimated MIP: ', num2str(Z_MIP_REMCMC_with)])
-% disp(' ')
-
-
