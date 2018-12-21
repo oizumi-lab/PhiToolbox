@@ -63,7 +63,7 @@ for t=2: T
 end
 
 
-%% Converg data to an undirected graph using pairwise phi
+%% Convert data to an undirected graph using pairwise phi
 params_ToGenerateGraph.tau = 1;
 
 options_ToGenerateGraph.type_of_dist = 'Gauss';
@@ -91,8 +91,10 @@ options.type_of_dist = 'UndirectedGraph';
 options.type_of_MIPsearch = 'StoerWagner';
 
 tic;
+%% Recursive
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
     Complex_Recursive( probs, options );
+
 t = toc;
 
 %% show results
