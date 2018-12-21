@@ -41,17 +41,14 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %    main_complexes: indices of elements in main complexes
 %    phis_main_complexes: phi at the MIP of main complexes
 %   
-%    Res.cands_MIP: candidates of complexes and MIP of the candidates
+%    Res.Z: candidates of complexes and MIP of the candidates
 %    Res.phi: phi at the MIP of the candidates of complexes
 %    Res.parent: index of the parent of each candidate of complexes.
-%    indices correspond to Res.cands_MIP
-%
+%    An index indicate a row Res.Z
 % 
 % Jun Kitazono, 2018
 
 Res = Complex_RecursiveFunction( probs, options );
-% [phi_Largest, row_Largest_phi] = max(Res.phi);
-% indices_Largest_phi = find(Res.Z(row_Largest_phi,:));
 
 [complexes, phis_complexes] = find_Complexes_fromRes(Res);
 [main_complexes, phis_main_complexes] = find_main_Complexes(complexes, phis_complexes);
@@ -122,7 +119,7 @@ end
 
 end
 
-function [complexes, phis] = find_Complexes_fromRes(Res)
+function [complexes, phis_complexes] = find_Complexes_fromRes(Res)
 
 nSubsets = length(Res.phi);
 phi_temp_max = zeros(nSubsets, 1);
@@ -146,10 +143,10 @@ for i = 1:nComplexes
     complexes{i} = find(Zs_Complexes(i,:));
 end
 
-phis = Res.phi(isComplex);
+phis_complexes = Res.phi(isComplex);
 
-[phis_sorted, idx_phis_sorted] = sort(phis, 'descend');
-phis = phis_sorted;
+[phis_sorted, idx_phis_sorted] = sort(phis_complexes, 'descend');
+phis_complexes = phis_sorted;
 complexes = complexes(idx_phis_sorted);
 
 end

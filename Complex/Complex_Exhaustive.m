@@ -54,8 +54,8 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %    phis_main_complexes: phi at the MIP of main complexes
 %
 %    Res.subsets_all: the (micro) indices of every subsystem
-%    Res.phis_all: phi at the MIP of every subsystem
-%    Res.MIPs_all: the MIP of every subsystem
+%    Res.Z: the MIP of every subsystem
+%    Res.phi: phi at the MIP of every subsystem
 %    Res.group_indices_all: the (macro) indices of groups of every subsystem
 % 
 % 
@@ -84,8 +84,8 @@ nClusters = length(groups);
 group_indices_all = cell(2^nClusters-1, 1);
 subsets_all = cell(2^nClusters-1, 1);
 
-phis_all = zeros(2^nClusters-1, 1);
-MIPs_all = zeros(2^nClusters-1, N);
+phis = zeros(2^nClusters-1, 1);
+Z = zeros(2^nClusters-1, N);
 
 idx = 0;
 for i = 1:nClusters
@@ -124,18 +124,18 @@ parfor i = 1:length(group_indices_all)
         end
     end
     
-    phis_all(i, 1) = phi_MIP;
+    phis(i, 1) = phi_MIP;
     Z_temp = zeros(1, N);
     Z_temp(1,indices_temp) = Z_MIP;
-    MIPs_all(i, :) = Z_temp;
+    Z(i, :) = Z_temp;
 end
 
-[complexes, phis_complexes] = find_Complexes( subsets_all, phis_all );
+[complexes, phis_complexes] = find_Complexes( subsets_all, phis );
 [main_complexes, phis_main_complexes] = find_main_Complexes( complexes, phis_complexes );
 
-Res.subsets_all = subsets_all;
-Res.phis_all = phis_all;
-Res.MIPs_all = MIPs_all;
+Res.subset = subsets_all;
+Res.Z = Z;
+Res.phi = phis;
 Res.group_indices_all = group_indices_all;
 
 

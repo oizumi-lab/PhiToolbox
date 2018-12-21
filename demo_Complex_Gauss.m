@@ -33,7 +33,7 @@
 %              Note that, after finding the MIPs, phi wo/ normalization at
 %              the MIPs is used to compare subsets and find the complexes in both options. 
 
-clear all;
+%clear all;
 addpath(genpath('../PhiToolbox'))
 
 %% generate data
@@ -69,7 +69,7 @@ params.tau = 1; % time lag
 options.type_of_dist = 'Gauss'; % type of probability distributions
 options.type_of_phi = 'MI1'; % type of phi
 options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
-options.type_of_complexsearch = 'Exhaustive'; % type of complex search
+options.type_of_complexsearch = 'Recursive'; % type of complex search
 options.normalization = 0; % normalization of phi by Entropy
 
 % options.type_of_dist = 'Gauss'; % type of probability distributions
@@ -94,28 +94,18 @@ title('Main Complexes')
 ylabel('\Phi_{MIP}')
 xlabel('Indices of the main complexes')
 
-[phis_sorted, idx_phis_sorted] = sort(Res.phis_all, 'descend');
+[phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
 figure(3)
-subplot(2,1,1), imagesc(Res.MIPs_all(idx_phis_sorted,:)'),title('Subsets')
+subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
 title('Candidates of complexes')
-subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phis_all)+0.5]),title('\Phi')
+subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
 title('\Phi_{MIP}')
 
-
-
-
-% [phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
-% figure(3)
-% subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
-% title('Candidates of complexes')
-% subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
-% title('\Phi_{MIP}')
-% 
-% switch options.type_of_complexsearch
-%     case 'Recursive'
-%         figure(4)
-%         VisualizeComplexes(Res, 1);
-%         ylabel('\Phi_{MIP}')
-%         xlabel('Indices')
-%         title('Candidates of complexes')
-% end
+switch options.type_of_complexsearch
+    case 'Recursive'
+        figure(4)
+        VisualizeComplexes(Res, 1);
+        ylabel('\Phi_{MIP}')
+        xlabel('Indices')
+        title('Candidates of complexes')
+end

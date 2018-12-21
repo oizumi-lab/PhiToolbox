@@ -106,3 +106,16 @@ set(gca, 'xticklabel', main_complexes_str)
 title('Main Complexes')
 ylabel('\Phi_{MIP}')
 xlabel('Indices of the main complexes')
+
+[phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
+figure(3)
+subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
+title('Candidates of complexes')
+subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
+title('\Phi_{MIP}')
+
+figure(4)
+VisualizeComplexes(Res, 1);
+ylabel('\Phi_{MIP}')
+xlabel('Indices')
+title('Candidates of complexes')

@@ -94,26 +94,9 @@ set(gca, 'YTick', [1: 1: N], 'YTickLabel', s_ind);
 
 %% find the complex
 options.type_of_dist = 'discrete';
-% type_of_dist:
-%    'Gauss': Gaussian distribution
-%    'discrete': discrete probability distribution
-
 options.type_of_phi = 'MI1';
-% type_of_phi:
-%    'MI1': Multi (Mutual) information, e.g., I(X_1; X_2). (IIT1.0)
-%    'MI': Multi (Mutual) information, e.g., I(X_1, Y_1; X_2, Y_2)
-%    'SI': phi_H, stochastic interaction
-%    'star': phi_star, based on mismatched decoding
-%    'Geo': phi_G, information geometry version
-
 options.type_of_MIPsearch = 'Queyranne';
-% type_of_search: 
-%    'Exhaustive': 
-%    'Queyranne': 
-%    'REMCMC':
-
-options.type_of_complexsearch = 'Recursive';
-
+options.type_of_complexsearch = 'Exhaustive';
 options.normalization = 0;% normalization of phi by Entropy
 
 params.tau = 1; % time delay
@@ -135,15 +118,15 @@ title('Main Complexes')
 ylabel('\Phi_{MIP}')
 xlabel('Indices of the main complexes')
 
+[phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
+figure(3)
+subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
+title('Candidates of complexes')
+subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
+title('\Phi_{MIP}')
+
 switch options.type_of_complexsearch
     case 'Recursive'
-        [phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
-        figure(3)
-        subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
-        title('Candidates of complexes')
-        subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
-        title('\Phi_{MIP}')
-        
         figure(4)
         VisualizeComplexes(Res, 1);
         ylabel('\Phi_{MIP}')
