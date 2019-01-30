@@ -30,11 +30,12 @@ function [mv, mw] = mincut(g, s)
     if nargin == 1,     s = 1;      end
     
     g = double(g);      N = length(g);    % number of nodes
+    g = g + realmin; % This line is added by Jun Kitazono, Jan. 2019
     
     % remove self edges and inf-value
     g(1:N+1:end) = 0;   
     g(isinf(g))  = 0; 
-    
+        
     % predefine
     mv = (1:N)';        mw = inf;
 
@@ -50,7 +51,7 @@ function [mv, mw] = mincut(g, s)
         [vs, vt] = mincutphase( g );
         st = sum(g(vt, setdiff(1:length(g),vt)));
 
-        if st<mw,   % record
+        if st<mw   % record
             mw = st;
             end_mv = mv;                % end_mv - the last result, 
             end_mv(mv==mv(ni(vt))) = 0; % one partition is 0
@@ -63,6 +64,7 @@ function [mv, mw] = mincut(g, s)
         [g, ni] = merge2nodes(g, vs, vt, ni);
     end
     mv = end_mv;  mv(mv>0) = 1;         % another partiotion is 1
+    mw = mw - realmin*nnz(mv)*nnz(mv==0); % This line is added by Jun Kitazono, Jan. 2019
     
 % +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ %
 
