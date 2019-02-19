@@ -10,7 +10,7 @@ nComplexes = length(Phis);
 [Phis_sorted, index_Phis_sorted] = sort(Phis, 'ascend');
 Complexes_sorted = Complexes(index_Phis_sorted);
 
-if isempty(g)
+if isempty(g) || max(g(:))<=0
     g = ones(nElems);
 else
     max_g = max(g(:));
@@ -61,8 +61,8 @@ if isshown
         Pair = Pairs_sorted(iPairs,:);
         Xs = X(Pair);
         Ys = Y(Pair);
-        if ~isempty(EdgeColors{Pair(1), Pair(2)})
-            line(Xs, Ys, 'Color', EdgeColors{Pair(1), Pair(2)}, 'LineWidth', max(LineWidth*g(Pair(1), Pair(2))));
+        if ~isempty(EdgeColors{Pair(1), Pair(2)}) && LineWidth*g(Pair(1), Pair(2))>0
+            line(Xs, Ys, 'Color', EdgeColors{Pair(1), Pair(2)}, 'LineWidth', LineWidth*g(Pair(1), Pair(2)) );
         end
     end
     
