@@ -121,3 +121,27 @@ VisualizeComplexes(Res, 1);
 ylabel('\Phi_{MIP}')
 xlabel('Indices')
 title('Candidates of complexes')
+
+
+figure(5)
+% set coordinates
+thetas = 2*pi*(0:(N-1))/N;
+x_coordinate = cos(thetas);
+y_coordinate = sin(thetas);
+
+type_of_colormap = 'parula';
+
+% set linewidth
+set(gca, 'XTickLabel', [], 'YTickLabel', [], 'xtick', [], 'ytick', [])
+currunit = get(gca, 'units');
+set(gca, 'units', 'points');
+axisPos = plotboxpos(gca);
+set(gca, 'Units', currunit);
+width_a = axisPos(3);
+LineWidth = width_a * 0.01;
+
+isshown = 1;
+
+[EdgePhis, EdgeColors] = ComplexGraphs(x_coordinate, y_coordinate, main_complexes, phis_main_complexes, type_of_colormap, LineWidth, g, isshown);
+text(x_coordinate, y_coordinate, num2str((1:7)'))
+title('Main Complexes')

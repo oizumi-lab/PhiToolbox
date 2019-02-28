@@ -57,6 +57,7 @@ if isshown
     [EdgePhis_vec_sorted, ind_sort] = sort(EdgePhis_vec, 'ascend');
     Pairs_sorted = Pairs(ind_sort,:);
 
+    scatter(X, Y, 'Visible', 'off');
     for iPairs = 1:size(Pairs, 1)
         Pair = Pairs_sorted(iPairs,:);
         Xs = X(Pair);
