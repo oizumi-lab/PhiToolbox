@@ -5,15 +5,19 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           probs: probability distributions for computing phi
 %           
 %           In the Gaussian case
-%               probs.Cov_X: covariance of data X (past, t-tau)
-%               probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
-%               probs.Cov_Y: covariance of data Y (present, t)
+%               When options.type_of_phi is 'MI1'
+%                  probs.Cov_X: covariance of data X
+%               When options.type_of_phi is NOT 'MI1'
+%                  probs.Cov_X: covariance of data X (past, t-tau)
+%                  probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
+%                  probs.Cov_Y: covariance of data Y (present, t)
 %           In the discrete case
-%               probs.past: probability distribution of past state (X^t-tau)
-%               probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%               probs.present: probability distribution of present state (X^t-tau)
-%
-%               probs.p: probability distribution of X (only used for MI)
+%               When options.type_of_phi is 'MI1'
+%                  probs.past: probability distribution of past state (X^t-tau)
+%                  probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%                  probs.present: probability distribution of present state (X^t-tau)
+%               When options.type_of_phi is NOT 'MI1'
+%                  probs.p: probability distribution of X
 %
 %           options: options for computing phi and for MIP search
 %           

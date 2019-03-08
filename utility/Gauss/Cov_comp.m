@@ -1,8 +1,7 @@
 function probs = Cov_comp(X,tau,isjoint)
-%-----------------------------------------------------------------------
-% FUNCTION: Cov_comp.m
-% PURPOSE: Compute covarance matrices from time series data X
+%: Compute covarance matrices from time series data X
 %
+%-----------------------------------------------------------------------
 % INPUTS:
 %           X: time series data in the form (units X time)
 %           tau: time lag between past and present states
@@ -10,9 +9,12 @@ function probs = Cov_comp(X,tau,isjoint)
 %
 % OUTPUT:
 %           probs: coraince matrices
-%               probs.Cov_X: covariance of data X (past, t-tau)
-%               probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
-%               probs.Cov_Y: covariance of data Y (present, t)
+%               When isjoint == 1
+%                  probs.Cov_X: covariance of data X (past, t-tau)
+%                  probs.Cov_XY: cross-covariance of X (past, t-tau) and Y (present, t)
+%                  probs.Cov_Y: covariance of data Y (present, t)
+%               When isjoint == 0
+%                  probs.Cov_X: covariance of data X
 %
 %-----------------------------------------------------------------------
 
