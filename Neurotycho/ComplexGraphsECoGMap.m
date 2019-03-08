@@ -1,6 +1,24 @@
-function [EdgePhis, EdgeColors] = ComplexGraphsECoGMap(SubjectName, target_ch, Complexes, Phis, colormap, bipolar, g, isshown, clim)
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+function [EdgePhis, EdgeColors] = ComplexGraphsECoGMap(SubjectName, target_ch, indices, phis, type_of_colormap, bipolar, g, isshown, clim)
+% Visualize complexes as superimposed graphs on brain image
+% 
+% INPUT:
+%    SubjectName: monkey subject name
+%    target_ch: targeted channels
+%    indices: The indices of complexes. (#subsets by 1 cell array. Each cell contains indices of a subset.)
+%    phis: The amount of integrated information for subsets. (#subsets by 1
+%    vector)
+%    type_of_colormap: ex. 'parula'
+%    bipolar: is the data bipolar re-referenced or not
+%    g: relative width of edges
+%    isshown: show the image or not
+%    clim: clim of colormap
+%
+% OUTPUT:
+%    EdgePhis: the amount of integrated information of the complex where
+%    each edge is included
+%    EdgeColors: the color of each edge
+%
+% Jun Kitazono, 2018
 
 if bipolar == 1
     CortexMap = load([SubjectName, 'Map_bipolar.mat']);
@@ -27,9 +45,9 @@ X = CortexMap.X(target_ch);
 Y = CortexMap.Y(target_ch);
 
 if nargin < 8
-    [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, Complexes, Phis, colormap, LineWidth, g, isshown);
+    [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, indices, phis, type_of_colormap, LineWidth, g, isshown);
 else
-    [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, Complexes, Phis, colormap, LineWidth, g, isshown, clim);
+    [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, indices, phis, type_of_colormap, LineWidth, g, isshown, clim);
 end
 
 end

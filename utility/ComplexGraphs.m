@@ -1,14 +1,31 @@
-function [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, Complexes, Phis, type_of_colormap, LineWidth, g, isshown, clim)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+function [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, indices, phis, type_of_colormap, LineWidth, g, isshown, clim)
+% Visualize complexes as superimposed graphs
+%
+% INPUT:
+%    X, Y: X and Y coordinates of nodes
+%    indices: The indices of complexes. (#subsets by 1 cell array. Each cell contains indices of a subset.)
+%    phis: The amount of integrated information for subsets. (#subsets by 1
+%    vector)
+%    type_of_colormap: ex. 'parula'
+%    LineWidth: max. width of edges
+%    g: relative width of edges
+%    isshown: show the image or not
+%    clim: clim of colormap
+%
+% OUTPUT:
+%    EdgePhis: the amount of integrated information of the complex where
+%    each edge is included
+%    EdgeColors: the color of each edge
+%
+% Jun Kitazono, 2018
 
 nBinsColormap = 1024;
 nElems = length(X);
 
-nComplexes = length(Phis);
+nComplexes = length(phis);
 
-[Phis_sorted, index_Phis_sorted] = sort(Phis, 'ascend');
-Complexes_sorted = Complexes(index_Phis_sorted);
+[Phis_sorted, index_Phis_sorted] = sort(phis, 'ascend');
+Complexes_sorted = indices(index_Phis_sorted);
 
 if isempty(g) || max(g(:))<=0
     g = ones(nElems);
@@ -30,8 +47,8 @@ else
 end
 
 Colors = eval([type_of_colormap, '(nBinsColormap);']);
-indices = 1 + floor( (nBinsColormap-1)*Phis_sorted_rescaled );
-Colors = Colors(indices,:);
+ColorIndices = 1 + floor( (nBinsColormap-1)*Phis_sorted_rescaled );
+Colors = Colors(ColorIndices,:);
 
 EdgePhis = zeros(nElems, nElems);
 EdgeColors = cell(nElems, nElems);
