@@ -27,7 +27,7 @@ N = length(target_ch);
 
 
 %% select type
-type = 'Gauss';
+type = 'UndirectedGraph';
 
 switch type
     case 'Gauss'
