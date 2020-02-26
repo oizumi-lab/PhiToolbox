@@ -76,11 +76,21 @@ ch_nonzero_weight = weight>0;
 % size(zeros(nnz(weight),1))
 
 if type_of_heatmap == 1
-    min_point_size = (width_a/100*1e-1)^2;
-    max_point_size = (width_a/100*5)^2;
-    scatter(X, Y, ...
-    weight'*(max_point_size-min_point_size)+min_point_size, ...
+    min_point_size = sqrt(realmin);
+    max_point_size = (width_a/100*5);
+    
+    sizes = min_point_size + weight'*(max_point_size-min_point_size);
+    sizes = sizes.^2;
+    
+    scatter(X, Y, sizes, ...
     [weight', zeros(length(weight),1), zeros(length(weight),1)], 'filled')
+    
+%     min_point_size = (width_a/100*1e-1)^2;
+%     max_point_size = (width_a/100*5)^2;
+%     scatter(X, Y, ...
+%     weight'*(max_point_size-min_point_size)+min_point_size, ...
+%     [weight', zeros(length(weight),1), zeros(length(weight),1)], 'filled')
+
 %     scatter(X, Y, min_point_size, 'MarkerFaceColor', 'k', 'MarkerEdgeColor', 'k')
 %     scatter(X(ch_nonzero_weight), Y(ch_nonzero_weight), ...
 %     weight(ch_nonzero_weight)'*(max_point_size-min_point_size)+min_point_size, ...
