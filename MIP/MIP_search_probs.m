@@ -13,9 +13,9 @@ function [Z_MIP, phi_MIP, Zs, phis] = MIP_search_probs( probs, options )
 %                  probs.Cov_Y: covariance of data Y (present, t)
 %           In the discrete case
 %               When options.type_of_phi is 'MI1'
-%                  probs.past: probability distribution of past state (X^t-tau)
-%                  probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%                  probs.present: probability distribution of present state (X^t-tau)
+%                  probs.past: probability distribution of past state X(t-tau)
+%                  probs.joint: joint distribution of X(t) (present) and X(t-tau) (past)
+%                  probs.present: probability distribution of present state X(t)
 %               When options.type_of_phi is NOT 'MI1'
 %                  probs.p: probability distribution of X
 %
@@ -28,8 +28,8 @@ function [Z_MIP, phi_MIP, Zs, phis] = MIP_search_probs( probs, options )
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version (only for 'Gauss')
 %              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%              'MI': Multi (Mutual) information, I(X_1(t-tau), X_1(t); X_2(t-tau), X_2(t))
+%              'MI1': Multi (Mutual) information. I(X_1(t); X_2(t)). (IIT1.0)
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm

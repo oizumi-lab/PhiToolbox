@@ -20,8 +20,8 @@ function [Z_MIP, phi_MIP] = MIP_search( X, params, options )
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version (only for 'Gauss')
 %              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%              'MI': Multi (Mutual) information, I(X_1(t-tau), X_1(t); X_2(t-tau), X_2(t))
+%              'MI1': Multi (Mutual) information. I(X_1(t); X_2(t)). (IIT1.0)
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
