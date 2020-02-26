@@ -13,11 +13,11 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %                  probs.Cov_Y: covariance of data Y (present, t)
 %           In the discrete case
 %               When options.type_of_phi is 'MI1'
-%                  probs.past: probability distribution of past state (X^t-tau)
-%                  probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
-%                  probs.present: probability distribution of present state (X^t-tau)
-%               When options.type_of_phi is NOT 'MI1'
 %                  probs.p: probability distribution of X
+%               When options.type_of_phi is NOT 'MI1'
+%                  probs.past: probability distribution of past state (X(t-tau))
+%                  probs.joint: joint distribution of X(t) (present) and X(t-tau) (past)
+%                  probs.present: probability distribution of present state X(t-tau)
 %
 %           options: options for computing phi and for MIP search
 %           
@@ -28,8 +28,8 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %              'SI': phi_H, stochastic interaction
 %              'Geo': phi_G, information geometry version
 %              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
+%              'MI': Multi (Mutual) information, I(X_1(t-tau), X_1(t); X_2(t-tau), X_2(t))
+%              'MI1': Multi (Mutual) information. I(X_1(t); X_2(t)). (IIT1.0)
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
@@ -54,8 +54,7 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 
 Res = Complex_RecursiveFunction( probs, options );
 
-[complexes, phis_complexes] = find_Complexes_fromRes(Res);
-[main_complexes, phis_main_complexes] = find_main_Complexes(complexes, phis_complexes);
+[complexes, phis_complexes, main_complexes, phis_main_complexes] = find_Complexes_fromRes(Res);
 
 end
 
@@ -123,34 +122,51 @@ end
 
 end
 
-function [complexes, phis_complexes] = find_Complexes_fromRes(Res)
+function [complexes, phis_complexes, main_complexes, phis_main_complexes] = find_Complexes_fromRes(Res)
 
 nSubsets = length(Res.phi);
 phi_temp_max = zeros(nSubsets, 1);
 isComplex = false(nSubsets, 1);
+isMainComplex = false(nSubsets, 1);
+mrac = zeros(nSubsets, 1);
 
 phi_temp_max(nSubsets) = Res.phi(nSubsets);
-isComplex(nSubsets) = 1;
+isComplex(nSubsets) = true;
+isMainComplex(nSubsets) = true;
+mrac(nSubsets) = nSubsets;
 for i = nSubsets-1: -1 :1
     if Res.phi(i) > phi_temp_max(Res.parent(i))
         phi_temp_max(i) = Res.phi(i);
         isComplex(i) = true;
+        
+        isMainComplex( mrac(Res.parent(i)) ) = false;
+        isMainComplex(i) = true;
+        mrac(i) = i;
     else
         phi_temp_max(i) = phi_temp_max(Res.parent(i));
+        
+        mrac(i) = mrac(Res.parent(i));
     end
 end
 
-nComplexes = nnz(isComplex);
-complexes = cell(nComplexes, 1);
-Zs_Complexes = Res.Z(isComplex,:);
-for i = 1:nComplexes
-    complexes{i} = find(Zs_Complexes(i,:));
+[complexes, phis_complexes] = sort_Complexes(isComplex, Res);
+[main_complexes, phis_main_complexes] = sort_Complexes(isMainComplex, Res);
+
 end
 
-phis_complexes = Res.phi(isComplex);
+function [complexes, phis] = sort_Complexes(isComplex, Res)
 
-[phis_sorted, idx_phis_sorted] = sort(phis_complexes, 'descend');
-phis_complexes = phis_sorted;
+nComplexes = nnz(isComplex);
+complexes = cell(nComplexes, 1);
+Zs = Res.Z(isComplex,:);
+for i = 1:nComplexes
+    complexes{i} = find(Zs(i,:));
+end
+
+phis = Res.phi(isComplex);
+
+[phis_sorted, idx_phis_sorted] = sort(phis, 'descend');
+phis = phis_sorted;
 complexes = complexes(idx_phis_sorted);
 
 end
