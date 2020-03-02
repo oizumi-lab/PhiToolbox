@@ -3,9 +3,8 @@ function [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, indices, phis, type_of_col
 %
 % INPUT:
 %    X, Y: X and Y coordinates of nodes
-%    indices: The indices of complexes. (#subsets by 1 cell array. Each cell contains indices of a subset.)
-%    phis: The amount of integrated information for subsets. (#subsets by 1
-%    vector)
+%    indices: The indices of complexes. (#complexes-by-1 cell array. Each cell contains indices of a subset.)
+%    phis: The amount of integrated information for complexes. (#complexes-by-1 vector)
 %    type_of_colormap: ex. 'parula'
 %    LineWidth: max. width of edges
 %    g: relative width of edges
@@ -65,6 +64,7 @@ EdgePhis = EdgePhis + EdgePhis';
 %EdgeColors = EdgeColors + EdgeColors';
 
 if isshown
+    hold on
     Pairs = nchoosek(1:nElems, 2);
     EdgePhis_vec = zeros(size(Pairs, 1), 1);
     for iPairs = 1:size(Pairs, 1)
@@ -81,6 +81,8 @@ if isshown
         Ys = Y(Pair);
         if ~isempty(EdgeColors{Pair(1), Pair(2)}) && LineWidth*g(Pair(1), Pair(2))>0
             line(Xs, Ys, 'Color', EdgeColors{Pair(1), Pair(2)}, 'LineWidth', LineWidth*g(Pair(1), Pair(2)) );
+            
+            scatter(Xs, Ys, MarkerSize, EdgeColors{Pair(1), Pair(2)}, 'filled')
         end
     end
     
