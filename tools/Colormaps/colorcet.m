@@ -16627,6 +16627,16 @@ end
         end
     end
 
+    % Interpolate if N > 256. Added by J. Kitazono, 2020
+    if N > size(map, 1)
+        tmap = map;
+        tN = size(tmap,1);
+        map = zeros(N, 3);
+        for j = 1:3
+            map(:,j) = interp1((0.5:1:(tN-0.5))/tN, tmap(:,j), (0.5:1:(N-0.5))/N, 'linear', 'extrap' );
+        end
+    end     
+        
 
     if nargout == 0
         colormap(map);
