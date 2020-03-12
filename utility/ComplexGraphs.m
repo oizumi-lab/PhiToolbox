@@ -1,9 +1,10 @@
-function [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, indices, phis, type_of_colormap, LineWidth, g, isshown, clim)
+function [EdgePhis, EdgeColors] = ...
+    ComplexGraphs(X, Y, complexes, phis, type_of_colormap, LineWidth, MarkerSize, g, isshown, clim, isclim)
 % Visualize complexes as superimposed graphs
 %
 % INPUT:
 %    X, Y: X and Y coordinates of nodes
-%    indices: The indices of complexes. (#complexes-by-1 cell array. Each cell contains indices of a subset.)
+%    complexes: The indices of complexes. (#complexes-by-1 cell array. Each cell contains indices of a subset.)
 %    phis: The amount of integrated information for complexes. (#complexes-by-1 vector)
 %    type_of_colormap: ex. 'parula'
 %    LineWidth: max. width of edges
@@ -18,13 +19,13 @@ function [EdgePhis, EdgeColors] = ComplexGraphs(X, Y, indices, phis, type_of_col
 %
 % Jun Kitazono, 2018
 
-nBinsColormap = 1024;
+nBinsColormap = 256;
 nElems = length(X);
 
 nComplexes = length(phis);
 
-[Phis_sorted, index_Phis_sorted] = sort(phis, 'ascend');
-Complexes_sorted = indices(index_Phis_sorted);
+[phis_sorted, index_phis_sorted] = sort(phis, 'ascend');
+complexes_sorted = complexes(index_phis_sorted);
 
 if isempty(g) || max(g(:))<=0
     g = ones(nElems);
@@ -35,27 +36,27 @@ end
 
 
 if nargin < 9
-    Phis_sorted_rescaled = rescale(Phis_sorted);
-    clim = [Phis_sorted(1), Phis_sorted(end)];
+    phis_sorted_rescaled = rescale(phis_sorted);
+    clim = [phis_sorted(1), phis_sorted(end)];
 else
     if clim(1) ~= clim(2)
-        Phis_sorted_rescaled = (Phis_sorted-clim(1))./(clim(2)-clim(1));
+        phis_sorted_rescaled = (phis_sorted-clim(1))./(clim(2)-clim(1));
     else
-        Phis_sorted_rescaled = 0;
+        phis_sorted_rescaled = 0;
     end
 end
 
 Colors = eval([type_of_colormap, '(nBinsColormap);']);
-ColorIndices = 1 + floor( (nBinsColormap-1)*Phis_sorted_rescaled );
+ColorIndices = 1 + floor( (nBinsColormap-1)*phis_sorted_rescaled );
 Colors = Colors(ColorIndices,:);
 
 EdgePhis = zeros(nElems, nElems);
 EdgeColors = cell(nElems, nElems);
 for iComplexes = 1:nComplexes
-    Pairs = nchoosek(Complexes_sorted{iComplexes}, 2);
+    Pairs = nchoosek(complexes_sorted{iComplexes}, 2);
     for iPairs = 1:size(Pairs, 1)
         Pair = Pairs(iPairs, :);
-        EdgePhis(Pair(1), Pair(2)) = Phis_sorted(iComplexes);
+        EdgePhis(Pair(1), Pair(2)) = phis_sorted(iComplexes);
         EdgeColors{Pair(1), Pair(2)} = Colors(iComplexes,:);
     end
 end
@@ -85,38 +86,14 @@ if isshown
             scatter(Xs, Ys, MarkerSize, EdgeColors{Pair(1), Pair(2)}, 'filled')
         end
     end
-    
-%     for i = 1:nElems
-%         for j = i+1:nElems
-%             
-%             Xs = [X(i), X(j)];
-%             Ys = [Y(i), Y(j)];
-%             
-%             line(Xs, Ys, 'Color', EdgeColors{i,j}, 'LineWidth', LineWidth);
-%             
-%         end
-%     end
-    
-    % for iComplexes = 1:nComplexes
-    %
-    %     Pairs = nchoosek(Complexes_sorted{iComplexes}, 2);
-    %     Color = Colors(iComplexes,:);
-    % %     LineWidth = LineWidths(iComplexes);
-    %     for iPairs = 1:size(Pairs,1)
-    %         Pair = Pairs(iPairs, :);
-    %         Xs = X(Pair);%[X(Pair(:,1)), X(Pair(:,2))];
-    %         Ys = Y(Pair);%[Y(Pair(:,1)), Y(Pair(:,2))];
-    %
-    %         line(Xs, Ys, 'Color', Color, 'LineWidth', LineWidth);
-    %     end
-    %
-    % end
-    
-    colormap(type_of_colormap);
+
+    eval(['colormap(', type_of_colormap, '(nBinsColormap));']);
     
     if clim(1)~=clim(2)
         caxis(clim)
-        colorbar('Ticks', clim, 'TickLabels', {num2str(clim(1)), num2str(clim(end))})
+        if isclim == 1
+            colorbar('Ticks', clim, 'TickLabels', {num2str(clim(1)), num2str(clim(end))})
+        end
     end
 end
 
