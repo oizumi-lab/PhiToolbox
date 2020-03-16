@@ -1,10 +1,8 @@
 
-%addpath(genpath('/home/kitazono/GitHub/PhiToolbox'))
-%addpath(genpath('/home/kitazono/Documents/MATLAB/tools/Colormaps'))
-addpath(genpath('C:\Users\Jun\Documents\GitHub\PhiToolbox'))
+addpath(genpath('../../PhiToolbox'))
 
 
-%% Set parameters of an AR model
+%% Set parameters of an AR model X(t+1) = AX(t) + E(t), where A is the connectivity matrix and E is Gaussian noise.
 N = 6; % N: the number of elements
 
 % A: the connextivity Matrix
@@ -28,17 +26,17 @@ colorbar
 % sigmaE: std of noise
 sigmaE = 0.1;
 
-% Compute covariances
+% Compute covariances of the stationary distribution
 probs.number_of_elements = N;
 
 if license('test', 'control_toolbox')
     product_info = ver('control');
-    if ~isempty(product_info)
-        probs.Cov_X = dlyap(A, sigmaE^2*eye(N));
+    if ~isempty(product_info) % check if Control System Toolbox is installed.
+        probs.Cov_X = dlyap(A, sigmaE^2*eye(N)); % 'dlyap' belongs to Control System Toolbox. 
         probs.Cov_XY = probs.Cov_X * A';
         probs.Cov_Y = probs.Cov_X;
     else
-        probs.Cov_X = sigmaE^2 * eye(N,N) / (eye(N,N)-A*A);
+        probs.Cov_X = sigmaE^2 * eye(N,N) / (eye(N,N)-A*A); % This equation can be used only when A is symmetric.
         probs.Cov_XY = probs.Cov_X * A';
         probs.Cov_Y = probs.Cov_X;
     end
@@ -59,8 +57,10 @@ options.type_of_complexsearch = 'Recursive';
 Xcoordinate_all = [0 0 1 1 2 2];
 Ycoordinate_all = [1 0 1 0 1 0];
 
+figure
+
 color_level = (Res.phi - min(Res.phi))/(max(Res.phi)-min(Res.phi)); 
-cmap = colorcet('R1'); % Get colormap KovesiRainbow (in PhiToolbox/tools/Colormaps/)
+cmap = KobesiRainbow(256); % Get colormap KovesiRainbow (in PhiToolbox/tools/Colormaps/)
 
 figure, hold on
 
@@ -103,6 +103,8 @@ for i = 1:length(Res.phi)
             'LineWidth', 2);
        
 end
+
+
 zlim([-0.01 0.14]*1e-4)
 zlabel('$I^\mathrm{MIP}$', 'Interpreter', 'latex', 'FontSize', 18)
 
