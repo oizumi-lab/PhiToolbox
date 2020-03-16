@@ -70,13 +70,15 @@ f_HPC = fit( log10(nsHPC), log10(tsHPC), ft_HPC, 'StartPoint', [5, -7]);
 figure
 loglog(nsExhaustive, tsExhaustive, 'k^', 'MarkerSize', 8);
 hold on
-loglog(nsHPC, tsHPC, 'ro', 'MarkerSize', 8);
 
 log10_ns_fit_Ex = log10(3):0.1:log10(40);
 log10_ts_fit_Ex = f_Ex(log10_ns_fit_Ex);
 loglog(10.^(log10_ns_fit_Ex), 10.^(log10_ts_fit_Ex), 'k--', 'LineWidth', 2);
 
-log10_ns_fit_HPC = log10(1):0.1:log10(2e3);
+
+loglog(nsHPC, tsHPC, 'ro', 'MarkerSize', 8);
+
+log10_ns_fit_HPC = log10(1):0.1:log10(2000);
 log10_ts_fit_HPC = f_HPC(log10_ns_fit_HPC);
 loglog(10.^(log10_ns_fit_HPC), 10.^(log10_ts_fit_HPC), 'r-', 'LineWidth', 2);
 
@@ -85,6 +87,8 @@ ylim([1e-2, 1e10])
 xlabel('Number of elements', 'FontSize', 20)
 ylabel('Computation time (sec.)', 'FontSize', 20)
 set(gca, 'FontSize', 16)
+
+legend({'Exhaustive', 'Exhaustive, fitted', 'HPC', 'HPC, fitted'})
 
 
 
