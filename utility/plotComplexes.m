@@ -47,17 +47,16 @@ if isempty(cLim)
     cLim = [phis_sorted(1), phis_sorted(end)];
 end
 
+phis_sorted_rescaled = my_rescale(phis_sorted, cLim(1), cLim(2));
+cmap = colormap;
+nBinsColormap = size(cmap,1);
+colorIndices = 1 + floor( (nBinsColormap-1)*phis_sorted_rescaled );
+colors = cmap(colorIndices,:);
+caxis(cLim)
 
 hold on
 switch plotType
     case {'BirdsEye', '3D'}
-        phis_sorted_rescaled = my_rescale(phis_sorted, cLim(1), cLim(2));
-        cmap = colormap;
-        nBinsColormap = size(cmap,1);
-        colorIndices = 1 + floor( (nBinsColormap-1)*phis_sorted_rescaled );
-        colors = cmap(colorIndices,:);
-        caxis(cLim)
-        
         G = ones(nNodes);
         G(1:(nNodes+1):end) = 0;
         G = graph(G);
@@ -70,7 +69,7 @@ switch plotType
             
             switch plotType
                 case 'BirdsEye'
-                    ZData_temp = repelem(phi_temp, length(indices_temp));
+                    ZData_temp = repelem(phi_temp, length(indices_temp))*1e3;
                 case '3D'
                     ZData_temp = ZData(indices_temp);
             end
@@ -84,32 +83,78 @@ switch plotType
         end
         
     case '2D'
-        G = zeros(nNodes);
-                
+        G = ones(nNodes);
+        G(1:(nNodes+1):end) = 0;
+        G = graph(G);
+        %adjG = adjacency(G);
+        
+        %H = G;
+        %adjH = adjacency(H);
+        adjG = adjacency(G);
+        adjH = zeros(numnodes(G));
+        
         allIndices = [];
-        NodeCData = zeros(allIndices, 1);
         for iComplexes = 1:nComplexes
             indices_temp = complexes_sorted{iComplexes};
             allIndices = union(allIndices, indices_temp);
             
-            phi_temp = phis_sorted(iComplexes);
-            G(indices_temp, indices_temp) = phi_temp;
-            NodeCData(indices_temp) = phi_temp;
+            adjH(indices_temp, indices_temp) = adjG(indices_temp, indices_temp);
+            
         end
-        G(1:(nNodes+1):end) = 0;
-        subG = G(allIndices, allIndices);
-        subG = graph(subG);
-        subGPlotProps_temp = getSubGraphPlotProperties(nNodes, allIndices, args{:});
+        H = graph(adjH);
+        H = subgraph(H, allIndices);
         
-        NodeCData = my_rescale(NodeCData, cLim(1), cLim(2));
-        EdgeCData = my_rescale(subG.Edges.Weight, cLim(1), cLim(2));
+        subGPlotProps_temp = getSubGraphPlotProperties(G, allIndices, args{:});
         
+        plotH = plot(H, 'XData', XData(allIndices), 'YData', YData(allIndices), subGPlotProps_temp{:});
+        
+        for iComplexes = 1:nComplexes
+            indices_temp = complexes_sorted{iComplexes};
+            adjH_temp = zeros(numnodes(G));
+            adjH_temp(indices_temp, indices_temp) = adjG(indices_temp, indices_temp);
+            H_temp = graph(adjH_temp);
+            H_temp = subgraph(H_temp, allIndices);
+            
+            highlight(plotH, H_temp, 'NodeColor', colors(iComplexes,:), 'EdgeColor', colors(iComplexes,:) )
+        end
+%         
+%                 
+%         G.Edges.Weight(:) = 0;
+%         for iComplexes = 1:nComplexes
+%             indices_temp = complexes_sorted{iComplexes};
+%             G
+%             
+%         end
+%                 
+%         allIndices = [];
+%         
+%         
+%         NodeCData = zeros(allIndices, 1);
+%         for iComplexes = 1:nComplexes
+%             indices_temp = complexes_sorted{iComplexes};
+%             allIndices = union(allIndices, indices_temp);
+%             
+%             phi_temp = phis_sorted(iComplexes);
+%             G(indices_temp, indices_temp) = phi_temp;
+%             NodeCData(indices_temp) = phi_temp;
+%         end
+%         G(1:(nNodes+1):end) = 0;
+%         G = graph(G);
+%         subG = subgraph(G, allIndices);
+%         
+% %         subG = G(allIndices, allIndices);
+% %         subG = graph(subG);
+%         subGPlotProps_temp = getSubGraphPlotProperties(G, allIndices, args{:});
+%         
+%         NodeCData = my_rescale(NodeCData(allIndices), cLim(1), cLim(2));
+%         EdgeCData = my_rescale(subG.Edges.Weight, cLim(1), cLim(2));
+%         
 %         plot(subG, 'XData', XData(allIndices), 'YData', YData(allIndices), ...
 %         'NodeCData', NodeCData, 'EdgeCData', EdgeCData, ...
 %         subGPlotProps_temp{:});
-        plot(subG, ...
-        'NodeCData', NodeCData, 'EdgeCData', EdgeCData, ...
-        subGPlotProps_temp{:});
+% %         plot(subG, ...
+% %         'NodeCData', NodeCData, 'EdgeCData', EdgeCData, ...
+% %         subGPlotProps_temp{:});
         
 end
 
