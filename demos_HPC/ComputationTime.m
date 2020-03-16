@@ -1,10 +1,7 @@
 addpath(genpath('../../PhiToolbox'))
 
-clear
-
 %% Set parameters and options
-
-n_elems = 60;
+n_elems = 200;
 sigmaA = 0.1;
 sigmaE = 0.1;
 
@@ -55,6 +52,7 @@ for i = length(nsHPC):-1:1
     tsHPC(i) = toc;
     
 end
+
 
 %% Plot results
 
