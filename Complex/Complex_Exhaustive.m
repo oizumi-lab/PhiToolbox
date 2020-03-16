@@ -47,8 +47,8 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %              the MIPs. 
 %                 0: without normalization (default)
 %                 1: with normalization
-%              Note that, after finding the MIPs, phi wo/ normalization at
-%              the MIPs is used to compare subsets and find the complexes in both options.  
+%              Note that, after finding the MIPs, phi wo/ normalization
+%              with the MIPs is used to compare subsets and find the complexes in both options.  
 %
 %
 % OUTPUTS:
@@ -106,7 +106,7 @@ for i = 1:nClusters
     end
 end
 
-parfor i = 1:length(group_indices_all)
+for i = 1:length(group_indices_all)
     indices_temp = subsets_all{i};
    % disp(indices_temp);
     % disp(['i/length_ind_groups: ', num2str(i), '/', num2str(length(ind_groups))])
