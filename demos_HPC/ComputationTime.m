@@ -1,12 +1,15 @@
 addpath(genpath('../../PhiToolbox'))
 
-%% Set parameters and options
+%%
+% Set parameters of an AR model X(t+1) = AX(t) + E(t), where A is the
+% connectivity matrix and E is Gaussian noise.
 n_elems = 200;
 sigmaA = 0.1;
 sigmaE = 0.1;
 
 A = sigmaA*randn(n_elems)/sqrt(n_elems);
 
+% Compute covariances of the stationary distribution
 Cov_X = dlyap(A, sigmaE^2*eye(n_elems));
 Cov_XY = Cov_X * A';
 Cov_Y = Cov_X;
