@@ -50,11 +50,13 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %    Res.parent: index of the parent of each candidate of complexes.
 %    An index indicate a row Res.Z
 % 
-% Jun Kitazono, 2018
+% Jun Kitazono, 2020
 
 Res = Complex_RecursiveFunction( probs, options );
-
-[complexes, phis_complexes, main_complexes, phis_main_complexes] = find_Complexes_fromRes(Res);
+[complexes, phis_complexes, isComplex, ...
+    main_complexes, phis_main_complexes, isMainComplex] = find_Complexes_fromRes(Res);
+Res.isComplex = isComplex;
+Res.isMainComplex = isMainComplex;
 
 end
 
@@ -122,7 +124,7 @@ end
 
 end
 
-function [complexes, phis_complexes, main_complexes, phis_main_complexes] = find_Complexes_fromRes(Res)
+function [complexes, phis_complexes, isComplex, main_complexes, phis_main_complexes, isMainComplex] = find_Complexes_fromRes(Res)
 
 nSubsets = length(Res.phi);
 phi_temp_max = zeros(nSubsets, 1);
