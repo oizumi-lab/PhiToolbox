@@ -1,5 +1,5 @@
 function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
-   Complex_search_probs( probs, options)
+   Complex_search_probs( probs, options )
 % Find complexes and main complexes from probability distributions
 %
 % INPUTS:
