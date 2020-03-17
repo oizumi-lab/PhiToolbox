@@ -5,8 +5,7 @@ addpath(genpath('../../PhiToolbox'))
 %% Set parameters of an AR model X(t+1) = AX(t) + E(t), where A is the connectivity matrix and E is Gaussian noise.
 N = 6; % N: the number of elements
 
-% A: the connextivity Matrix
-A = zeros(N);
+A = zeros(N); % A: the connextivity Matrix
 
 A(1:2, 1:2) = 0.05;
 A(3:6, 3:6) = 0.05;
@@ -21,10 +20,10 @@ A(4,2) = 0.01;
 A = A/N;
 
 figure, imagesc(A), axis equal tight
+title('Connectivity Matrix', 'FontSize', 18)
 colorbar
 
-% sigmaE: std of noise
-sigmaE = 0.1;
+sigmaE = 0.1; % sigmaE: std of noise
 
 % Compute covariances of the stationary distribution
 probs.number_of_elements = N;
@@ -54,13 +53,12 @@ options.type_of_complexsearch = 'Recursive';
 %% show results
 
 % Set X and Y coordinates of nodes
-Xcoordinate_all = [0 0 1 1 2 2];
-Ycoordinate_all = [1 0 1 0 1 0];
+XCoor_all = [0 0 1 1 2 2];
+YCoor_all = [1 0 1 0 1 0];
 
-figure
 
 color_level = (Res.phi - min(Res.phi))/(max(Res.phi)-min(Res.phi)); 
-cmap = KobesiRainbow(256); % Get colormap KovesiRainbow (in PhiToolbox/tools/Colormaps/)
+cmap = KovesiRainbow(256); % Get colormap KovesiRainbow (in PhiToolbox/tools/Colormaps/)
 
 figure, hold on
 
@@ -72,29 +70,23 @@ for i = 1:length(Res.phi)
     G_temp(1:(length(G_temp)+1):end) = 0;
     G = graph(G_temp);
     
-    Xcoordinate = Xcoordinate_all(1,members);
-    Ycoordinate = Ycoordinate_all(1,members);
-    Zcoordinate = Res.phi(i) * ones(1,nnz(members));
+    XCoor = XCoor_all(1,members);
+    YCorr = YCoor_all(1,members);
+    ZCorr = Res.phi(i) * ones(1,nnz(members));
     
     NodeLabel = indices(members);
     
     color_temp = cmap(floor(color_level(i)*255 + 1),:);
     
-   
-    ind_members = indices(members);
-    for j = 1:length(phis_complexes)
-        iscomp = isempty(setdiff(complexes{j}, ind_members)) && isempty(setdiff(ind_members, complexes{j}));
-        if iscomp
-            LineStyle = '-';
-            break
-        else
-            LineStyle = '--';
-        end
-    end
+   if Res.isComplex(i)
+       LineStyle = '-';
+   else
+       LineStyle = '--';
+   end
     
-    p = plot(G, 'XData', Xcoordinate, ...
-            'YData', Ycoordinate, ...
-            'ZData', Zcoordinate, ...
+    p = plot(G, 'XData', XCoor, ...
+            'YData', YCorr, ...
+            'ZData', ZCorr, ...
             'NodeLabel', NodeLabel, ...
             'NodeColor', color_temp, ...
             'EdgeColor', color_temp, ...
@@ -110,6 +102,9 @@ zlabel('$I^\mathrm{MIP}$', 'Interpreter', 'latex', 'FontSize', 18)
 
 xticks([])
 yticks([])
-colormap(colorcet('R1'))
+colormap(cmap)
 c_handle = colorbar('Ticks', (0:4)/4, 'TickLabels', num2str( min(Res.phi) + (0:4)'*(max(Res.phi)-min(Res.phi))/4, 3));
+c_handle.Label.Interpreter = 'latex';
+c_handle.Label.FontSize = 18;
+c_handle.Label.String = '$I^\mathrm{MIP}$';
 view(-6.8, 11.6)
