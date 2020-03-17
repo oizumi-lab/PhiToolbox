@@ -1,7 +1,20 @@
+%% Measure the computation time of searching for complexes by simulations. 
+% We measure the computation time of hierarchical partitioning for complex
+% search (HPC) by simulation. As a comparison with HPC algorithm, we also
+% meausre the computation time when complexes are exhaustively searhced by
+% brute force. We consider a simple AR model, X(t+1) = AX(t)+E(t), We
+% randomly generated the connectivity matrices A of an AR model X(t+1) =
+% AX(t)+E(t). We determined each element of this connectivity matrix A  by
+% sampling from a Gaussian distribution with mean 0 and variance 0.01/N,
+% where N is the number of elements. The covariance of the additive
+% Gaussian noise in the AR model was set to 0.01I, where I is an identity
+% matrix. See Section 9.2 in Kitazono et al., 2020 for more details.      
+% 
+% Jun Kitazono, 2020
+
 addpath(genpath('../../PhiToolbox'))
 
-%%
-% Set parameters of an AR model X(t+1) = AX(t) + E(t), where A is the
+%% Set parameters of an AR model X(t+1) = AX(t) + E(t), where A is the
 % connectivity matrix and E is Gaussian noise.
 n_elems = 200;
 sigmaA = 0.1;
@@ -28,11 +41,11 @@ options.type_of_MIPsearch = 'Queyranne';
 %% Measure computation time
 % Exhaustive search
 options.type_of_complexsearch = 'Exhaustive';
-nsExhaustive = (3:10)';% In the paper, this was set to (3:16)'.
+nsExhaustive = (3:10)';% In Kitazono et al., 2020, this was set to (3:16)'.
 
 tsExhaustive = zeros(size(nsExhaustive));
 for i = length(nsExhaustive):-1:1
-    probs_sub = ExtractSubsystem(options.type_of_dist, probs, 1:nsExhaustive(i));
+    probs_sub = ExtractSubsystem(options.type_of_dist, probs, 1:nsExhaustive(i)); % Extract a subsystem with nsExhaustive(i) elementes.
     
     tic;
     [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
@@ -43,11 +56,11 @@ end
 
 % Hierarchical partitioninf for complex search (HPC)
 options.type_of_complexsearch = 'Recursive';
-nsHPC = (10:10:40)'; % In the paper, this was set to (10:10:200)'.
+nsHPC = (10:10:40)'; % In Kitazono et al., 2020, this was set to (10:10:200)'.
 
 tsHPC = zeros(size(nsHPC));
 for i = length(nsHPC):-1:1
-    probs_sub = ExtractSubsystem(options.type_of_dist, probs, 1:nsHPC(i));
+    probs_sub = ExtractSubsystem(options.type_of_dist, probs, 1:nsHPC(i)); % Extract a subsystem with nsHPC(i) elementes.
     
     tic;
     [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
@@ -90,6 +103,3 @@ ylabel('Computation time (sec.)', 'FontSize', 20)
 set(gca, 'FontSize', 16)
 
 legend({'Exhaustive', 'Exhaustive, fitted', 'HPC', 'HPC, fitted'})
-
-
-

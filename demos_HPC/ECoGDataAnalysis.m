@@ -1,3 +1,22 @@
+%% Apply Hierarchical partitioning for complex search (HPC) to ECoG data
+% We used electrocorticography (ECoG) data recorded from a macaque monkey.
+% The dataset is available at an open database, Neurotycho.org
+% (http://neurotycho.org/). One hundred twenty-eight electrodes were
+% implanted in the left hemisphere. Signals were sampled at a rate
+% of 1 kHz. The monkey was awake with the eyes covered by an eye-mask to
+% restrain visual responses. To remove line noise and artifacts, we
+% performed bipolar re-referencing between adjacent electrode pairs, i.e.
+% subtracting the signal of one electrode from that of the other. The
+% number of bipolar re-referenced electrodes was 64 in total. Among the 64
+% channels, two channels were removed from further analysis because of
+% measurement noise. We extracted 1-minute signals consisting of 1 kHz
+% * 60 s = 60,000 samples. We searched for complexes. We approximated the
+% probability distribution of the signals with multivariate Gaussian
+% distributions. See Section 9.3 in Kitazono et al., 2020 for more details.
+% 
+% Jun Kitazono, 2020
+
+
 addpath(genpath('../../PhiToolbox'))
 
 %% Preprocess data
@@ -22,7 +41,7 @@ options.type_of_complexsearch = 'Recursive'; % type of complex search
 probs = data_to_probs(X, params, options);
 
 
-%% Find complexes
+%% Find complexes and main complexes
 tic;
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
     Complex_search_probs( probs, options );
