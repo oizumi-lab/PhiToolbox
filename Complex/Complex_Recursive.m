@@ -33,23 +33,40 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
-%           options.groups: search complex based on predefined groups.
-%           A group is considered as an element, which is not subdivided
-%           further.
-%
+%           options.groups: search complex based on predefined groups. 
+%                           A group is considered as an element, which is
+%                           not subdivided further. 
 %
 % OUTPUTS:
 %    complexes: indices of elements in complexes
-%    phis_complexes: phi at the MIP of complexes
+%    phis_complexes: phi measured with the MIP of complexes
 %    main_complexes: indices of elements in main complexes
-%    phis_main_complexes: phi at the MIP of main complexes
+%    phis_main_complexes: phi measured with the MIP of main complexes
 %   
-%    Res.Z: candidates of complexes and MIP of the candidates
-%    Res.phi: phi at the MIP of the candidates of complexes
-%    Res.parent: index of the parent of each candidate of complexes.
-%    An index indicate a row Res.Z
-% 
+%    Res.Z: Each row of Z represents a complex candidate. This is a subset
+%           belonging to \mathcal{V} in Kitazono et al., 2020. The i-th
+%           element of a row has a nonzero value (1 or 2) when the element
+%           is included in the candidate and zero when the element is NOT
+%           included. The value 1 and 2 indicate the MIP of a candidate. 
+%           Ex.: [0, 0, 2, 1, 2, 0, 2]
+%                 1  2  3  4  5  6  7
+%                (The 3rd, 4th, 5th, and 7th elements are included in
+%                this candidate. Its MIP divides it into {4} and {3,5,7}.) 
+%           
+%    Res.phi: phi measured with the MIPs of the complex candidates. The
+%             i-th element of Res.phi of i-th candidate 
+%
+%    Res.parent: The parent of each complex candidate. When the i-th
+%                element of Res.parent is j (i<j), this means that the j-th
+%                candidate is the parent of i-th candidate in the
+%                hierarchy. When i-th element is zero, this means the i-the
+%                candidate is the root node (the whole system). 
+%                
+%    Res.isComplex: This indicates whether each candidate is a complex or
+%                   not (1: a complex, 0: not a complex). 
+%    Res.isMainComplex: This indicates whether each candidate is a main
+%                       complex or not (1: a main complex, 0: not a main complex). 
+%
 % Jun Kitazono, 2020
 
 Res = Complex_RecursiveFunction( probs, options );
@@ -78,8 +95,6 @@ else
             [Z_MIP, phi_MIP] = MIP_Exhaustive( probs, options );
         case 'Queyranne'
             [Z_MIP, phi_MIP] = MIP_Queyranne( probs, options );
-        case 'REMCMC'
-            [Z_MIP, phi_MIP] = MIP_REMCMC( probs, options );
         case 'StoerWagner'
             [Z_MIP, phi_MIP] = mincut( probs.g );
             Z_MIP = Z_MIP + 1;

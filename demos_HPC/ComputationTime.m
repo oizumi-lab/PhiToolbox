@@ -3,12 +3,12 @@
 % search (HPC) by simulation. As a comparison with HPC algorithm, we also
 % meausre the computation time when complexes are exhaustively searhced by
 % brute force. We consider a simple AR model, X(t+1) = AX(t)+E(t), We
-% randomly generated the connectivity matrices A of an AR model X(t+1) =
-% AX(t)+E(t). We determined each element of this connectivity matrix A  by
-% sampling from a Gaussian distribution with mean 0 and variance 0.01/N,
-% where N is the number of elements. The covariance of the additive
-% Gaussian noise in the AR model was set to 0.01I, where I is an identity
-% matrix. See Section 9.2 in Kitazono et al., 2020 for more details.      
+% randomly generated the connectivity matrix A. We determined each element
+% of this connectivity matrix A by sampling from a Gaussian distribution
+% with mean 0 and variance 0.01/N, where N is the number of elements. The
+% covariance of the additive % Gaussian noise in the AR model was set to
+% 0.01I, where I is an identity matrix. See Section 9.2 in Kitazono et al.,
+% 2020 for more details.
 % 
 % Jun Kitazono, 2020
 

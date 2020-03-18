@@ -15,7 +15,7 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           In the discrete case
 %               When options.type_of_phi is 'MI1'
 %                  probs.past: probability distribution of past state (X^t-tau)
-%                  probs.joint: joint distribution of X^t (present) and X^(t-\tau) (past)
+%                  probs.joint: joint distribution of X^t (present) and X^(t-tau) (past)
 %                  probs.present: probability distribution of present state (X^t-tau)
 %               When options.type_of_phi is NOT 'MI1'
 %                  probs.p: probability distribution of X
@@ -36,7 +36,6 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
 %
 %           options.groups
 %              search the complexes based on predefined groups. A group is
@@ -120,8 +119,6 @@ for i = 1:length(group_indices_all)
                 [Z_MIP, phi_MIP] = MIP_Exhaustive( probs_Sub, options);
             case 'Queyranne'
                 [Z_MIP, phi_MIP] = MIP_Queyranne( probs_Sub, options );
-            case 'REMCMC'
-                [Z_MIP, phi_MIP] = MIP_REMCMC( probs_Sub, options );
         end
         if normalization == 1
             phi_MIP = phi_comp_probs(type_of_dist, type_of_phi, Z_MIP, probs_Sub, options_forRecalc);
