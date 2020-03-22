@@ -25,8 +25,7 @@ addpath(genpath('../../PhiToolbox'))
 window_length = 60*1000; % 1 minute
 
 load('misc/Neurotycho/X_window01.mat')
-% X_128ch: 1-minute signals of 128 channeles. 128 by 60,000 (1 minutes * 60 sec. * 1000Hz) matrix
-X = Bipolar_Subtraction(X_128ch, 'Chibi'); % Bipolar re-referencing
+% X: 1-minute signals of 64 channeles, which are bipolar-rereferenced. 64 by 60,000 (1 minutes * 60 sec. * 1000Hz) matrix
 
 % select target channels
 target_ch = 1:62;
