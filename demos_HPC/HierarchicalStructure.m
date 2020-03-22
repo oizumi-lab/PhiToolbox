@@ -83,8 +83,8 @@ for i = 1:length(Res.phi)
     G = graph(G_temp);
     
     XCoor = XCoor_all(1,members);
-    YCorr = YCoor_all(1,members);
-    ZCorr = Res.phi(i) * ones(1,nnz(members));
+    YCoor = YCoor_all(1,members);
+    ZCoor = Res.phi(i) * ones(1,nnz(members));
     
     NodeLabel = indices(members);
     
@@ -97,8 +97,8 @@ for i = 1:length(Res.phi)
     end
     
     p = plot(G, 'XData', XCoor, ...
-        'YData', YCorr, ...
-        'ZData', ZCorr, ...
+        'YData', YCoor, ...
+        'ZData', ZCoor, ...
         'NodeLabel', NodeLabel, ...
         'NodeColor', color_temp, ...
         'EdgeColor', color_temp, ...        
@@ -107,10 +107,11 @@ for i = 1:length(Res.phi)
         'LineWidth', 2);
     
 end
-% You can make a similar plot as above more easily by using 
-% PLOT_COMPLEXES(COMPLEXES, PHIS_COMPLEXES, 'BirdsEye',...). 
-% Note, however, the subset {4,5,6}, which is not a complex, should be
-% omitted. See the function PLOT_COMPLEXES for more details. 
+% You can make a similar plot as above more easily by using the following
+% command.
+%    plotComplexes(complexes, phis_complexes, 'BirdsEye', 'XData', XCoor_all, 'YData', YCoor_all, 'MarkerSize', 10, 'LineWidth', 2)
+% Note, however, the subset {4,5,6}, which is not a complex, will not be
+% plotted. See the function PLOTCOMPLEXES for more details. 
 
 zlim([-0.01 0.14]*1e-4)
 zlabel('$I^\mathrm{MIP}$', 'Interpreter', 'latex', 'FontSize', 18)
