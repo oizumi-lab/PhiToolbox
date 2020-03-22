@@ -65,7 +65,7 @@ function p = plotComplexes(varargin)
 % graph. 
 %
 % 
-% PLOT_COMPLEXES accept the same Name-Value pair arguments as plot(G), 
+% PLOTCOMPLEXES accept the same Name-Value pair arguments as plot(G), 
 % except Linespec (e.g., '-.or'). 
 % The previous syntaxes can also contain one or more Name-Value pair
 % arguments that specify additional properties. 
