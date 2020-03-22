@@ -63,16 +63,15 @@ options.type_of_complexsearch = 'Recursive';
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
          Complex_search_probs( probs, options );
 
-%% show results
+%% Plot results
 
 % Set X and Y coordinates of nodes
 XCoor_all = [0 0 1 1 2 2];
 YCoor_all = [1 0 1 0 1 0];
 
-
 color_level = (Res.phi - min(Res.phi))/(max(Res.phi)-min(Res.phi)); 
 cmap = KovesiRainbow(256);
-
+ 
 figure, hold on
 
 indices = 1:N;
@@ -108,7 +107,10 @@ for i = 1:length(Res.phi)
         'LineWidth', 2);
     
 end
-
+% You can make a similar plot as above more easily by using 
+% PLOT_COMPLEXES(COMPLEXES, PHIS_COMPLEXES, 'BirdsEye',...). 
+% Note, however, the subset {4,5,6}, which is not a complex, should be
+% omitted. See the function PLOT_COMPLEXES for more details. 
 
 zlim([-0.01 0.14]*1e-4)
 zlabel('$I^\mathrm{MIP}$', 'Interpreter', 'latex', 'FontSize', 18)
