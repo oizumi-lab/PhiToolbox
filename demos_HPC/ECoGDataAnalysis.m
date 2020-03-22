@@ -20,10 +20,6 @@
 addpath(genpath('../../PhiToolbox'))
 
 %% Preprocess data
-
-% extract 1-minute signal
-window_length = 60*1000; % 1 minute
-
 load('misc/Neurotycho/X_window01.mat')
 % X: 1-minute signals of 64 channeles, which are bipolar-rereferenced. 64 by 60,000 (1 minutes * 60 sec. * 1000Hz) matrix
 
