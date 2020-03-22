@@ -54,11 +54,11 @@ cLim = [min(phis_complexes), max(phis_complexes)];
 
 CortexMap = load('ChibiMap_bipolar.mat');
 XCoor = CortexMap.X(target_ch);
-YCorr = CortexMap.Y(target_ch);
+YCoor = CortexMap.Y(target_ch);
 
 subplot(1,2,1) % Main complexes
 image(CortexMap.I*(1/5)+4*256/5); axis equal, hold on
-plotComplexes(main_complexes, phis_main_complexes, '2D', XCoor, YCorr, 'cLim', cLim, 'NodeLabel', [], 'LineWidth', 2)
+plotComplexes(main_complexes, phis_main_complexes, '2D', 'XData', XCoor, 'YData', YCoor, 'cLim', cLim, 'NodeLabel', [], 'LineWidth', 2)
 colorbar
 title('Main Complexes')
 
@@ -69,7 +69,7 @@ set(gca, 'XTickLabel', [], 'YTickLabel', [], 'xtick', [], 'ytick', [])
 
 subplot(1,2,2) % Complexes
 image(CortexMap.I*(1/5)+4*256/5); axis equal, hold on
-plotComplexes(complexes, phis_complexes, '2D',  XCoor, YCorr, 'cLim', cLim, 'NodeLabel', [], 'LineWidth', 2)
+plotComplexes(complexes, phis_complexes, '2D', 'XData', XCoor, 'YData', YCoor, 'cLim', cLim, 'NodeLabel', [], 'LineWidth', 2)
 colorbar
 title('Complexes')
 
