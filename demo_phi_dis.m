@@ -1,4 +1,4 @@
-clear all;
+clear
 
 addpath(genpath('../PhiToolbox'))
 

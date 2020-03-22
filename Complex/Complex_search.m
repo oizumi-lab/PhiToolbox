@@ -26,7 +26,6 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhau stive search
 %              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
 %           options.type_of_complexsearch
 %               'Exhaustive': exhaustive search
 %               'Recursive': recursive MIP search

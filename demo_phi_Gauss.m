@@ -2,25 +2,7 @@
 % X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
 
-%% options
-%           options: options for computing phi, MIP search, and complex
-%           search
-%           
-%           options.type_of_dist:
-%              'Gauss': Gaussian distribution
-%              'discrete': discrete probability distribution
-%           options.type_of_phi:
-%              'SI': phi_H, stochastic interaction
-%              'Geo': phi_G, information geometry version
-%              'star': phi_star, based on mismatched decoding
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%           options.normalization: 
-%              0: without normalization by Entropy
-%              1: with normalization by Entropy
-
-
-clear all;
+clear
 addpath(genpath('../PhiToolbox'))
 
 %% generate random gaussian time series X
