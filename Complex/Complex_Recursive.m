@@ -48,18 +48,19 @@ function [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] =
 %           element of a row has a nonzero value (1 or 2) when the element
 %           is included in the candidate and zero when the element is NOT
 %           included. The value 1 and 2 indicate the MIP of a candidate. 
-%           Ex.: [0, 0, 2, 1, 2, 0, 2]
-%                 1  2  3  4  5  6  7
-%                (The 3rd, 4th, 5th, and 7th elements are included in
-%                this candidate. Its MIP divides it into {4} and {3,5,7}.) 
+%           Ex.: Res.Z(i,:): [0, 0, 2, 1, 2, 0, 2]
+%                             1  2  3  4  5  6  7
+%                (The 3rd, 4th, 5th, and 7th elements are included in the
+%                i-th candidate. Its MIP divides it into {4} and {3,5,7}.) 
 %           
 %    Res.phi: phi measured with the MIPs of the complex candidates. The
-%             i-th element of Res.phi of i-th candidate 
+%             i-th element of Res.phi is phi of i-th candidate measured
+%             with its MIP. 
 %
 %    Res.parent: The parent of each complex candidate. When the i-th
 %                element of Res.parent is j (i<j), this means that the j-th
 %                candidate is the parent of i-th candidate in the
-%                hierarchy. When i-th element is zero, this means the i-the
+%                hierarchy. When i-th element is zero, this means the i-th
 %                candidate is the root node (the whole system). 
 %                
 %    Res.isComplex: This indicates whether each candidate is a complex or
