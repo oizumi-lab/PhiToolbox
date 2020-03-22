@@ -1,8 +1,8 @@
 %% Find the complex in a multivariate autoregressive model, 
 %   X^t = A*X^{t-1} + E,
 % where A is a connectivity matrix and E is gaussian noise.
-
-%% options
+%
+% options
 %           options: options for computing phi, MIP search, and complex
 %           search
 %           
@@ -19,7 +19,6 @@
 %           options.type_of_MIPsearch
 %              'Exhaustive': exhaustive search
 %              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
 %              'StoerWagner': mincut search algorithm for undirected graphs
 %           options.type_of_complexsearch
 %               'Exhaustive': exhaustive search
@@ -33,28 +32,33 @@
 %              Note that, after finding the MIPs, phi wo/ normalization at
 %              the MIPs is used to compare subsets and find the complexes in both options. 
 
-%clear all;
 addpath(genpath('../PhiToolbox'))
 
 %% generate data
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 disp('Generating data...')
 
-%%% construct connectivity matrix %%%
-N = 7; % the number of elements
-A = eye(N)/N; % A: connectivity matrix
-A(3:N-2, 3:N-2) = 1/N;
-A(1:2, 1:2) = 1/N;
-A(6:7, 6:7) = 0.5/N;
-A = A + 0.01*randn(N)/sqrt(N);
+% construct connectivity matrix
+N = 6; % N: the number of elements
+A = zeros(N); % A: the connextivity Matrix
 
-figure(1)
-imagesc(A)
-title('Connectivity Matrix A')
-drawnow
+A(1:2, 1:2) = 0.05;
+A(3:6, 3:6) = 0.05;
+A(5:6, 5:6) = 0.1;
+A(1:(N+1):end) = 0.9; % self connections
 
-%%% generate time series X using the AR model %%%
-T = 10^6;
+A(1,3) = 0.01;
+A(3,1) = 0.01;
+A(2,4) = 0.01;
+A(4,2) = 0.01;
+
+A = A/N;
+
+figure, imagesc(A), axis equal tight
+title('Connectivity Matrix', 'FontSize', 18)
+colorbar
+
+% generate time series X using the AR model
+T = 10^7;
 X = zeros(N,T);
 X(:,1) = randn(N,1);
 for t=2: T
@@ -66,12 +70,14 @@ end
 params.tau = 1; % time lag
 
 %% options
+%%% Example 1
 options.type_of_dist = 'Gauss'; % type of probability distributions
 options.type_of_phi = 'MI1'; % type of phi
 options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
 options.type_of_complexsearch = 'Recursive'; % type of complex search
 options.normalization = 0; % normalization of phi by Entropy
 
+%%%% Example2
 % options.type_of_dist = 'Gauss'; % type of probability distributions
 % options.type_of_phi = 'star'; % type of phi
 % options.type_of_MIPsearch = 'Queyranne'; % type of MIP search
@@ -82,30 +88,30 @@ options.normalization = 0; % normalization of phi by Entropy
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
     Complex_search( X, params, options );
 
-%% show results
+%% Show results
 main_complexes_str = cell(size(main_complexes));
 for i = 1:length(main_complexes)
     main_complexes_str{i} =  num2str(main_complexes{i});
 end
-figure(2)
+figure
 bar(phis_main_complexes)
 set(gca, 'xticklabel', main_complexes_str)
 title('Main Complexes')
-ylabel('\Phi_{MIP}')
+ylabel('\Phi^{MIP}')
 xlabel('Indices of the main complexes')
 
-[phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
-figure(3)
-subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
-title('Candidates of complexes')
-subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
-title('\Phi_{MIP}')
 
-switch options.type_of_complexsearch
-    case 'Recursive'
-        figure(4)
-        VisualizeComplexes(Res, 1);
-        ylabel('\Phi_{MIP}')
-        xlabel('Indices')
-        title('Candidates of complexes')
-end
+XCoor = [0 0 1 1 2 2];
+YCoor = [1 0 1 0 1 0];
+figure
+colormap(KovesiRainbow)
+plotComplexes(complexes,phis_complexes,'BirdsEye','XData',XCoor,'YData',YCoor, 'LineWidth', 2)
+title('(Main) Complexes')
+colorbar
+
+min_phi_comp = min(phis_complexes);
+max_phi_comp = max(phis_complexes);
+zlim([min_phi_comp, max_phi_comp])
+zlabel('$\Phi^\mathrm{MIP}$', 'Interpreter', 'latex', 'FontSize', 18)
+
+view(-6.8, 11.6)

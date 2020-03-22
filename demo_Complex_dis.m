@@ -34,7 +34,7 @@
 %              Note that, after finding the MIPs, phi wo/ normalization at
 %              the MIPs is used to compare subsets and find the complexes in both options. 
 
-clear all;
+clear
 addpath(genpath('../PhiToolbox'))
 
 %% generate data
@@ -69,7 +69,7 @@ X = generate_Boltzmann(beta,W,N,T); % generate time series of Boltzman machine
 %% 
 
 T_seg = 1000;
-figure(1)
+figure
 t_vec1 = 1: T_seg;
 t_vec2 = 2*10^3: 2*10^3+T_seg;
 t_vec3 = 10^4: 10^4+T_seg;
@@ -80,17 +80,19 @@ subplot(3,2,2),imagesc(X(:,t_vec2));
 subplot(3,2,3),imagesc(X(:,t_vec3));
 subplot(3,2,4),imagesc(X(:,t_vec4));
 subplot(3,2,5),imagesc(X(:,t_vec5));
+suptitle('Time Series')
 
 %% compute correlation
 R = corrcoef(X');
 disp('Correlation Matrix')
 disp(R);
 
-figure(2)
+figure
 [Z_sort, s_ind] = sort(Z);
 imagesc(R(s_ind,s_ind));
 set(gca, 'XTick', [1: 1: N], 'XTickLabel', s_ind); 
 set(gca, 'YTick', [1: 1: N], 'YTickLabel', s_ind); 
+title('Correlation Matrix')
 
 %% find the complex
 options.type_of_dist = 'discrete';
@@ -106,30 +108,31 @@ params.number_of_states = 2;  % number of states
 [complexes, phis_complexes, main_complexes, phis_main_complexes, Res] = ...
    Complex_search( X, params, options);
 
-%% show results
+%% Show results
 main_complexes_str = cell(size(main_complexes));
 for i = 1:length(main_complexes)
     main_complexes_str{i} =  num2str(main_complexes{i});
 end
-figure(2)
+figure
 bar(phis_main_complexes)
 set(gca, 'xticklabel', main_complexes_str)
 title('Main Complexes')
-ylabel('\Phi_{MIP}')
+ylabel('\Phi^{MIP}')
 xlabel('Indices of the main complexes')
 
-[phis_sorted, idx_phis_sorted] = sort(Res.phi, 'descend');
-figure(3)
-subplot(2,1,1), imagesc(Res.Z(idx_phis_sorted,:)'),title('Subsets')
-title('Candidates of complexes')
-subplot(2,1,2), plot(phis_sorted), xlim([0.5 length(Res.phi)+0.5]),title('\Phi')
-title('\Phi_{MIP}')
 
-switch options.type_of_complexsearch
-    case 'Recursive'
-        figure(4)
-        VisualizeComplexes(Res, 1);
-        ylabel('\Phi_{MIP}')
-        xlabel('Indices')
-        title('Candidates of complexes')
-end
+figure
+colormap(KovesiRainbow)
+plotComplexes(complexes,phis_complexes,'BirdsEye','N',N, 'LineWidth', 2)
+title('(Main) Complexes')
+colorbar
+
+min_phi_comp = min(phis_complexes);
+max_phi_comp = max(phis_complexes);
+zlim([min_phi_comp, max_phi_comp])
+zlabel('$\Phi^\mathrm{MIP}$', 'Interpreter', 'latex', 'FontSize', 18)
+
+view(-6.8, 11.6)
+
+
+
