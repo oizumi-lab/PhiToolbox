@@ -3,37 +3,6 @@
 %   prob(x=1) = sigmoid(input);
 % where W is a connectivity matrix
 
-%% options
-%           options: options for computing phi, MIP search, and complex
-%           search
-%           
-%           options.type_of_dist:
-%              'Gauss': Gaussian distribution
-%              'discrete': discrete probability distribution
-%              'UndirectedGraph': Undirected Graph
-%           options.type_of_phi:
-%              'MI1': Multi (Mutual) information. I(X_1; X_2). (IIT1.0)
-%              'MI': Multi (Mutual) information, I(X_1, Y_1; X_2, Y_2)
-%              'SI': phi_H, stochastic interaction
-%              'star': phi_star, based on mismatched decoding
-%              'Geo': phi_G, information geometry version
-%           options.type_of_MIPsearch
-%              'Exhaustive': exhaustive search
-%              'Queyranne': Queyranne algorithm
-%              'REMCMC': Replica Exchange Monte Carlo Method 
-%              'StoerWagner': mincut search algorithm for undirected graphs
-%           options.type_of_complexsearch
-%               'Exhaustive': exhaustive search
-%               'Recursive': recursive MIP search
-%           options.normalization
-%              (Available only when the dist. is 'Gauss' and the complex search is 'Exhaustive')
-%              Regarding normalization of phi by Entropy when searching
-%              the MIPs. 
-%                 0: without normalization (default)
-%                 1: with normalization
-%              Note that, after finding the MIPs, phi wo/ normalization at
-%              the MIPs is used to compare subsets and find the complexes in both options. 
-
 clear
 addpath(genpath('../PhiToolbox'))
 
