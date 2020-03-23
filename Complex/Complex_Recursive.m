@@ -96,9 +96,6 @@ else
             [Z_MIP, phi_MIP] = MIP_Exhaustive( probs, options );
         case 'Queyranne'
             [Z_MIP, phi_MIP] = MIP_Queyranne( probs, options );
-        case 'StoerWagner'
-            [Z_MIP, phi_MIP] = mincut( probs.g );
-            Z_MIP = Z_MIP + 1;
     end
     
     indices_L = find(Z_MIP==1);
