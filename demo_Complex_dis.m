@@ -44,12 +44,11 @@ t_vec2 = 2*10^3: 2*10^3+T_seg;
 t_vec3 = 10^4: 10^4+T_seg;
 t_vec4 = 10^5: 10^5+T_seg;
 t_vec5 = T-300: T;
-subplot(3,2,1),imagesc(X(:,t_vec1));
-subplot(3,2,2),imagesc(X(:,t_vec2));
-subplot(3,2,3),imagesc(X(:,t_vec3));
-subplot(3,2,4),imagesc(X(:,t_vec4));
-subplot(3,2,5),imagesc(X(:,t_vec5));
-suptitle('Time Series')
+subplot(3,2,1),imagesc(X(:,t_vec1));title('Time Series 1')
+subplot(3,2,2),imagesc(X(:,t_vec2));title('Time Series 2')
+subplot(3,2,3),imagesc(X(:,t_vec3));title('Time Series 3')
+subplot(3,2,4),imagesc(X(:,t_vec4));title('Time Series 4')
+subplot(3,2,5),imagesc(X(:,t_vec5));title('Time Series 5')
 
 %% compute correlation
 R = corrcoef(X');
