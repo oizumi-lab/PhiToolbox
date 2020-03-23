@@ -99,6 +99,7 @@ beta = beta_init;
 % set options of minFunc
 Options.Method = 'lbfgs';
 Options.Display = 'off';
+% Options.useMex = 0;
 
 %% minimize  negative I_s
 

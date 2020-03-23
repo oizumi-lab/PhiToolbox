@@ -39,6 +39,7 @@ beta =  1; % initial value
 % set options of minFunc
 Options.Method = 'lbfgs';
 Options.Display = 'off';
+% Options.useMex = 0;
 
 %% minimize  negative I_s
 [beta,minus_I_s,~,~] = minFunc(@I_s_I_s_d,beta,Options);

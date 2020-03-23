@@ -72,11 +72,11 @@ error = 10^-10;
 
 % set options of minFunc
 Options.Method = 'lbfgs';
-%Options.optTol = 10^-15;
 Options.progTol = 10^-10;
 Options.MaxFunEvals = 4000;
 Options.MaxIter = 2000;
 Options.display = 'off';
+% Options.useMex = 0;
 
 Cov_E_p = Cov_E;
 for iter=1: iter_max
