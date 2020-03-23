@@ -6,7 +6,7 @@
 % randomly generated the connectivity matrix A. We determined each element
 % of this connectivity matrix A by sampling from a Gaussian distribution
 % with mean 0 and variance 0.01/N, where N is the number of elements. The
-% covariance of the additive % Gaussian noise in the AR model was set to
+% covariance of the additive Gaussian noise in the AR model was set to
 % 0.01I, where I is an identity matrix. See Section 9.2 in Kitazono et al.,
 % 2020 for more details.
 % 
