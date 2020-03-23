@@ -45,14 +45,12 @@ if license('test', 'control_toolbox')
     product_info = ver('control');
     if ~isempty(product_info) % check if Control System Toolbox is installed.
         probs.Cov_X = dlyap(A, sigmaE^2*eye(N)); % 'dlyap' belongs to Control System Toolbox. 
-        probs.Cov_XY = probs.Cov_X * A';
-        probs.Cov_Y = probs.Cov_X;
     else
         probs.Cov_X = sigmaE^2 * eye(N,N) / (eye(N,N)-A*A); % This equation can be used only when A is symmetric.
-        probs.Cov_XY = probs.Cov_X * A';
-        probs.Cov_Y = probs.Cov_X;
     end
 end
+probs.Cov_XY = probs.Cov_X * A';
+probs.Cov_Y = probs.Cov_X;
 
 %% Find complexes
 options.type_of_dist = 'Gauss';

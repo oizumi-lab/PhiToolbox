@@ -1,7 +1,7 @@
 %% Measure the computation time of searching for complexes by simulations. 
 % We measure the computation time of hierarchical partitioning for complex
 % search (HPC) by simulation. As a comparison with HPC algorithm, we also
-% meausre the computation time when complexes are exhaustively searhced by
+% measure the computation time when complexes are exhaustively searhced by
 % brute force. We consider a simple AR model, X(t+1) = AX(t)+E(t), We
 % randomly generated the connectivity matrix A. We determined each element
 % of this connectivity matrix A by sampling from a Gaussian distribution
@@ -23,13 +23,17 @@ sigmaE = 0.1;
 A = sigmaA*randn(n_elems)/sqrt(n_elems);
 
 % Compute covariances of the stationary distribution
-Cov_X = dlyap(A, sigmaE^2*eye(n_elems));
-Cov_XY = Cov_X * A';
-Cov_Y = Cov_X;
-
-probs.Cov_X = Cov_X;
-probs.Cov_XY = Cov_XY;
-probs.Cov_Y = Cov_Y;
+if license('test', 'control_toolbox')
+    product_info = ver('control');
+    if ~isempty(product_info) % check if Control System Toolbox is installed.
+        probs.Cov_X = dlyap(A, sigmaE^2*eye(n_elems)); % 'dlyap' belongs to Control System Toolbox. 
+    else
+        A = (A + A')/2; % In the case Control System Toolbox is not installed, use a symmetric matrix instead. 
+        probs.Cov_X = sigmaE^2 * eye(n_elems,n_elems) / (eye(n_elems,n_elems)-A*A); % This equation can be used only when A is symmetric.
+    end
+    probs.Cov_XY = probs.Cov_X * A';
+    probs.Cov_Y = probs.Cov_X;
+end
 probs.number_of_elements = n_elems;
 
 
