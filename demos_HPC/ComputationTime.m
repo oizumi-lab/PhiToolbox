@@ -76,29 +76,11 @@ end
 
 %% Plot results
 
-% Fitting analysis
-ft_Ex = fittype('my_powerOf10(x, a, b)');
-f_Ex = fit( log10(nsExhaustive), log10(tsExhaustive), ft_Ex, 'StartPoint', [0.4, -3], 'Exclude', 1:5  );
-
-ft_HPC = fittype('my_linear(x, a, b)');
-f_HPC = fit( log10(nsHPC), log10(tsHPC), ft_HPC, 'StartPoint', [5, -7]);
-% f_HPC = fit( log10(nsHPC), log10(tsHPC), ft_HPC, 'StartPoint', [5, -7], 'Exclude', 1:5 ); % In the paper, the first five points were discarded from the fitting analysis. 
-
 % Plot
 figure
 loglog(nsExhaustive, tsExhaustive, 'k^', 'MarkerSize', 8);
 hold on
-
-log10_ns_fit_Ex = log10(3):0.1:log10(40);
-log10_ts_fit_Ex = f_Ex(log10_ns_fit_Ex);
-loglog(10.^(log10_ns_fit_Ex), 10.^(log10_ts_fit_Ex), 'k--', 'LineWidth', 2);
-
-
 loglog(nsHPC, tsHPC, 'ro', 'MarkerSize', 8);
-
-log10_ns_fit_HPC = log10(1):0.1:log10(2000);
-log10_ts_fit_HPC = f_HPC(log10_ns_fit_HPC);
-loglog(10.^(log10_ns_fit_HPC), 10.^(log10_ts_fit_HPC), 'r-', 'LineWidth', 2);
 
 xlim([1e0, 2e3])
 ylim([1e-2, 1e10])
@@ -106,4 +88,34 @@ xlabel('Number of elements', 'FontSize', 20)
 ylabel('Computation time (sec.)', 'FontSize', 20)
 set(gca, 'FontSize', 16)
 
-legend({'Exhaustive', 'Exhaustive, fitted', 'HPC', 'HPC, fitted'})
+% Fitting
+
+% check if Curve Fitting Toolbox is installed.
+if license('test', 'curve_fitting_toolbox')
+    product_info = ver('curvefit');
+    isCurveFit = ~isempty(product_info);
+end
+
+if isCurveFit
+    % Fitting analysis
+    ft_Ex = fittype('my_powerOf10(x, a, b)');
+    f_Ex = fit( log10(nsExhaustive), log10(tsExhaustive), ft_Ex, 'StartPoint', [0.4, -3], 'Exclude', 1:5  );
+    
+    ft_HPC = fittype('my_linear(x, a, b)');
+    f_HPC = fit( log10(nsHPC), log10(tsHPC), ft_HPC, 'StartPoint', [5, -7]);
+    % f_HPC = fit( log10(nsHPC), log10(tsHPC), ft_HPC, 'StartPoint', [5, -7], 'Exclude', 1:5 ); % In the paper, the first five points were discarded from the fitting analysis.
+    
+    log10_ns_fit_Ex = log10(3):0.1:log10(40);
+    log10_ts_fit_Ex = f_Ex(log10_ns_fit_Ex);
+    loglog(10.^(log10_ns_fit_Ex), 10.^(log10_ts_fit_Ex), 'k--', 'LineWidth', 2);
+    
+    log10_ns_fit_HPC = log10(1):0.1:log10(2000);
+    log10_ts_fit_HPC = f_HPC(log10_ns_fit_HPC);
+    loglog(10.^(log10_ns_fit_HPC), 10.^(log10_ts_fit_HPC), 'r-', 'LineWidth', 2);
+
+    legend({'Exhaustive', 'HPC', 'Exhaustive, fitted', 'HPC, fitted'})
+    
+else
+    legend({'Exhaustive', 'HPC'})
+end
+    
