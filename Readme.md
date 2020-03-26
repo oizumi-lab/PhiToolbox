@@ -1,4 +1,4 @@
-# Practical Phi Toolbox for Integrated Information Analysis
+# Practical &Phi; Toolbox for Integrated Information Analysis
 Jun Kitazono and Masafumi Oizumi (The University of Tokyo)  
 Email: c-kitazono@g.ecc.u-tokyo.ac.jp, c-oizumi@g.ecc.u-tokyo.ac.jp  
 Last update: Mar XXth, 2020  
@@ -9,7 +9,7 @@ This toolbox provides MATLAB codes for end-to-end computation for practical vers
 <table>
     <thead>
         <tr align='center'>
-            <th colspan=8>Computation of practical measures of Phi</th> <th>MIP Search</th> <th>Complex Search</th>
+            <th colspan=8>Computation of practical measures of &Phi;</th> <th>MIP Search</th> <th>Complex Search</th>
         </tr>
     </thead>
     <tbody>
@@ -22,12 +22,12 @@ This toolbox provides MATLAB codes for end-to-end computation for practical vers
         <tr align='center'>
             <td>MI</td>
             <td>SI</td>
-            <td>star</td>
-            <td>Geo</td>
+            <td>&Phi;<sub>*</sub></td>
+            <td>&Phi;<sub>G</sub></td>
             <td>MI</td>
             <td>SI</td>
-            <td>star</td>
-            <td>Geo</td>
+            <td>&Phi;<sub>*</sub></td>
+            <td>&Phi;<sub>G</sub></td>
         </tr>
         <tr align='center'>
             <td>&#10003;</td> <!-- Gaussian -->
@@ -47,7 +47,7 @@ This toolbox provides MATLAB codes for end-to-end computation for practical vers
 ## General description
 
 ### Computation of practical measures of integrated information
-This toolbox provides codes for computing practical measures of integrated information (PHI), namely, mutual information (Tononi, 2004), stochastic interaction (Ay, 2001, 2015; Barrett & Seth, 2011), integrated information based on mismatched decoding Φ^* [1] and geometric integrated information Φ_G [2]. Integrated information quantifies the amount of information that is integrated within a system. Please look at “demo_phi_Gauss.m” and “demo_phi_dis.m” to see how to use the core functions for PHI computation. 
+This toolbox provides codes for computing practical measures of integrated information (&Phi;), namely, mutual information (Tononi, 2004), stochastic interaction (Ay, 2001, 2015; Barrett & Seth, 2011), integrated information based on mismatched decoding &Phi;<sub>*</sub> [1] and geometric integrated information &Phi;<sub>G</sub> [2]. Integrated information quantifies the amount of information that is integrated within a system. Please look at “demo_phi_Gauss.m” and “demo_phi_dis.m” to see how to use the core functions for PHI computation. 
 
 ### Search for minimum information partitions (MIPs)
 The codes for searching for the minimum information partition (see Tononi, 2008, Biol Bull for example) are provided. Two types of algorithms for the MIP search are provided, namely, an exhaustive search, Queranne’s algorithm [3, 4]. Please look at “demo_MIP_Gauss.m” and “demo_MIP_dis.m” to see how to use the core functions for MIP search.
@@ -56,20 +56,24 @@ The codes for searching for the minimum information partition (see Tononi, 2008,
 ### Search for complexes
 The codes for searching for complexes (See Balduzzi & Tononi, 2008, PLoS Comp. Biol. for example) are provided. Two types of algorithm are provided, namely, an exhaustive search and Hierarchical Partitioning for Complex search (HPC) [5]. Please look at “demo_Complex_Gauss.m” and “demo_Complex_dis.m” to see how to use the core functions for complex search. Please also look at “demos_HPC” folder containing codes for reproducing the simulations in Kitazono et al., 2020 [5] in which we propose HPC.
 
-You can freely use this toolbox at your own risk. Please cite this toolbox (URL) and the papers listed below when the toolbox is used for your publication. Comments, bug reports, and proposed improvements are always welcome. 
+You can freely use this toolbox at your own risk. Please cite this toolbox (URL) and the papers listed below when the toolbox is used for your publication. Comments, bug reports, and proposed improvements are always welcome.  
 
 
+### Misc.
 This toolbox uses  
-“colorcet.m” written by Peter Kovesi, which provides perceptually uniform color maps. See the link below for more details. 
+- “colorcet.m” written by Peter Kovesi, which provides perceptually uniform color maps. See the link below for more details.  
 https://peterkovesi.com/projects/colourmaps/  
 
-“minFunc” written by Mark Schmidt, which is needed for solving unconstrained optimization. See the link below for more details. 
+- “minFunc” written by Mark Schmidt, which is needed for solving unconstrained optimization. See the link below for more details.  
 http://www.cs.ubc.ca/~schmidtm/Software/minFunc.html
-- In the case minFunc does not work due to a problem in mex files, please compile minFunc files by executing mexAll.m in PhiToolbox/tools/minFunc_2012 or please set Options.useMex = 0 in phi_G_Gauss-LBFGS.m, phi_star_dis.m and phi_star_Gauss.m. 
 
 
-## Acknowledgement
-We thank Shohei Hidaka for providing the codes for Queyranne’s algorithm. 
+## Trouble shooting
+- *Invalid MEX File Errors*. In the case you get "Invalid MEX-file" error messages related to minFunc, please compile minFunc files by executing mexAll.m in PhiToolbox/tools/minFunc_2012 or please set Options.useMex = 0 in phi_G_Gauss-LBFGS.m, phi_star_dis.m and phi_star_Gauss.m.
+
+
+## Acknowledgment
+We thank Shohei Hidaka (JAIST) for providing the codes for Queyranne’s algorithm. 
 
 
 ## References
