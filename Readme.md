@@ -5,7 +5,6 @@ Last update: Mar XXth, 2020
 
 This toolbox provides MATLAB codes for end-to-end computation for practical versions of integrated information theory. This toolbox is an update of our previous version of the toolbox available at figshare (doi:10.6084/m9.figshare.3203326). In this new version, the algorithms for searching for complexes are newly implemented. The features available in this toolbox are summarized in the table below.
 
-
 <table>
     <thead>
         <tr align='center'>
@@ -50,11 +49,11 @@ This toolbox provides MATLAB codes for end-to-end computation for practical vers
 This toolbox provides codes for computing practical measures of integrated information (&Phi;), namely, mutual information (Tononi, 2004), stochastic interaction (Ay, 2001, 2015; Barrett & Seth, 2011), integrated information based on mismatched decoding &Phi;<sub>*</sub> [1] and geometric integrated information &Phi;<sub>G</sub> [2]. Integrated information quantifies the amount of information that is integrated within a system. Please look at “demo_phi_Gauss.m” and “demo_phi_dis.m” to see how to use the core functions for PHI computation. 
 
 ### Search for minimum information partitions (MIPs)
-The codes for searching for the minimum information partition (see Tononi, 2008, Biol Bull for example) are provided. Two types of algorithms for the MIP search are provided, namely, an exhaustive search, Queranne’s algorithm [3, 4]. Please look at “demo_MIP_Gauss.m” and “demo_MIP_dis.m” to see how to use the core functions for MIP search.
+The codes for searching for the minimum information partition (see Balduzzi & Tononi, 2008, PLoS Comp. Biol. for example) are provided. Two types of algorithms for the MIP search are provided, namely, an exhaustive search, Queranne’s algorithm [3, 4]. Please look at “demo_MIP_Gauss.m” and “demo_MIP_dis.m” to see how to use the core functions for MIP search.
 
 
 ### Search for complexes
-The codes for searching for complexes (See Balduzzi & Tononi, 2008, PLoS Comp. Biol. for example) are provided. Two types of algorithm are provided, namely, an exhaustive search and Hierarchical Partitioning for Complex search (HPC) [5]. Please look at “demo_Complex_Gauss.m” and “demo_Complex_dis.m” to see how to use the core functions for complex search. Please also look at “demos_HPC” folder containing codes for reproducing the simulations in Kitazono et al., 2020 [5] in which we propose HPC.
+The codes for searching for complexes (see Balduzzi & Tononi, 2008, PLoS Comp. Biol. for example) are provided. Two types of algorithm are provided, namely, an exhaustive search and Hierarchical Partitioning for Complex search (HPC) [5]. Please look at “demo_Complex_Gauss.m” and “demo_Complex_dis.m” to see how to use the core functions for complex search. Please also look at “demos_HPC” folder containing codes for reproducing the simulations in Kitazono et al., 2020 [5] in which we propose HPC.
 
 You can freely use this toolbox at your own risk. Please cite this toolbox (URL) and the papers listed below when the toolbox is used for your publication. Comments, bug reports, and proposed improvements are always welcome.  
 
