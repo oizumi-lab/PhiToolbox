@@ -1,5 +1,5 @@
 # Practical &Phi; Toolbox for Integrated Information Analysis
-Jun Kitazono and Masafumi Oizumi (The University of Tokyo) 
+Jun Kitazono and Masafumi Oizumi (The University of Tokyo)  
 Email: c-kitazono@g.ecc.u-tokyo.ac.jp, c-oizumi@g.ecc.u-tokyo.ac.jp 
  
 This toolbox provides MATLAB codes for end-to-end computation in "practical versions" of integrated information theory: computing practical measures of integrated information, searching for minimum information partitions and complexes. These are key important concepts in integrated information theory and can be generally utilized for network analysis, i.e., evaluating how much information is integrated in a network, finding the optimal partition and the cores of the network. In general, these computations take a large amount of computation time, which has hindered the applicability of integrated information theory to real data. This toolbox enables us to analyze a network consisting of up to several hundred of elements by utilizing efficient algorithms. This toolbox is an update of our previous version of the toolbox available at figshare (doi:10.6084/m9.figshare.3203326). In this new version, the algorithms for searching for complexes are newly implemented. The features available in this toolbox are summarized in the table below.
