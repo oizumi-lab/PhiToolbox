@@ -16,7 +16,7 @@ In general, these computations take a large amount of time, which has hindered t
 ### Computation of practical measures of &Phi;
 The codes for computing practical measures of integrated information (&Phi;), namely, Mutual Information (Tononi, 2004), Stochastic Interaction (Ay, 2001, 2015; Barrett & Seth, 2011), integrated information based on mismatched decoding &Phi;<sub>\*</sub> [1] and geometric integrated information &Phi;<sub>G</sub> [2]. Integrated information quantifies the amount of information that is integrated within a system. For quantifying integrated information, we need to assume what distribution data obeys. Two options are available for a probability distribution with which integrated information is computed: a Gaussian distribution and a discrete distribution. The relations among the computation times of these measures are summarised as </br>
 MI (Gauss) < SI (Gauss) << &Phi;<sub>\*</sub> (Gauss) << &Phi;<sub>G</sub> (Gauss) << MI (dis) < SI (dis) << &Phi;<sub>\*</sub> (dis). </br>
-&Phi;<sub>G</sub> for discrete distributions is not implemented. 
+The computation of &Phi;<sub>G</sub> for discrete distributions is not implemented. 
 In geneneral, the computation for Gaussian distributions is much faster than that for discrete distributions. The computation of &Phi;<sub>\*</sub> and &Phi;<sub>G</sub> takes more time than that for MI and SI because the computation of &Phi;<sub>\*</sub> and &Phi;<sub>G</sub> requires solving continuous optimization problems. Please look at “demo_phi_Gauss.m” and “demo_phi_dis.m” to see how to use the core functions for &Phi; computation.
 
  
