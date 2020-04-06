@@ -13,7 +13,13 @@ N = probs.number_of_elements;
 type_of_dist = options.type_of_dist;
 type_of_phi = options.type_of_phi;
 
-if strcmpi(type_of_phi, 'MI1') && strcmpi(type_of_dist, 'Gauss')
+isNormalization = false;
+if isfield(options, 'normalization')
+    if options.normalization == 1
+        isNormalization = true;
+    end
+end
+if strcmpi(type_of_phi, 'MI1') && strcmpi(type_of_dist, 'Gauss') && ~isNormalization
     [IndexOutput] = QueyranneAlgorithmNormal(probs.Cov_X, 1:N);
     
     phi_MIP = MI1_Gauss(probs.Cov_X, indices2bipartition(IndexOutput, N));
