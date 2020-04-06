@@ -13,10 +13,16 @@ N = probs.number_of_elements;
 type_of_dist = options.type_of_dist;
 type_of_phi = options.type_of_phi;
 
-F = @(indices)phi_comp_probs(type_of_dist, type_of_phi, indices2bipartition(indices, N), probs, options);
+if strcmpi(type_of_phi, 'MI1') && strcmpi(type_of_dist, 'Gauss')
+    [IndexOutput] = QueyranneAlgorithmNormal(probs.Cov_X, 1:N);
+    
+    phi_MIP = MI1_Gauss(probs.Cov_X, indices2bipartition(IndexOutput, N));
+else
+    F = @(indices)phi_comp_probs(type_of_dist, type_of_phi, indices2bipartition(indices, N), probs, options);
 
-[IndexOutput] = QueyranneAlgorithm( F, 1:N );
-phi_MIP = F(IndexOutput);
+    [IndexOutput] = QueyranneAlgorithm( F, 1:N );
+    phi_MIP = F(IndexOutput);
+end
 
 if ismember(1, IndexOutput)
     Z_MIP = 2*ones(1,N);
