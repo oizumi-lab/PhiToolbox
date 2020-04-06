@@ -60,7 +60,7 @@ end
 
 % Hierarchical partitioninf for complex search (HPC)
 options.type_of_complexsearch = 'Recursive';
-nsHPC = (10:10:40)'; % In Kitazono et al., 2020, this was set to (10:10:200)'.
+nsHPC = (10:10:60)'; % In Kitazono et al., 2020, this was set to (10:10:200)'.
 
 tsHPC = zeros(size(nsHPC));
 for i = length(nsHPC):-1:1
