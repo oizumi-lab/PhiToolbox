@@ -38,7 +38,7 @@ https://peterkovesi.com/projects/colourmaps/
 http://www.cs.ubc.ca/~schmidtm/Software/minFunc.html
  
  
-## Trouble shooting
+## Troubleshooting
 - *Invalid MEX File Errors*. In the case you get "Invalid MEX-file" error messages related to minFunc, please compile minFunc files by executing mexAll.m in PhiToolbox/tools/minFunc_2012 or please set Options.useMex = 0 in phi_G_Gauss-LBFGS.m, phi_star_dis.m and phi_star_Gauss.m.
  
  
