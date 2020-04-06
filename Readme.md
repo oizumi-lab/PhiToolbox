@@ -43,7 +43,7 @@ http://www.cs.ubc.ca/~schmidtm/Software/minFunc.html
  
  
 ## Acknowledgment
-We thank Shohei Hidaka (JAIST) for providing the codes for Queyranne’s algorithm. We thank Yuma Aoki, Ayaka Kato, Genji Kawakita, Takeru Kimura, Daiki Kiyooka and Kaio Misawa for testing the toolbox for usability.
+We thank Shohei Hidaka (JAIST) for providing the codes for Queyranne’s algorithm. We thank Yuma Aoki, Ayaka Kato, Genji Kawakita, Takeru Kimura, Daiki Kiyooka and Kaio Misawa for testing this toolbox for usability.
  
 ## References
 [1] Oizumi, M., Amari, S, Yanagawa, T., Fujii, N., & Tsuchiya, N. (2016). Measuring integrated information from the decoding perspective. PLoS Comput Biol, 12(1), e1004654. http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004654
