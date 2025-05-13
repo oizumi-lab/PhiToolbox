@@ -1,6 +1,6 @@
 # Practical &Phi; Toolbox for Integrated Information Analysis
-Jun Kitazono and Masafumi Oizumi (The University of Tokyo) </br>
-Email: c-kitazono@g.ecc.u-tokyo.ac.jp, c-oizumi@g.ecc.u-tokyo.ac.jp
+Jun Kitazono (Yokohama City University) and Masafumi Oizumi (The University of Tokyo) </br>
+Email: kitazono.jun.ig@yokohama-cu.ac.jp, c-oizumi@g.ecc.u-tokyo.ac.jp
 
 This toolbox provides MATLAB codes for end-to-end computation in "practical versions" of integrated information theory (IIT): 
 1. Computing practical measures of integrated information (&Phi;).
